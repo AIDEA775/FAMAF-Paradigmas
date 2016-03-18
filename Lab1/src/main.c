@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <argp.h>
 #include <stdbool.h>
+#include <string.h>
 
 const char *argp_program_version = "Ale's Translation 1.0";
 
@@ -64,10 +65,50 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
 
 static struct argp argp = { options, parse_opt, 0, doc };
 
+
+void translate (FILE *src, FILE *out) {
+  char word[100];
+  int ch, i;
+
+  do {
+    i = 0;
+
+    while(EOF != (ch = fgetc(src)) && isspace(ch))
+      fprintf(out, " ");
+
+    if (ch == EOF)
+      break;
+
+    // is a character
+    if(!isalpha(ch)) {
+      word[i++] = ch;
+      word[i++] = '\0';
+      fprintf(out, "%s", word);
+      continue;
+    }
+
+    // is a word
+    do {
+      word[i++] = tolower(ch);
+    } while(EOF != (ch = fgetc(src)) && isalpha(ch));
+
+    if(!isalpha(ch))
+      ungetc(ch, src);
+
+    word[i++] = '\0';
+    fprintf(out, "*%s*", word);
+
+  } while(1);
+
+}
+
 int main (int argc, char **argv) {
   struct Settings settings;
+  FILE *src;
+  FILE *out;
 
   // Default values.
+  settings.file_src = NULL;
   settings.file_out = "translated.txt";
   settings.file_dic = "dictionary.txt";
   settings.file_ign = "ignored.txt";
@@ -82,6 +123,22 @@ int main (int argc, char **argv) {
           settings.file_dic,
           settings.file_ign,
           settings.reverse ? "yes" : "no");
+
+  src = fopen(settings.file_src, "r");
+
+
+  if(src == NULL) {
+    printf("File not found\n");
+    return 1;
+  }
+
+  out = fopen(settings.file_out, "w+");
+
+//  translate(dict, src, out)
+  translate(src, out);
+
+  fclose(src);
+  fclose(out);
 
   exit (0);
 }
