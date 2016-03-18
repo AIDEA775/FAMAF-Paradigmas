@@ -1,9 +1,7 @@
-
-#include <stdlib.h>
 #include <argp.h>
 #include <stdbool.h>
 #include <string.h>
-#include <ctype.h>
+#include <stdlib.h>
 
 const char *argp_program_version = "Ale's Translation 1.0";
 
