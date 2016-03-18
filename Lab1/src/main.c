@@ -3,6 +3,7 @@
 #include <argp.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 
 const char *argp_program_version = "Ale's Translation 1.0";
 
@@ -66,6 +67,11 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
 static struct argp argp = { options, parse_opt, 0, doc };
 
 
+bool islatinapha(char c) {
+  return isalpha(c) || (strchr("áéíóúÁÉÍÓÚñÑ", c) != NULL);
+}
+
+
 void translate (FILE *src, FILE *out) {
   char word[100];
   int ch, i;
@@ -80,7 +86,7 @@ void translate (FILE *src, FILE *out) {
       break;
 
     // is a character
-    if(!isalpha(ch)) {
+    if(!islatinapha(ch)) {
       word[i++] = ch;
       word[i++] = '\0';
       fprintf(out, "%s", word);
@@ -90,7 +96,7 @@ void translate (FILE *src, FILE *out) {
     // is a word
     do {
       word[i++] = tolower(ch);
-    } while(EOF != (ch = fgetc(src)) && isalpha(ch));
+    } while(EOF != (ch = fgetc(src)) && islatinapha(ch));
 
     if(!isalpha(ch))
       ungetc(ch, src);
