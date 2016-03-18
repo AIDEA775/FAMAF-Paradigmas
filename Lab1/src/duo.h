@@ -1,12 +1,15 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
 
 typedef struct _duo_t  *duo_t;
 
-duo_t create_duo(string index, string data);
+duo_t create_duo(char* index, char* data);
 
-string get_data(duo_t duo);
+char* get_data(duo_t duo);
 
-string get_index(duo_t duo);
+char* get_index(duo_t duo);
 
 duo_t destroy_duo(duo_t duo);

@@ -3,29 +3,32 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include <duo.h>
 
 
 struct _duo_t {
-	string index;
-	string data;
+	char *index;
+	char *data;
 };
 
-duo_t create_duo(string index, string data)  {
+typedef struct _duo_t  *duo_t;
+
+duo_t create_duo(char *index, char *data)  {
     duo_t duo;
     duo = calloc(1, sizeof(struct _duo_t));
-    duo->index = calloc(strlegth(index) + 1, sizeof(char));
-    duo->data = calloc(strlegth(data) + 1, sizeof(char));
-    strncpy(duo->index, index);
-    strncpy(duo->data, data);
+    duo->index = calloc(strlen(index) + 1, sizeof(char));
+    duo->data = calloc(strlen(data) + 1, sizeof(char));
+    strcpy(duo->index, index);
+    strcpy(duo->data, data);
 
     return(duo);
 }
 
-string get_data(duo_t duo) {
+char* get_data(duo_t duo) {
     return(duo->data);
 }
 
-string get_index(duo_t duo) {
+char* get_index(duo_t duo) {
     return(duo->index);
 }
 
