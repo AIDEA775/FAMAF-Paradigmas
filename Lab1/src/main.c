@@ -70,8 +70,9 @@ bool islatinapha(char c) {
 }
 
 
-void translate (FILE *src, FILE *out) {
+void translate (dics_t dict, FILE *src, FILE *out) {
   char word[100];
+  char* translate;
   int ch, i;
 
   do {
@@ -100,7 +101,20 @@ void translate (FILE *src, FILE *out) {
       ungetc(ch, src);
 
     word[i++] = '\0';
-    fprintf(out, "*%s*", word);
+
+    translate = dics_search(dict, word);
+    switch (translate) {
+      case FOUND:
+        fprintf(out, "*%s*", get_translation(dict));
+        break;
+      case NOT_FOUND:
+        printf("NOT FOUND\n");
+        fprintf(out, "*NOTFOUND*");
+        break;
+      case EXCEPTION:
+        // skip
+        break;
+    }
 
   } while(1);
 
@@ -110,6 +124,7 @@ int main (int argc, char **argv) {
   struct Settings settings;
   FILE *src;
   FILE *out;
+  dics_t dict;
 
   // Default values.
   settings.file_src = NULL;
@@ -128,21 +143,27 @@ int main (int argc, char **argv) {
           settings.file_ign,
           settings.reverse ? "yes" : "no");
 
+  dict = dics_create(settings.reverse, settings.file_dic, settings.file_ign);
+  if(dict == NULL) {
+    printf("Dictionary not found\n");
+    return 1;
+  }
+
   src = fopen(settings.file_src, "r");
-
-
   if(src == NULL) {
     printf("File not found\n");
     return 1;
   }
 
   out = fopen(settings.file_out, "w+");
+  if(out == NULL) {
+    printf("File out error\n");
+    return 1;
+  }
 
-//  translate(dict, src, out)
-  translate(src, out);
+  translate(dict, src, out)
 
   fclose(src);
   fclose(out);
-
-  exit (0);
+  return 0;
 }
