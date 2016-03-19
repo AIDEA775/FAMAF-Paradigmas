@@ -3,15 +3,13 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
-#include <duo.h>
+#include "duo.h"
 
 
 struct _duo_t {
 	char *index;
 	char *data;
 };
-
-typedef struct _duo_t  *duo_t;
 
 duo_t create_duo(char *index, char *data)  {
     duo_t duo;
