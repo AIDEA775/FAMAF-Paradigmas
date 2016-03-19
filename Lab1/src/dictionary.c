@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,8 +17,32 @@ typedef struct _dic_node_t  *dic_t;
 dic_t dic_empty (void) {
 
     dic_t empty = NULL;
-
     return (empty);
+}
+
+dic_t dic_create (char* name_dic) {
+    dic_t dic = dic_empty();
+    FILE *archive;
+    archive = fopen(name_dic,"r+a");
+    duo_t duo;
+    char *line;
+    char *tokenindex;
+    char *tokendata;
+
+    if (archive == NULL) {
+        fclose(archive);
+        return NULL;
+    }
+
+    while(feof(archive) == 0) {
+        line = readline(archive);
+        tokenindex = strtok(line, ",");
+        tokendata = strtok(NULL, "\n");
+        if(tokendata != NULL && tokenindex != NULL)
+            dic = add_duo(dic, tokenindex, tokendata);
+    }
+    fclose(archive);
+    return dic;
 }
 
 char *readline(FILE * file) {
@@ -53,37 +76,20 @@ char *readline(FILE * file) {
             } else {
                 /* check if the user entered a newline */
                 result_len = strlen(result);
-                assert(result_len < size);
                 if (feof(file)) {
                     done = true;
                 } else if (result[result_len - 1] == '\n') {
                     /* Remove trailing '\n' */
                     result[result_len - 1] = '\0';
-                    assert(strlen(result) == result_len - 1);
                     done = true;
                 }
             }
         }
         size = size * 2;
     }
-    /* will return NULL if something went wrong */
-    assert(result == NULL || result[strlen(result)] != '\n');
     return (result);
 }
 
-
-dic_t dic_destroy(dic_t dic) {
-
-    if (dic != NULL) {
-        dic->duo = destroy_duo(dic->duo);
-        dic->left = dic_destroy(dic->left);
-        dic->right = dic_destroy(dic->right);
-        free(dic);
-        dic = NULL;
-    }
-
-    return (dic);
-}
 
 char* search_index(dic_t dic, char* word) {
     char* data = NULL;
@@ -106,7 +112,6 @@ dic_t add_duo(dic_t dic, char* index, char* data) {
 
     if (dic == NULL) {
         nuevo = calloc(1, sizeof(struct _dic_node_t));
-        assert(nuevo != NULL);
         nuevo->duo = create_duo(index, data);
         nuevo->left = NULL;
         nuevo->right = NULL;
@@ -121,12 +126,12 @@ dic_t add_duo(dic_t dic, char* index, char* data) {
     return (dic);
 }
 
-int save_duo(char *index, char *data, char *archive) {
+int save_duo(char *name_dic, char *index, char *data) {
     FILE *file;
-    if (archive == NULL) {
+    if (name_dic == NULL) {
         return -1;
     } else {
-        file = fopen(archive, "a");
+        file = fopen(name_dic, "a");
         fprintf(file,"\n%s" ,index);
         fprintf(file, "," );
         fprintf(file,"%s" ,data);
@@ -136,26 +141,16 @@ int save_duo(char *index, char *data, char *archive) {
     }
 }
 
-dic_t dic_create (char* namedic) {
-    dic_t dic = dic_empty();
-    FILE *archive;
-    archive = fopen(namedic,"r+a");
-    duo_t duo;
-    char *line;
-    char *tokenindex;
-    char *tokendata;
-    if (archive == NULL) {
-        fclose(archive);
-        return NULL;
-    } else {
-        while(feof(archive) == 0) {
-            line = readline(archive);
-            tokenindex = strtok(line, ",");
-            tokendata = strtok(NULL, "\n");
-            if(tokendata != NULL && tokenindex != NULL)
-                dic = add_duo(dic, tokenindex, tokendata);
-        }
-        fclose(archive);
-        return dic;
+
+dic_t dic_destroy(dic_t dic) {
+
+    if (dic != NULL) {
+        dic->duo = destroy_duo(dic->duo);
+        dic->left = dic_destroy(dic->left);
+        dic->right = dic_destroy(dic->right);
+        free(dic);
+        dic = NULL;
     }
-} 
+
+    return (dic);
+}
