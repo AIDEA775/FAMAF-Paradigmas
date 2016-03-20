@@ -55,12 +55,16 @@ char* get_translation(dics_t dics) {
     return translated;
 }
 
-void add_translation(dics_t dics, char* word, char* translation) {
+void add_translation(dics_t dics, char* word, char* translation, bool save) {
     dics->translation = add_duo(dics->translation, word, translation);
+    if(save)
+        save_duo(dics->translation, word, translation);
 }
 
-void add_exception(dics_t dics, char* word) {
+void add_exception(dics_t dics, char* word, bool save) {
     dics->exception = add_duo(dics->exception, word, word);
+    if(save)
+        save_duo(dics->exception, word, word);
 }
 
 dics_t dics_destroy(dics_t dics) {

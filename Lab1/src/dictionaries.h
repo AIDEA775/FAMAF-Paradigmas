@@ -16,9 +16,9 @@ int dics_search(dics_t dics, char* word);
 
 char* get_translation(dics_t dics);
 
-void add_translation(dics_t dics, char* word, char* translation);
+void add_translation(dics_t dics, char* word, char* translation, bool save);
 
-void add_exception(dics_t dics, char* word);
+void add_exception(dics_t dics, char* word, bool save);
 
 dics_t dics_destroy(dics_t dics);
 
