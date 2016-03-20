@@ -3,16 +3,18 @@
 #include <stdlib.h>
 
 #include "dictionaries.h"
+#include "dictionary.h"
+#include "duo.h"
 
-struct _dics_t {
-    struct dic_t translation;
-    struct dic_t exception;
-    char* result;
+struct _dics_node_t {
+    char *result;
+    struct _dic_node_t *translation;
+    struct _dic_node_t *exception;
 };
 
 
 dics_t dics_create(bool reverse, char* name_dic, char* name_ign) {
-    dics_t dics = calloc(1, sizeof(struct _dics_t));
+    dics_t dics = calloc(1, sizeof(struct _dics_node_t));
 
     dics->translation = dic_create(reverse, name_dic);
     if(dics->translation == NULL) {
@@ -34,9 +36,9 @@ dics_t dics_create(bool reverse, char* name_dic, char* name_ign) {
 int dics_search(dics_t dics, char* word) {
     char* result;
 
-    if((result = search_index(dics->exception)) != NULL) {
+    if((result = search_index(dics->exception, word)) != NULL) {
         return EXCEPTION;
-    } else if((result = search_index(dics->translation)) != NULL) {
+    } else if((result = search_index(dics->translation, word)) != NULL) {
         dics->result = result;
         return FOUND;
     } else {
@@ -54,7 +56,6 @@ char* get_translation(dics_t dics) {
 
     return translated;
 }
-
 void add_translation(dics_t dics, char* word, char* translation, bool save) {
     dics->translation = add_duo(dics->translation, word, translation);
     if(save)

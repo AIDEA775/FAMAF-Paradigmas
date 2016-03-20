@@ -3,8 +3,10 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "dictionaries.h" 
+
 const char *argp_program_version = "Ale's Translation 1.0";
-const char user_interface = "No hay traducción para la palabra: %s\n"
+const char *user_interface = "No hay traducción para la palabra: %s\n"
              "Ignore (i) - Ignorar Todas (h) - Traducir como (t) - Traducir siempre como (s)";
 
 // Documentation.
@@ -75,6 +77,7 @@ bool islatinapha(char c) {
 void translate_word(dics_t dict, FILE *out, char* word) {
   char option;
   char translation[100];
+  int translate;
 
   translate = dics_search(dict, word);
     switch (translate) {
@@ -116,7 +119,6 @@ void translate_word(dics_t dict, FILE *out, char* word) {
 
 void translate (dics_t dict, FILE *src, FILE *out) {
   char word[100];
-  char* translate;
   int ch, i;
 
   do {
@@ -194,7 +196,7 @@ int main (int argc, char **argv) {
     return 1;
   }
 
-  translate(dict, src, out)
+  translate(dict, src, out);
 
   fclose(src);
   fclose(out);

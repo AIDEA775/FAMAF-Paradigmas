@@ -7,7 +7,8 @@
 #define NOT_FOUND 1
 #define EXCEPTION 2
 
-typedef _dics_t *dics_t;
+
+typedef struct _dics_node_t  *dics_t;
 
 
 dics_t dics_create(bool reverse, char* name_dic, char* name_ign);
@@ -21,5 +22,4 @@ void add_translation(dics_t dics, char* word, char* translation, bool save);
 void add_exception(dics_t dics, char* word, bool save);
 
 dics_t dics_destroy(dics_t dics);
-
 #endif
