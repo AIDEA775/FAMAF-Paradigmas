@@ -1,3 +1,6 @@
+#ifndef _DUO_H
+#define _DUO_H
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -13,3 +16,5 @@ char* get_data(duo_t duo);
 char* get_index(duo_t duo);
 
 duo_t destroy_duo(duo_t duo);
+
+#endif

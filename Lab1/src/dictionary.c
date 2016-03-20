@@ -14,13 +14,15 @@ struct _dic_node_t {
 
 typedef struct _dic_node_t  *dic_t;
 
+char *readline(FILE *file);
+dic_t add_duo(dic_t dic, char* index, char* data);
 dic_t dic_empty (void) {
 
     dic_t empty = NULL;
-    return (empty);
+    return empty;
 }
 
-dic_t dic_create (char* name_dic) {
+dic_t dic_create (bool reverse, char* name_dic) {
     dic_t dic = dic_empty();
     FILE *archive;
     archive = fopen(name_dic,"r+a");
@@ -38,14 +40,17 @@ dic_t dic_create (char* name_dic) {
         line = readline(archive);
         tokenindex = strtok(line, ",");
         tokendata = strtok(NULL, "\n");
-        if(tokendata != NULL && tokenindex != NULL)
+        if(tokendata != NULL && tokenindex != NULL && !reverse){
             dic = add_duo(dic, tokenindex, tokendata);
+        } else {
+            dic = add_duo(dic, tokendata, tokenindex);
+        }
     }
     fclose(archive);
     return dic;
 }
 
-char *readline(FILE * file) {
+char *readline(FILE *file) {
     bool done = false;
     char *result = NULL, *read_from = NULL;
     char *alloc_result = NULL, *fgets_result = NULL;
@@ -87,7 +92,7 @@ char *readline(FILE * file) {
         }
         size = size * 2;
     }
-    return (result);
+    return result;
 }
 
 
@@ -104,7 +109,7 @@ char* search_index(dic_t dic, char* word) {
         }
     }
 
-    return (data);
+    return data;
 }
 
 dic_t add_duo(dic_t dic, char* index, char* data) {
@@ -123,7 +128,7 @@ dic_t add_duo(dic_t dic, char* index, char* data) {
         dic->right = add_duo(dic->right, index, data);
     }
 
-    return (dic);
+    return dic;
 }
 
 int save_duo(char *name_dic, char *index, char *data) {
@@ -152,5 +157,5 @@ dic_t dic_destroy(dic_t dic) {
         dic = NULL;
     }
 
-    return (dic);
+    return dic;
 }

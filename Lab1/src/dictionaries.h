@@ -7,7 +7,7 @@
 #define NOT_FOUND 1
 #define EXCEPTION 2
 
-typedef _dics_t *dics_t
+typedef _dics_t *dics_t;
 
 
 dics_t dics_create(bool reverse, char* name_dic, char* name_ign);
