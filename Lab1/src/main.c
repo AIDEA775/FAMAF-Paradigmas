@@ -4,6 +4,8 @@
 #include <stdlib.h>
 
 const char *argp_program_version = "Ale's Translation 1.0";
+const char user_interface = "No hay traducción para la palabra: %s\n"
+             "Ignore (i) - Ignorar Todas (h) - Traducir como (t) - Traducir siempre como (s)";
 
 // Documentation.
 static char doc[] =
@@ -70,6 +72,48 @@ bool islatinapha(char c) {
 }
 
 
+void translate_word(dics_t dict, FILE *out, char* word) {
+  char option;
+  char translation[100];
+
+  translate = dics_search(dict, word);
+    switch (translate) {
+      case FOUND:
+        fprintf(out, "*%s*", get_translation(dict));
+        break;
+      case NOT_FOUND:
+        printf(user_interface, word);
+        option = getchar();
+        switch (option) {
+          case 'i':
+          case 'h':
+            // skip word
+            add_exception(dict, word, option == 'h');
+            printf("Ignore word\n");
+            break;
+          case 't':
+          case 's':
+            // translate word
+            printf("Translate %s by: \n", word);
+            scanf("%s", translation);
+            add_translation(dict, word, translation, option == 's');
+            fprintf(out, "|%s|", translation);
+            break;
+          default:
+            printf("Esto no deberia imprimirse!!\n");
+            break;
+        }
+        break;
+      case EXCEPTION:
+        // skip
+        break;
+      default:
+        printf("Esto tampoco no deberia imprimirse!!\n");
+        break;
+    }
+}
+
+
 void translate (dics_t dict, FILE *src, FILE *out) {
   char word[100];
   char* translate;
@@ -78,13 +122,14 @@ void translate (dics_t dict, FILE *src, FILE *out) {
   do {
     i = 0;
 
+    // spaces
     while(EOF != (ch = fgetc(src)) && isspace(ch))
       fprintf(out, " ");
 
     if (ch == EOF)
       break;
 
-    // is a character
+    // character
     if(!islatinapha(ch)) {
       word[i++] = ch;
       word[i++] = '\0';
@@ -92,7 +137,7 @@ void translate (dics_t dict, FILE *src, FILE *out) {
       continue;
     }
 
-    // is a word
+    // word
     do {
       word[i++] = tolower(ch);
     } while(EOF != (ch = fgetc(src)) && islatinapha(ch));
@@ -102,19 +147,7 @@ void translate (dics_t dict, FILE *src, FILE *out) {
 
     word[i++] = '\0';
 
-    translate = dics_search(dict, word);
-    switch (translate) {
-      case FOUND:
-        fprintf(out, "*%s*", get_translation(dict));
-        break;
-      case NOT_FOUND:
-        printf("NOT FOUND\n");
-        fprintf(out, "*NOTFOUND*");
-        break;
-      case EXCEPTION:
-        // skip
-        break;
-    }
+    translate_word(dict, out, word);
 
   } while(1);
 
