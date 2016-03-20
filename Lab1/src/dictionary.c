@@ -4,48 +4,39 @@
 #include <string.h>
 
 #include "duo.h"
+#include "bst.h"
+#include "dictionary.h"
 
 
 struct _dic_node_t {
-    duo_t duo;
-    struct _dic_node_t *left;
-    struct _dic_node_t *right;
+    char* name_file;
+	struct _tree_node_t *bst;
 };
 
-typedef struct _dic_node_t  *dic_t;
-
-char *readline(FILE *file);
-dic_t add_duo(dic_t dic, char* index, char* data);
-
-
-dic_t dic_empty (void) {
-    dic_t empty = NULL;
-    return empty;
-}
 
 dic_t dic_create (bool reverse, char* name_dic) {
-    dic_t dic = dic_empty();
+    dic_t dic = calloc(1, sizeof(struct _dic_node_t));
+    dic->bst = bst_empty();
+    dic->name_file = name_dic;
     FILE *archive;
     archive = fopen(name_dic,"r+a");
-    duo_t duo;
     char *line;
     char *tokenindex;
     char *tokendata;
 
     if (archive == NULL) {
-        // bst_destroy();
+        fclose(archive);
         return NULL;
     }
 
     while(feof(archive) == 0) {
         line = readline(archive);
-        token_1 = strtok(line, ",");
-        token_2 = strtok(NULL, "\n");
-        if(tokendata != NULL && tokenindex != NULL) {
-            if(reverse)
-            dic = add_duo(dic, token_2, token_1);
-            else
-            dic = add_duo(dic, token_1, token_2);
+        tokenindex = strtok(line, ",");
+        tokendata = strtok(NULL, "\n");
+        if(tokendata != NULL && tokenindex != NULL && !reverse){
+            dic->bst = bst_add(dic->bst, tokenindex, tokendata);
+        } else {
+            dic->bst = bst_add(dic->bst, tokendata, tokenindex);
         }
     }
     fclose(archive);
@@ -98,65 +89,36 @@ char *readline(FILE *file) {
 }
 
 
-char* search_index(dic_t dic, char* word) {
-    char* data = NULL;
-
-    if (dic != NULL) {
-        if ((strcmp(get_index(dic->duo), word)) == 0) {
-            data = get_data(dic->duo);
-        } else if (strcmp(get_index(dic->duo), word) < 0) {
-            data = search_index(dic->right, word);
-        } else {
-            data = search_index(dic->left, word);
-        }
-    }
-
-    return data;
-}
-
-dic_t add_duo(dic_t dic, char* index, char* data) {
-    dic_t nuevo = NULL;
-
-    if (dic == NULL) {
-        nuevo = calloc(1, sizeof(struct _dic_node_t));
-        nuevo->duo = create_duo(index, data);
-        nuevo->left = NULL;
-        nuevo->right = NULL;
-
-        dic = nuevo;
-    } else if (strcmp(index, get_index(dic->duo)) < 0) {
-        dic->left = add_duo(dic->left, index, data);
-    } else {
-        dic->right = add_duo(dic->right, index, data);
-    }
-
-    return dic;
-}
-
-int save_duo(char *name_dic, char *index, char *data) {
+int save_duo(dic_t dic, char *index, char *data) {
     FILE *file;
-    if (name_dic == NULL) {
+    if (dic->name_file == NULL) {
         return -1;
+    } else {
+        file = fopen(dic->name_file, "a");
+        fprintf(file,"\n%s" ,index);
+        fprintf(file, "," );
+        fprintf(file,"%s" ,data);
+        fclose(file);
+        return 0;
     }
-    file = fopen(name_dic, "a");
-    fprintf(file,"\n%s" ,index);
-    fprintf(file, "," );
-    fprintf(file,"%s" ,data);
-    fclose(file);
+}
 
-    return 0;
+char* search_index(dic_t dic, char* word) {
+    char *result;
+    result = bst_search(dic->bst, word);
+
+    return result;
 }
 
 
 dic_t dic_destroy(dic_t dic) {
+    dic->bst = bst_destroy(dic->bst);
+    free(dic->name_file);
+    dic = NULL;
+    return dic;
+}
 
-    if (dic != NULL) {
-        dic->duo = destroy_duo(dic->duo);
-        dic->left = dic_destroy(dic->left);
-        dic->right = dic_destroy(dic->right);
-        free(dic);
-        dic = NULL;
-    }
-
+dic_t add_duo(dic_t dic, char *word, char *translation) {
+    dic->bst = bst_add(dic->bst, word, translation);
     return dic;
 }
