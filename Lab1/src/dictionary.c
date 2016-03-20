@@ -16,8 +16,9 @@ typedef struct _dic_node_t  *dic_t;
 
 char *readline(FILE *file);
 dic_t add_duo(dic_t dic, char* index, char* data);
-dic_t dic_empty (void) {
 
+
+dic_t dic_empty (void) {
     dic_t empty = NULL;
     return empty;
 }
@@ -32,18 +33,19 @@ dic_t dic_create (bool reverse, char* name_dic) {
     char *tokendata;
 
     if (archive == NULL) {
-        fclose(archive);
+        // bst_destroy();
         return NULL;
     }
 
     while(feof(archive) == 0) {
         line = readline(archive);
-        tokenindex = strtok(line, ",");
-        tokendata = strtok(NULL, "\n");
-        if(tokendata != NULL && tokenindex != NULL && !reverse){
-            dic = add_duo(dic, tokenindex, tokendata);
-        } else {
-            dic = add_duo(dic, tokendata, tokenindex);
+        token_1 = strtok(line, ",");
+        token_2 = strtok(NULL, "\n");
+        if(tokendata != NULL && tokenindex != NULL) {
+            if(reverse)
+            dic = add_duo(dic, token_2, token_1);
+            else
+            dic = add_duo(dic, token_1, token_2);
         }
     }
     fclose(archive);
@@ -135,15 +137,14 @@ int save_duo(char *name_dic, char *index, char *data) {
     FILE *file;
     if (name_dic == NULL) {
         return -1;
-    } else {
-        file = fopen(name_dic, "a");
-        fprintf(file,"\n%s" ,index);
-        fprintf(file, "," );
-        fprintf(file,"%s" ,data);
-        fclose(file);
-
-        return 0;
     }
+    file = fopen(name_dic, "a");
+    fprintf(file,"\n%s" ,index);
+    fprintf(file, "," );
+    fprintf(file,"%s" ,data);
+    fclose(file);
+
+    return 0;
 }
 
 
