@@ -16,7 +16,6 @@ struct _dics_node_t {
 dics_t dics_create(bool reverse, char* name_dic, char* name_ign) {
     dics_t dics = calloc(1, sizeof(struct _dics_node_t));
 
-    printf("hahaha\n");
     dics->translation = dic_create(reverse, name_dic);
     if(dics->translation == NULL) {
         free(dics);
@@ -29,7 +28,6 @@ dics_t dics_create(bool reverse, char* name_dic, char* name_ign) {
         free(dics);
         return NULL;
     }
-
     dics->result = NULL;
     return dics;
 }

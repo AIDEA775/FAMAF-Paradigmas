@@ -21,20 +21,21 @@ dic_t dic_create (bool reverse, char* name_dic) {
     FILE *archive;
     archive = fopen(name_dic,"r+a");
     char *line;
-    char *tokenindex;
-    char *tokendata;
+    char *token_1;
+    char *token_2;
 
     if (archive == NULL)
         return NULL;
 
     while(feof(archive) == 0) {
         line = readline(archive);
-        tokenindex = strtok(line, ",");
-        tokendata = strtok(NULL, "\n");
-        if(tokendata != NULL && tokenindex != NULL && !reverse){
-            dic->bst = bst_add(dic->bst, tokenindex, tokendata);
-        } else {
-            dic->bst = bst_add(dic->bst, tokendata, tokenindex);
+        token_1 = strtok(line, ",");
+        token_2 = strtok(NULL, "\n");
+        if(token_1 != NULL && token_2 != NULL) {
+            if(reverse)
+                dic->bst = bst_add(dic->bst, token_2, token_1);
+            else
+                dic->bst = bst_add(dic->bst, token_1, token_2);
         }
     }
     fclose(archive);
