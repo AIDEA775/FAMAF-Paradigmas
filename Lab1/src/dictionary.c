@@ -24,10 +24,8 @@ dic_t dic_create (bool reverse, char* name_dic) {
     char *tokenindex;
     char *tokendata;
 
-    if (archive == NULL) {
-        fclose(archive);
+    if (archive == NULL)
         return NULL;
-    }
 
     while(feof(archive) == 0) {
         line = readline(archive);

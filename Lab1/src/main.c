@@ -121,6 +121,7 @@ void translate (dics_t dict, FILE *src, FILE *out) {
   char word[100];
   int ch, i;
 
+  printf("hola\n");
   do {
     i = 0;
 
@@ -149,6 +150,7 @@ void translate (dics_t dict, FILE *src, FILE *out) {
 
     word[i++] = '\0';
 
+    printf("translate_word\n");
     translate_word(dict, out, word);
 
   } while(1);
@@ -178,7 +180,9 @@ int main (int argc, char **argv) {
           settings.file_ign,
           settings.reverse ? "yes" : "no");
 
+  printf("holis\n");
   dict = dics_create(settings.reverse, settings.file_dic, settings.file_ign);
+  printf("puff\n");
   if(dict == NULL) {
     printf("Dictionary not found\n");
     return 1;
