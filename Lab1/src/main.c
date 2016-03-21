@@ -126,7 +126,7 @@ void translate (dics_t dict, FILE *src, FILE *out) {
 
     // spaces
     while(EOF != (ch = fgetc(src)) && isspace(ch))
-      fprintf(out, " ");
+      fprintf(out, "%c", ch);
 
     if (ch == EOF)
       break;
