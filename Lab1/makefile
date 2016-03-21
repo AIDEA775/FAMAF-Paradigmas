@@ -1,20 +1,25 @@
 FLAGS = -g -Wall -Werror -pedantic -std=c99
-OBJETOS = main.o dictionaries.o dictionary.o bst.o duo.o
+SRC = src/
+BIN = bin/
+OBJECTS = $(BIN)main.o $(BIN)dictionaries.o $(BIN)dictionary.o $(BIN)duo.o $(BIN)bst.o
 
-translator : $(OBJETOS)
-	gcc $(FLAGS) -o translator $(OBJETOS) 
+translator : $(OBJECTS)
+	gcc $(FLAGS) -o $(BIN)translator $(OBJECTS) 
 
-main.o : main.c dictionaries.h
-	gcc $(FLAGS) -c main.c
+$(BIN)main.o : $(SRC)main.c $(SRC)dictionaries.h
+	gcc $(FLAGS) -o $(BIN)main.o -c $(SRC)main.c
 
-dictionaries.o : dictionaries.c dictionary.h
-	gcc $(FLAGS) -c dictionaries.c
+$(BIN)dictionaries.o : $(SRC)dictionaries.c $(SRC)dictionary.h
+	gcc $(FLAGS) -o $(BIN)dictionaries.o -c $(SRC)dictionaries.c
 
-dictionary.o : dictionary.c bst.h duo.h
-	gcc $(FLAGS) -c dictionary.c
+$(BIN)dictionary.o : $(SRC)dictionary.c $(SRC)bst.h $(SRC)duo.h
+	gcc $(FLAGS) -o $(BIN)dictionary.o -c $(SRC)dictionary.c
 
-duo.o : duo.c
-	gcc $(FLAGS) -c duo.c
+$(BIN)duo.o : $(SRC)duo.c
+	gcc $(FLAGS) -o $(BIN)duo.o -c $(SRC)duo.c
+
+$(BIN)bst.o : $(SRC)bst.c
+	gcc $(FLAGS) -o $(BIN)bst.o -c $(SRC)bst.c
 
 clean :
-		rm translator $(OBJETOS)
+		rm $(BIN)translator $(OBJECTS)
