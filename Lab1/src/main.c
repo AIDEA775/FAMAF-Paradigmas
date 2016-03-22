@@ -7,8 +7,8 @@
 #include "helper.h"
 
 const char *argp_program_version = "Ale's Translation 1.0";
-const char *user_interface = "No hay traducción para la palabra: %s\n"
-             "Ignore (i) - Ignorar Todas (h) - Traducir como (t) - Traducir siempre como (s)";
+const char *user_interface = "\nI can't find translation for *%s*\n"
+             "Ignore (i) - Ignore all (h) - Translated as (t) - Always translate as (s): ";
 
 // Documentation.
 static char doc[] =
@@ -83,7 +83,7 @@ void translate_word(dics_t dict, FILE *out, char* word) {
   translate = dics_search(dict, word);
     switch (translate) {
       case FOUND:
-        fprintf(out, "*%s*", get_translation(dict));
+        fprintf(out, "%s", get_translation(dict));
         break;
       case NOT_FOUND:
         printf(user_interface, word);
@@ -98,10 +98,10 @@ void translate_word(dics_t dict, FILE *out, char* word) {
           case 't':
           case 's':
             // translate word
-            printf("Translate %s by: \n", word);
+            printf("Translate %s as: ", word);
             translation = readline(stdin);
             add_translation(dict, word, translation, *option == 's');
-            fprintf(out, "|%s|", translation);
+            fprintf(out, "%s", translation);
             free(translation);
             break;
           default:
@@ -174,13 +174,6 @@ int main (int argc, char **argv) {
 
   // Parse arguments.
   argp_parse (&argp, argc, argv, 0, 0, &settings);
-
-  printf ("SRC = %s\nOUT = %s\nDIC = %s\n"
-          "IGN = %s\nREV = %s\n",
-          settings.file_src, settings.file_out,
-          settings.file_dic,
-          settings.file_ign,
-          settings.reverse ? "yes" : "no");
 
   dict = dics_create(settings.reverse, settings.file_dic, settings.file_ign);
 
