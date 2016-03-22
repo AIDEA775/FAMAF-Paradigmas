@@ -52,15 +52,15 @@ char* bst_search(bst_t bst, char* word) {
 }
 
 bst_t bst_add(bst_t bst, char* index, char* data) {
-   bst_t nuevo = NULL;
+   bst_t new = NULL;
 
     if (bst == NULL) {
-        nuevo = calloc(1, sizeof(struct _tree_node_t));
-        nuevo->duo = create_duo(index, data);
-        nuevo->left = NULL;
-        nuevo->right = NULL;
+        new = calloc(1, sizeof(struct _tree_node_t));
+        new->duo = create_duo(index, data);
+        new->left = NULL;
+        new->right = NULL;
 
-        bst = nuevo;
+        bst = new;
     } else if (strcmp(index, get_index(bst->duo)) < 0) {
         bst->left = bst_add(bst->left, index, data);
     } else {

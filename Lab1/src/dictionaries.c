@@ -71,5 +71,6 @@ dics_t dics_destroy(dics_t dics) {
     dics->translation = dic_destroy(dics->translation);
     dics->exception = dic_destroy(dics->exception);
     dics->result = NULL;
+    free(dics);
     return NULL;
 }

@@ -196,9 +196,9 @@ int main (int argc, char **argv) {
     printf("File out error\n");
     return 1;
   }
-
+  
   translate(dict, src, out);
-
+  dict = dics_destroy(dict);
   fclose(src);
   fclose(out);
   return 0;

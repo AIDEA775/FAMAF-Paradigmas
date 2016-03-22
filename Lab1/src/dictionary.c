@@ -17,7 +17,8 @@ struct _dic_node_t {
 dic_t dic_create (bool reverse, char* name_dic) {
     dic_t dic = calloc(1, sizeof(struct _dic_node_t));
     dic->bst = bst_empty();
-    dic->name_file = name_dic;
+    dic->name_file = calloc(strlen(name_dic)+1, sizeof(char));
+    strcpy(dic->name_file, name_dic);
     FILE *archive;
     archive = fopen(name_dic,"r+a");
     char *line;
@@ -37,6 +38,7 @@ dic_t dic_create (bool reverse, char* name_dic) {
             else
                 dic->bst = bst_add(dic->bst, token_1, token_2);
         }
+        free(line);
     }
     fclose(archive);
     return dic;
@@ -92,14 +94,13 @@ int save_duo(dic_t dic, char *index, char *data) {
     FILE *file;
     if (dic->name_file == NULL) {
         return -1;
-    } else {
-        file = fopen(dic->name_file, "a");
-        fprintf(file,"\n%s" ,index);
-        fprintf(file, "," );
-        fprintf(file,"%s" ,data);
-        fclose(file);
-        return 0;
     }
+    file = fopen(dic->name_file, "a");
+    fprintf(file,"\n%s" ,index);
+    fprintf(file, "," );
+    fprintf(file,"%s" ,data);
+    fclose(file);
+    return 0;
 }
 
 char* search_index(dic_t dic, char* word) {
@@ -113,6 +114,7 @@ char* search_index(dic_t dic, char* word) {
 dic_t dic_destroy(dic_t dic) {
     dic->bst = bst_destroy(dic->bst);
     free(dic->name_file);
+    free(dic);
     dic = NULL;
     return dic;
 }
