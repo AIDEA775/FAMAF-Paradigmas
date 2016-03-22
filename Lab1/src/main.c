@@ -3,7 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "dictionaries.h" 
+#include "dictionaries.h"
+#include "helper.h"
 
 const char *argp_program_version = "Ale's Translation 1.0";
 const char *user_interface = "No hay traducción para la palabra: %s\n"
@@ -75,8 +76,8 @@ bool islatinapha(char c) {
 
 
 void translate_word(dics_t dict, FILE *out, char* word) {
-  char option;
-  char translation[100];
+  char* option;
+  char* translation;
   int translate;
 
   translate = dics_search(dict, word);
@@ -86,26 +87,29 @@ void translate_word(dics_t dict, FILE *out, char* word) {
         break;
       case NOT_FOUND:
         printf(user_interface, word);
-        option = getchar();
-        switch (option) {
+        option = readline(stdin);
+        switch (*option) {
           case 'i':
           case 'h':
             // skip word
-            add_exception(dict, word, option == 'h');
+            add_exception(dict, word, *option == 'h');
             printf("Ignore word\n");
             break;
           case 't':
           case 's':
             // translate word
             printf("Translate %s by: \n", word);
-            scanf("%s", translation);
-            add_translation(dict, word, translation, option == 's');
+            translation = readline(stdin);
+            add_translation(dict, word, translation, *option == 's');
             fprintf(out, "|%s|", translation);
+            free(translation);
             break;
           default:
             printf("Esto no deberia imprimirse!!\n");
             break;
         }
+        free(option);
+        option = NULL;
         break;
       case EXCEPTION:
         // skip
@@ -196,7 +200,7 @@ int main (int argc, char **argv) {
     printf("File out error\n");
     return 1;
   }
-  
+
   translate(dict, src, out);
   dict = dics_destroy(dict);
   fclose(src);
