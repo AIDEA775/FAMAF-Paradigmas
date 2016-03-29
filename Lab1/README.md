@@ -1,0 +1,38 @@
+# Ale's Translation
+
+## Las pruebas...
+Para compilar:  
+`$ make`
+
+Para ejecutar:  
+`$ bin/translator`
+
+
+## Las ideas...
+##### Nuestro main
+En este proyecto decidimos usa argp para el pasaje de argumentos, ya que nos pareció  mas completo y con un estilo mas GNU. Decidimos leer el archivo caracter por caracter asi podemos respetar los espacios y caracteres especiales.
+
+##### Nuestros TADS
+Para traducir decidimos implementar el *`TAD dictionaries`* que es un conjunto de diccionarios. Un diccionario para las excepciones y otro con las traducciones, con la posibilidad de agregar mas idiomas. Para implementar los diccionarios, creamos el *`TAD dictionary`*, el cual nos permite agregar y buscar la traduccion de una palabra. Para la busqueda de una palabra implementamos el *`TAD bst`*, para que sea mas eficiente ya que es log(n). Para la traduccion de una palabra implementamos el *`TAD duo`*, que contiene la palabra y su traduccion, los cuales no tiene limite de longitud porque si se usa con otros idiomas (diccionarios) no sabemos que longitud puede tener las palabras.
+
+## Otras ideas...
+##### Nuestro scanf
+Para leer la entrada estandar y los archivos usamos la funcion *`readline()`* implementada en *`helper.h`* porque lo usamos tanto en el *`main`* como *`diccionary`*.
+
+##### Nuestro isalpha
+Para detectar si un *`char`* es un caracter o una letra, existe una funcion de la libreria estandar *`string`* llamada *`isalpha()`*. Pero esta no reconoce la **ñ** ni los **acentos**, por lo que la expandimos en nuestra funcion *`islatinapha()`* con un simple *or*.
+
+##### Nuestras minusculas
+Decidimos que la traduccion sea toda en minuscula para no complicarnos, ademas, hasta google translate lo hace aveces. **(¿¿lo hace verdad??)**
+
+##### Nuestro doble switch case
+Para modularizar mas la busqueda de la traduccion, decidimos que *`dics_search()`* sólo retorne si encontró o no la traduccion y si hay que ignorarla. Si encontró la traduccion, se la puede recuperar a través de *`get_translation()`*. Esto es para que eventualmente poder agregar mas funcionalidades, como un diccionario con insultos, lo cual deberia censurarse con "\*\*\*\*\*". **(¿¿agregar otro ejemplo??)**
+
+
+##### Nuestro add save duo ¿?
+Explicar porque decidimos usar una funcion solo para guardar un duo en nuestro diccionario en RAM, y otra en el archivo del diccionario.
+
+
+
+
+En este proyectos las deciciones que utilizamos fue, utilizar un TAD duo en el cual va a contener la palabra y la traduccion en su estructura, luego implementamos bst para cargar el diccionario y poder hacer una busqueda mas eficiente. Luego el TAD diccionary usa bst para agregar y buscar palabras en el diccionario. El TAD
