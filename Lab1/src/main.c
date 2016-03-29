@@ -148,7 +148,7 @@ void translate (dics_t dict, FILE *src, FILE *out) {
       word[i++] = tolower(ch);
     } while(EOF != (ch = fgetc(src)) && islatinapha(ch));
 
-    if(!isalpha(ch))
+    if(!islatinapha(ch))
       ungetc(ch, src);
 
     word[i++] = '\0';
