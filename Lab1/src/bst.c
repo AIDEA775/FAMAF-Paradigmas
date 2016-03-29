@@ -1,8 +1,3 @@
-#include <assert.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "bst.h"
 #include "duo.h"
 

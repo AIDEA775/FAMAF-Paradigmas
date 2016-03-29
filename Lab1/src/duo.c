@@ -1,10 +1,4 @@
-#include <assert.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
 #include "duo.h"
-
 
 struct _duo_t {
 	char *index;

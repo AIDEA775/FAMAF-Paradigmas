@@ -1,13 +1,14 @@
-#ifndef _BST_H
-#define _BST_H
+// Copyright 2015 Alejandro * (Nigrelli + Silva)
+
+#ifndef  LAB1_SRC_BST_H_
+#define  LAB1_SRC_BST_H_
 
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "bst.h"
-#include "duo.h"
+#include "../src/duo.h"
 
 typedef struct _tree_node_t  *bst_t;
 
@@ -19,4 +20,4 @@ char* bst_search(bst_t bst, char* index);
 
 bst_t bst_add(bst_t bst, char* index, char* data);
 
-#endif
+#endif  // LAB1_SRC_BST_H_

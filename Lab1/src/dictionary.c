@@ -1,13 +1,7 @@
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "duo.h"
 #include "bst.h"
 #include "dictionary.h"
 #include "helper.h"
-
 
 struct _dic_node_t {
     char* name_file;

@@ -1,5 +1,5 @@
-#ifndef _DUO_H
-#define _DUO_H
+#ifndef LAB1_SRC_DUO_H_
+#define LAB1_SRC_DUO_H_
 
 #include <assert.h>
 #include <stdio.h>
@@ -17,4 +17,4 @@ char* get_index(duo_t duo);
 
 duo_t destroy_duo(duo_t duo);
 
-#endif
+#endif  // LAB1_SRC_DUO_H_

@@ -1,6 +1,11 @@
-#ifndef _HELPER_H
-#define _HELPER_H
+#ifndef LAB1_SRC_HELPER_H_
+#define LAB1_SRC_HELPER_H_
+
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 char *readline(FILE *file);
 
-#endif
+#endif  // LAB1_SRC_HELPER_H_

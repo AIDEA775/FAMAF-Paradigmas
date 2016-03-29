@@ -1,15 +1,17 @@
-#ifndef _DICTIONARIES_H
-#define _DICTIONARIES_H
+#ifndef LAB1_SRC_DICTIONARIES_H_
+#define LAB1_SRC_DICTIONARIES_H_
 
-#include "dictionary.h"
+#include <assert.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+#include "../src/dictionary.h"
 
 #define FOUND 0
 #define NOT_FOUND 1
 #define EXCEPTION 2
 
-
 typedef struct _dics_node_t  *dics_t;
-
 
 dics_t dics_create(bool reverse, char* name_dic, char* name_ign);
 
@@ -22,4 +24,5 @@ void add_translation(dics_t dics, char* word, char* translation, bool save);
 void add_exception(dics_t dics, char* word, bool save);
 
 dics_t dics_destroy(dics_t dics);
-#endif
+
+#endif  // LAB1_SRC_DICTIONARIES_H_

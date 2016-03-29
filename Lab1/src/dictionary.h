@@ -1,12 +1,12 @@
-#ifndef _DICTIONARY_H
-#define _DICTIONARY_H
+#ifndef LAB1_SRC_DICTIONARY_H_
+#define LAB1_SRC_DICTIONARY_H_
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
 
-#include "bst.h"
+#include "../src/bst.h"
 
 typedef struct _dic_node_t  *dic_t;
 
@@ -24,4 +24,4 @@ int save_duo(dic_t dic, char* index, char* data);
 
 dic_t dic_destroy(dic_t dic);
 
-#endif
+#endif  // LAB1_SRC_DICTIONARY_H_
