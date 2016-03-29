@@ -15,19 +15,24 @@ bst_t bst_empty(void) {
     return (empty);
 }
 
-bst_t bst_destroy(bst_t bst) {
+bst_t bst_add(bst_t bst, char* index, char* data) {
+   bst_t new = NULL;
 
-    if (bst != NULL) {
-        bst->duo = destroy_duo(bst->duo);
-        bst->left = bst_destroy(bst->left);
-        bst->right = bst_destroy(bst->right);
-        free(bst);
-        bst = NULL;
+    if (bst == NULL) {
+        new = calloc(1, sizeof(struct _tree_node_t));
+        new->duo = create_duo(index, data);
+        new->left = NULL;
+        new->right = NULL;
+
+        bst = new;
+    } else if (strcmp(index, get_index(bst->duo)) < 0) {
+        bst->left = bst_add(bst->left, index, data);
+    } else {
+        bst->right = bst_add(bst->right, index, data);
     }
 
-    return (bst);
+    return bst;
 }
-
 
 char* bst_search(bst_t bst, char* word) {
     char* data = NULL;
@@ -46,21 +51,15 @@ char* bst_search(bst_t bst, char* word) {
 
 }
 
-bst_t bst_add(bst_t bst, char* index, char* data) {
-   bst_t new = NULL;
+bst_t bst_destroy(bst_t bst) {
 
-    if (bst == NULL) {
-        new = calloc(1, sizeof(struct _tree_node_t));
-        new->duo = create_duo(index, data);
-        new->left = NULL;
-        new->right = NULL;
-
-        bst = new;
-    } else if (strcmp(index, get_index(bst->duo)) < 0) {
-        bst->left = bst_add(bst->left, index, data);
-    } else {
-        bst->right = bst_add(bst->right, index, data);
+    if (bst != NULL) {
+        bst->duo = destroy_duo(bst->duo);
+        bst->left = bst_destroy(bst->left);
+        bst->right = bst_destroy(bst->right);
+        free(bst);
+        bst = NULL;
     }
 
-    return bst;
+    return (bst);
 }

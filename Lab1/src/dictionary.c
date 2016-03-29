@@ -39,19 +39,6 @@ dic_t dic_create (bool reverse, char* name_dic) {
     return dic;
 }
 
-int save_duo(dic_t dic, char *index, char *data) {
-    FILE *file;
-    if (dic->name_file == NULL) {
-        return -1;
-    }
-    file = fopen(dic->name_file, "a");
-    fprintf(file,"%s" ,index);
-    fprintf(file, "," );
-    fprintf(file,"%s\n" ,data);
-    fclose(file);
-    return 0;
-}
-
 char* search_index(dic_t dic, char* word) {
     char *result;
     result = bst_search(dic->bst, word);
@@ -59,16 +46,27 @@ char* search_index(dic_t dic, char* word) {
     return result;
 }
 
+dic_t add_duo(dic_t dic, char *word, char *translation) {
+    dic->bst = bst_add(dic->bst, word, translation);
+    return dic;
+}
+
+void save_duo(dic_t dic, char *index, char *data) {
+    FILE *file;
+
+    assert(dic->name_file != NULL);
+
+    file = fopen(dic->name_file, "a");
+    fprintf(file,"%s" ,index);
+    fprintf(file, "," );
+    fprintf(file,"%s\n" ,data);
+    fclose(file);
+}
 
 dic_t dic_destroy(dic_t dic) {
     dic->bst = bst_destroy(dic->bst);
     free(dic->name_file);
     free(dic);
     dic = NULL;
-    return dic;
-}
-
-dic_t add_duo(dic_t dic, char *word, char *translation) {
-    dic->bst = bst_add(dic->bst, word, translation);
     return dic;
 }

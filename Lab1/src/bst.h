@@ -14,10 +14,10 @@ typedef struct _tree_node_t  *bst_t;
 
 bst_t bst_empty(void);
 
-bst_t bst_destroy(bst_t bst);
+bst_t bst_add(bst_t bst, char* index, char* data);
 
 char* bst_search(bst_t bst, char* index);
 
-bst_t bst_add(bst_t bst, char* index, char* data);
+bst_t bst_destroy(bst_t bst);
 
 #endif  // LAB1_SRC_BST_H_
