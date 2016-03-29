@@ -1,3 +1,5 @@
+// Copyright 2015 Alejandro Nigrelli y Alejandro Silva
+
 #ifndef LAB1_SRC_DICTIONARIES_H_
 #define LAB1_SRC_DICTIONARIES_H_
 

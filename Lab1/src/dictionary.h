@@ -1,3 +1,5 @@
+// Copyright 2015 Alejandro Nigrelli y Alejandro Silva
+
 #ifndef LAB1_SRC_DICTIONARY_H_
 #define LAB1_SRC_DICTIONARY_H_
 
@@ -10,9 +12,9 @@
 
 typedef struct _dic_node_t  *dic_t;
 
-dic_t dic_empty (void);
+dic_t dic_empty(void);
 
-dic_t dic_create (bool reverse, char* name_dic);
+dic_t dic_create(bool reverse, char* name_dic);
 
 char *readline(FILE *file);
 

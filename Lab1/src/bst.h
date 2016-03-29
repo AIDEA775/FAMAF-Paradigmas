@@ -1,4 +1,4 @@
-// Copyright 2015 Alejandro * (Nigrelli + Silva)
+// Copyright 2015 Alejandro Nigrelli y Alejandro Silva
 
 #ifndef  LAB1_SRC_BST_H_
 #define  LAB1_SRC_BST_H_
