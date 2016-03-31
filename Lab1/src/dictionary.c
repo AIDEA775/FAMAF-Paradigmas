@@ -12,7 +12,7 @@ struct _dic_node_t {
 dic_t dic_create (bool reverse, char* name_dic) {
     dic_t dic = calloc(1, sizeof(struct _dic_node_t));
     dic->bst = bst_empty();
-    dic->name_file = calloc(strlen(name_dic)+1, sizeof(char));
+    dic->name_file = calloc(strlen(name_dic) + 1, sizeof(char));
     strcpy(dic->name_file, name_dic);
     FILE *archive;
     archive = fopen(name_dic,"r+a");
@@ -20,11 +20,19 @@ dic_t dic_create (bool reverse, char* name_dic) {
     char *token_1;
     char *token_2;
 
-    if (archive == NULL)
+    if (archive == NULL) {
+        bst_destroy(dic->bst);
+        free(dic->name_file);
+        free(dic);
         return NULL;
+    }
 
-    while(feof(archive) == 0) {
+    while(!feof(archive)) {
         line = readline(archive);
+
+        if(line == NULL)
+            continue;
+
         token_1 = strtok(line, ",");
         token_2 = strtok(NULL, "\n");
         if(token_1 != NULL && token_2 != NULL) {
