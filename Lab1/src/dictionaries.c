@@ -58,9 +58,9 @@ void add_translation(dics_t dics, char* word, char* translation, bool save) {
 }
 
 void add_exception(dics_t dics, char* word, bool save) {
-    dics->exception = add_duo(dics->exception, word, word);
+    dics->exception = add_duo(dics->exception, word, "_");
     if(save)
-        save_duo(dics->exception, word, word);
+        save_duo(dics->exception, word, "_");
 }
 
 dics_t dics_destroy(dics_t dics) {
