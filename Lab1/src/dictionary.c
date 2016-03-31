@@ -1,21 +1,22 @@
-#include "duo.h"
-#include "bst.h"
-#include "dictionary.h"
-#include "helper.h"
+// Copyright 2015 Alejandro Nigrelli y Alejandro Silva
+
+#include "./duo.h"
+#include "./bst.h"
+#include "./dictionary.h"
+#include "./helper.h"
 
 struct _dic_node_t {
     char* name_file;
-	struct _tree_node_t *bst;
+    struct _tree_node_t *bst;
 };
 
-
-dic_t dic_create (bool reverse, char* name_dic) {
+dic_t dic_create(bool reverse, char* name_dic) {
     dic_t dic = calloc(1, sizeof(struct _dic_node_t));
     dic->bst = bst_empty();
     dic->name_file = calloc(strlen(name_dic) + 1, sizeof(char));
     strcpy(dic->name_file, name_dic);
     FILE *archive;
-    archive = fopen(name_dic,"r+a");
+    archive = fopen(name_dic, "r+a");
     char *line;
     char *token_1;
     char *token_2;
@@ -27,16 +28,16 @@ dic_t dic_create (bool reverse, char* name_dic) {
         return NULL;
     }
 
-    while(!feof(archive)) {
+    while (!feof(archive)) {
         line = readline(archive);
 
-        if(line == NULL)
+        if (line == NULL)
             continue;
 
         token_1 = strtok(line, ",");
         token_2 = strtok(NULL, "\n");
-        if(token_1 != NULL && token_2 != NULL) {
-            if(reverse)
+        if (token_1 != NULL && token_2 != NULL) {
+            if (reverse)
                 dic->bst = bst_add(dic->bst, token_2, token_1);
             else
                 dic->bst = bst_add(dic->bst, token_1, token_2);
@@ -65,9 +66,9 @@ void save_duo(dic_t dic, char *index, char *data) {
     assert(dic->name_file != NULL);
 
     file = fopen(dic->name_file, "a");
-    fprintf(file,"%s" ,index);
-    fprintf(file, "," );
-    fprintf(file,"%s\n" ,data);
+    fprintf(file, "%s", index);
+    fprintf(file, ",");
+    fprintf(file, "%s\n", data);
     fclose(file);
 }
 

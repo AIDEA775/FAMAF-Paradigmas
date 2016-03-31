@@ -1,4 +1,6 @@
-#include "helper.h"
+// Copyright 2015 Alejandro Nigrelli y Alejandro Silva
+
+#include "./helper.h"
 
 char *readline(FILE *file) {
     bool done = false;

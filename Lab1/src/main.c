@@ -1,13 +1,16 @@
+// Copyright 2015 Alejandro Nigrelli y Alejandro Silva
+
 #include <argp.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
 
-#include "dictionaries.h"
-#include "helper.h"
+#include "./dictionaries.h"
+#include "./helper.h"
 
 const char *argp_program_version = "Ale's Translation 1.0";
-const char *user_interface = "Ignore (i) - Ignore all (h) - Translated as (t) - Always translate as (s)\n"
+const char *user_interface = "Ignore (i) - Ignore all (h) - "
+                             "Translated as (t) - Always translate as (s)\n"
                              ">> I can't find translation for *%s*\n"
                              ">> Your option: ";
 
@@ -34,7 +37,7 @@ struct Settings {
 };
 
 // Parse a single option.
-static error_t parse_opt (int key, char *arg, struct argp_state *state) {
+static error_t parse_opt(int key, char *arg, struct argp_state *state) {
   struct Settings *settings = state->input;
 
   switch (key) {
@@ -54,13 +57,13 @@ static error_t parse_opt (int key, char *arg, struct argp_state *state) {
       settings->reverse = true;
       break;
     case ARGP_KEY_ARG:
-        //Too many arguments.
-        argp_usage (state);
+        // too many arguments.
+        argp_usage(state);
       break;
     case ARGP_KEY_END:
       if (settings->file_src == NULL)
-        // Need source file
-        argp_usage (state);
+        // need source file
+        argp_usage(state);
       break;
     default:
       return ARGP_ERR_UNKNOWN;
@@ -131,7 +134,7 @@ retry:
 }
 
 
-void translate (dics_t dict, FILE *src, FILE *out) {
+void translate(dics_t dict, FILE *src, FILE *out) {
   char word[100];
   int ch, i;
 
@@ -139,14 +142,14 @@ void translate (dics_t dict, FILE *src, FILE *out) {
     i = 0;
 
     // spaces
-    while(EOF != (ch = fgetc(src)) && isspace(ch))
+    while (EOF != (ch = fgetc(src)) && isspace(ch))
       fprintf(out, "%c", ch);
 
     if (ch == EOF)
       break;
 
     // character
-    if(!islatinapha(ch)) {
+    if (!islatinapha(ch)) {
       word[i++] = ch;
       word[i++] = '\0';
       fprintf(out, "%s", word);
@@ -156,20 +159,18 @@ void translate (dics_t dict, FILE *src, FILE *out) {
     // word
     do {
       word[i++] = tolower(ch);
-    } while(EOF != (ch = fgetc(src)) && islatinapha(ch));
+    } while (EOF != (ch = fgetc(src)) && islatinapha(ch));
 
-    if(!islatinapha(ch))
+    if (!islatinapha(ch))
       ungetc(ch, src);
 
     word[i++] = '\0';
 
     translate_word(dict, out, word);
-
-  } while(1);
-
+  } while (1);
 }
 
-int main (int argc, char **argv) {
+int main(int argc, char **argv) {
   struct Settings settings;
   FILE *src;
   FILE *out;
@@ -183,23 +184,23 @@ int main (int argc, char **argv) {
   settings.reverse = false;
 
   // Parse arguments.
-  argp_parse (&argp, argc, argv, 0, 0, &settings);
+  argp_parse(&argp, argc, argv, 0, 0, &settings);
 
   dict = dics_create(settings.reverse, settings.file_dic, settings.file_ign);
 
-  if(dict == NULL) {
+  if (dict == NULL) {
     printf("Dictionary not found\n");
     return 1;
   }
 
   src = fopen(settings.file_src, "r");
-  if(src == NULL) {
+  if (src == NULL) {
     printf("File not found\n");
     return 1;
   }
 
   out = fopen(settings.file_out, "w+");
-  if(out == NULL) {
+  if (out == NULL) {
     printf("File out error\n");
     return 1;
   }

@@ -1,8 +1,10 @@
-#include "duo.h"
+// Copyright 2015 Alejandro Nigrelli y Alejandro Silva
+
+#include "./duo.h"
 
 struct _duo_t {
-	char *index;
-	char *data;
+    char *index;
+    char *data;
 };
 
 duo_t create_duo(char *index, char *data)  {

@@ -1,6 +1,8 @@
-#include "dictionaries.h"
-#include "dictionary.h"
-#include "duo.h"
+// Copyright 2015 Alejandro Nigrelli y Alejandro Silva
+
+#include "./dictionaries.h"
+#include "./dictionary.h"
+#include "./duo.h"
 
 struct _dics_node_t {
     char *result;
@@ -13,13 +15,13 @@ dics_t dics_create(bool reverse, char* name_dic, char* name_ign) {
     dics_t dics = calloc(1, sizeof(struct _dics_node_t));
 
     dics->translation = dic_create(reverse, name_dic);
-    if(dics->translation == NULL) {
+    if (dics->translation == NULL) {
         free(dics);
         return NULL;
     }
 
     dics->exception = dic_create(false, name_ign);
-    if(dics->exception == NULL) {
+    if (dics->exception == NULL) {
         dic_destroy(dics->translation);
         free(dics);
         return NULL;
@@ -31,9 +33,9 @@ dics_t dics_create(bool reverse, char* name_dic, char* name_ign) {
 int dics_search(dics_t dics, char* word) {
     char* result;
 
-    if((result = search_index(dics->exception, word)) != NULL) {
+    if ((result = search_index(dics->exception, word)) != NULL) {
         return EXCEPTION;
-    } else if((result = search_index(dics->translation, word)) != NULL) {
+    } else if ((result = search_index(dics->translation, word)) != NULL) {
         dics->result = result;
         return FOUND;
     } else {
@@ -53,13 +55,13 @@ char* get_translation(dics_t dics) {
 }
 void add_translation(dics_t dics, char* word, char* translation, bool save) {
     dics->translation = add_duo(dics->translation, word, translation);
-    if(save)
+    if (save)
         save_duo(dics->translation, word, translation);
 }
 
 void add_exception(dics_t dics, char* word, bool save) {
     dics->exception = add_duo(dics->exception, word, "_");
-    if(save)
+    if (save)
         save_duo(dics->exception, word, "_");
 }
 
