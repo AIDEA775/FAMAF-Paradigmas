@@ -1,9 +1,1 @@
-hace,do
-bien,good
-hola,hello
-que,what
 todo,all
-lol,LOL
-tab,TAB
-lol,LOL
-tab,TAB

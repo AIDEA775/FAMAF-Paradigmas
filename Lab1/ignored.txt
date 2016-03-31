@@ -1,1 +1,7 @@
-bro,bro
+hola,_
+que,_
+hace,_
+bro,_
+bien,_
+lol,_
+tab,_
