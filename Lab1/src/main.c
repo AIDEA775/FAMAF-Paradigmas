@@ -7,8 +7,9 @@
 #include "helper.h"
 
 const char *argp_program_version = "Ale's Translation 1.0";
-const char *user_interface = "\nI can't find translation for *%s*\n"
-             "Ignore (i) - Ignore all (h) - Translated as (t) - Always translate as (s): ";
+const char *user_interface = "Ignore (i) - Ignore all (h) - Translated as (t) - Always translate as (s)\n"
+                             ">> I can't find translation for *%s*\n"
+                             ">> Your option: ";
 
 // Documentation.
 static char doc[] =
@@ -81,43 +82,52 @@ void translate_word(dics_t dict, FILE *out, char* word) {
   int translate;
 
   translate = dics_search(dict, word);
-    switch (translate) {
-      case FOUND:
-        fprintf(out, "%s", get_translation(dict));
-        break;
-      case NOT_FOUND:
-        printf(user_interface, word);
-        option = readline(stdin);
-        switch (*option) {
-          case 'i':
-          case 'h':
-            // skip word
-            add_exception(dict, word, *option == 'h');
-            printf("Ignore word\n");
-            break;
-          case 't':
-          case 's':
-            // translate word
-            printf("Translate %s as: ", word);
-            translation = readline(stdin);
-            add_translation(dict, word, translation, *option == 's');
-            fprintf(out, "%s", translation);
-            free(translation);
-            break;
-          default:
-            printf("Esto no deberia imprimirse!!\n");
-            break;
-        }
-        free(option);
-        option = NULL;
-        break;
-      case EXCEPTION:
-        // skip
-        break;
-      default:
-        printf("Esto tampoco no deberia imprimirse!!\n");
-        break;
-    }
+  switch (translate) {
+    case FOUND:
+      fprintf(out, "%s", get_translation(dict));
+      break;
+
+    case EXCEPTION:
+      fprintf(out, "%s", word);
+      break;
+
+    case NOT_FOUND:
+      printf(user_interface, word);
+retry:
+      option = readline(stdin);
+      switch (*option) {
+        case 'i':
+        case 'h':
+          // skip word
+          fprintf(out, "%s", word);
+          add_exception(dict, word, *option == 'h');
+          printf(">> Word ignored!\n\n");
+          break;
+
+        case 't':
+        case 's':
+          // translate word
+          printf(">> Translate *%s* as: ", word);
+          translation = readline(stdin);
+          add_translation(dict, word, translation, *option == 's');
+          fprintf(out, "%s", translation);
+          printf(">> Translated!\n\n");
+          free(translation);
+          break;
+
+        default:
+          printf(">> Sorry, try again: ");
+          free(option);
+          goto retry;
+          break;
+      }
+      free(option);
+      option = NULL;
+      break;
+
+    default:
+      break;
+  }
 }
 
 
