@@ -74,7 +74,7 @@ void add_exception(dics_t dics, char* word, bool save) {
 dics_t dics_destroy(dics_t dics) {
     dics->translation = dic_destroy(dics->translation);
     dics->exception = dic_destroy(dics->exception);
-    if(dics->result != NULL)
+    if (dics->result != NULL)
         free(dics->result);
     dics->result = NULL;
     free(dics);
