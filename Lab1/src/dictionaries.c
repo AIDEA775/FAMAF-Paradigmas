@@ -26,8 +26,8 @@ dics_t dics_create(bool reverse, char* name_dic, char* name_ign) {
         free(dics);
         return NULL;
     }
-    dics->result = NULL;
     dics->reverse = reverse;
+    dics->result = NULL;
     return dics;
 }
 
@@ -54,6 +54,7 @@ char* get_translation(dics_t dics) {
 
     return translated;
 }
+
 void add_translation(dics_t dics, char* word, char* translation, bool save) {
     dics->translation = add_duo(dics->translation, word, translation);
     if (save) {

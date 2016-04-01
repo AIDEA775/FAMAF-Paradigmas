@@ -201,7 +201,7 @@ int main(int argc, char **argv) {
   dict = dics_create(settings.reverse, settings.file_dic, settings.file_ign);
 
   if (dict == NULL) {
-    printf("Dictionary not found\n");
+    printf("Dictionary error\n");
     return 1;
   }
 

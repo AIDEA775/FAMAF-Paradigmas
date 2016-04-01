@@ -6,23 +6,19 @@
 #include "./helper.h"
 
 struct _dic_node_t {
-    char* name_file;
+    FILE *file;
     struct _tree_node_t *bst;
 };
 
 dic_t dic_create(bool reverse, char* name_dic) {
-    FILE *archive = fopen(name_dic, "r");
-
-    if (archive == NULL)
-        archive = fopen(name_dic, "w+");
+    FILE *archive = fopen(name_dic, "a+");
 
     if (archive == NULL)
         return NULL;
 
     dic_t dic = calloc(1, sizeof(struct _dic_node_t));
     dic->bst = bst_empty();
-    dic->name_file = calloc(strlen(name_dic) + 1, sizeof(char));
-    strcpy(dic->name_file, name_dic);
+    dic->file = archive;
 
     char *line;
     char *token_1;
@@ -44,7 +40,6 @@ dic_t dic_create(bool reverse, char* name_dic) {
         }
         free(line);
     }
-    fclose(archive);
     return dic;
 }
 
@@ -61,20 +56,18 @@ dic_t add_duo(dic_t dic, char *word, char *translation) {
 }
 
 void save_duo(dic_t dic, char *index, char *data) {
-    FILE *file;
+    FILE *file = dic->file;
 
-    assert(dic->name_file != NULL);
+    assert(file != NULL);
 
-    file = fopen(dic->name_file, "a");
     fprintf(file, "%s", index);
     fprintf(file, ",");
     fprintf(file, "%s\n", data);
-    fclose(file);
 }
 
 dic_t dic_destroy(dic_t dic) {
     dic->bst = bst_destroy(dic->bst);
-    free(dic->name_file);
+    fclose(dic->file);
     free(dic);
     dic = NULL;
     return dic;
