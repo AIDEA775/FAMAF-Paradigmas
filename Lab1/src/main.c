@@ -12,6 +12,7 @@
 const char *latin_mayus = "ÁÉÍÓÚÑ";
 const char *latin_minus = "áéíóúñ";
 const char *latin_chars = "áéíóúñÁÉÍÓÚÑ";
+const char *char_ignore = "¡¿¡";
 
 // user interface
 const char *argp_program_version = "Ale's Translation 1.0";
@@ -161,10 +162,8 @@ void translate(struct Settings set, dics_t dict, FILE *src, FILE *out) {
 
         // character
         if (!is_latin_apha(ch)) {
-            word[i++] = ch;
-            word[i++] = '\0';
-            if(set.reverse || strchr("¿¡", ch) == NULL)
-                fprintf(out, "%s", word);
+            if (set.reverse || strchr(char_ignore, ch) == NULL)
+                fprintf(out, "%c", ch);
             continue;
         }
 

@@ -1,6 +1,5 @@
-libro,school
-glass,vaso
-house,casa
+libro,book
+casa,house
 dibujos,cartoons
 carpesan,file
 cerillas,match
@@ -88,3 +87,7 @@ primavera,spring
 rueda,wheel
 calendario,calendary
 Navidad,christmas
+yo,I
+él,he
+ella,she
+esto,it
