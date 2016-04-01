@@ -19,7 +19,6 @@ const char *user_interface = "Ignore (i) - Ignore all (h) - "
                              "Translated as (t) - Always translate as (s)\n"
                              ">> I can't find translation for *%s*\n"
                              ">> Your option: ";
-
 static char doc[] =
   "Translate Spanish to English files and backhand";
 
@@ -41,7 +40,7 @@ struct Settings {
   bool reverse;
 };
 
-// Parse a single option.
+// Parse a single option
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
   struct Settings *settings = state->input;
 
@@ -91,6 +90,7 @@ bool is_latin_apha(char c) {
   return isalpha(c) || (strchr(latin_chars, c) != NULL);
 }
 
+// translate a single word
 void translate_word(dics_t dict, FILE *out, char* word) {
   char* option;
   char* translation;
@@ -145,7 +145,7 @@ retry:
   }
 }
 
-
+// translate src and save in out
 void translate(dics_t dict, FILE *src, FILE *out) {
   char word[100];
   int ch, i;
