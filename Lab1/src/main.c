@@ -8,17 +8,22 @@
 #include "./dictionaries.h"
 #include "./helper.h"
 
+// latin chars
+const char *latin_mayus = "ÁÉÍÓÚÑ";
+const char *latin_minus = "áéíóúñ";
+const char *latin_chars = "áéíóúñÁÉÍÓÚÑ";
+
+// user interface
 const char *argp_program_version = "Ale's Translation 1.0";
 const char *user_interface = "Ignore (i) - Ignore all (h) - "
                              "Translated as (t) - Always translate as (s)\n"
                              ">> I can't find translation for *%s*\n"
                              ">> Your option: ";
 
-// Documentation.
 static char doc[] =
   "Translate Spanish to English files and backhand";
 
-// The options.
+// The options
 static struct argp_option options[] = {
   {"input", 'i', "FILE", 0, "Input file to translate" },
   {"output", 'o', "FILE", 0, "Output file" },
@@ -35,10 +40,6 @@ struct Settings {
   char *file_ign;
   bool reverse;
 };
-
-// constante auxiliares
-char* MAYUS = "ÁÉÍÓÚÑ";
-char* MINUS = "áéíóúñ";
 
 // Parse a single option.
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
@@ -79,17 +80,16 @@ static struct argp argp = { options, parse_opt, 0, doc };
 
 char to_latin_lower(char c) {
     char* i;
-    if ((i = strchr(MAYUS, c)) != NULL) {
-        return MINUS[(i - MAYUS) / sizeof(char)];
+    if ((i = strchr(latin_mayus, c)) != NULL) {
+        return latin_minus[(i - latin_mayus) / sizeof(char)];
     } else {
         return tolower(c);
     }
 }
 
 bool is_latin_apha(char c) {
-  return isalpha(c) || (strchr("áéíóúÁÉÍÓÚñÑ", c) != NULL);
+  return isalpha(c) || (strchr(latin_chars, c) != NULL);
 }
-
 
 void translate_word(dics_t dict, FILE *out, char* word) {
   char* option;
