@@ -15,6 +15,9 @@ En este proyecto decidimos usa argp para el pasaje de argumentos, ya que nos par
 ##### Nuestros TADS
 Para traducir decidimos implementar el *`TAD dictionaries`* que es un conjunto de diccionarios. Un diccionario para las excepciones y otro con las traducciones, con la posibilidad de agregar mas idiomas. Para implementar los diccionarios, creamos el *`TAD dictionary`*, el cual nos permite agregar y buscar la traduccion de una palabra. Para la busqueda de una palabra implementamos el *`TAD bst`*, para que sea mas eficiente ya que es log(n). Para la traduccion de una palabra implementamos el *`TAD duo`*, que contiene la palabra y su traduccion, los cuales no tiene limite de longitud porque si se usa con otros idiomas (diccionarios) no sabemos que longitud puede tener las palabras.
 
+##### Nuestro reverse
+Para implementar la funcion  *`reverse`*, decidimos que al momento de cargar el diccionario desde un archivo, lo hacemos en sentido contrario. En el caso del diccionario de excepciones, este se carga siempre en el mismo sentido, por lo que una palabra igorada vale para todos los idiomas.
+
 ## Las otras ideas...
 ##### Nuestro scanf
 Para leer la entrada estandar y los archivos usamos la funcion *`readline()`* implementada en *`helper.h`* porque lo usamos tanto en el *`main`* como *`diccionary`*.
@@ -33,3 +36,10 @@ Para modularizar mas la busqueda de la traduccion, decidimos que *`dics_search()
 
 ##### Nuestro add save duo
 Save duo se encarga de guardar en el archivo la palabra con su traducción, decidimos separarla de add duo para no modificar el *`TAD bst`*, ya que este solo modifica el árbol en memoria.
+
+## La ultima idea...
+##### Nuestro ejemplo
+Anexamos un texto y un diccionario de ejemplos, con ellos el traductor es de Español-Ingles
+
+
+### Esperemos que le gusten nuestra user interface!

@@ -68,7 +68,7 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
             if (settings->file_src == NULL)
                 // need source file
                 argp_usage(state);
-                break;
+            break;
         default:
             return ARGP_ERR_UNKNOWN;
     }
@@ -146,7 +146,7 @@ retry:
 }
 
 // translate src and save in out
-void translate(dics_t dict, FILE *src, FILE *out) {
+void translate(struct Settings set, dics_t dict, FILE *src, FILE *out) {
     char word[100];
 
     do {
@@ -163,7 +163,8 @@ void translate(dics_t dict, FILE *src, FILE *out) {
         if (!is_latin_apha(ch)) {
             word[i++] = ch;
             word[i++] = '\0';
-            fprintf(out, "%s", word);
+            if(set.reverse || strchr("¿¡", ch) == NULL)
+                fprintf(out, "%s", word);
             continue;
         }
 
@@ -205,20 +206,20 @@ int main(int argc, char **argv) {
 
     src = fopen(settings.file_src, "r");
     if (src == NULL) {
-        dict = dic_destroy();
+        dict = dics_destroy(dict);
         printf("File not found\n");
         return 1;
     }
 
     out = fopen(settings.file_out, "w+");
     if (out == NULL) {
-        dict = dic_destroy();
+        dict = dics_destroy(dict);
         fclose(src);
         printf("File out error\n");
         return 1;
     }
 
-    translate(dict, src, out);
+    translate(settings, dict, src, out);
     dict = dics_destroy(dict);
     fclose(src);
     fclose(out);

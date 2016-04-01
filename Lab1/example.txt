@@ -1,1 +1,24 @@
-Hello! My name is Ana. I am twenty-five years old. I live in Miami, Florida with my husband and two children. I have one son in kindergarten and one daughter in first grade. They both attend public school. My husband is a mechanic. On weekends, he works at a restaurant as a dishwasher. The restaurant usually gets more customers on weekends, so they need extra people to wash dishes
+Primeros años
+Richard Matthew Stallman nació en la Ciudad de Nueva York en el año 1953, hijo de Alice Lippman y Daniel Stallman.5 Su primera experiencia con computadoras fue en el Centro Científico de IBM en Nueva York cuando cursaba la preparatoria. Fue contratado durante un verano para escribir un programa de análisis numérico en Fortran. Completó el trabajo después de un par de semanas, y dedicó el resto del verano escribiendo un editor de textos en el lenguaje de programación APL.6 Stallman invirtió el verano de su graduación de la preparatoria en escribir otro programa, un preprocesador para el lenguaje de programación PL/1 en el IBM S/360.
+Durante este tiempo, Stallman fue también asistente voluntario de laboratorio en el departamento de biología de la Universidad Rockefeller. Aunque ya estaba ingresando a la carrera de física o matemáticas, su maestro tutor en el Rockefeller pensó que él podría ser biólogo en un futuro.7
+
+Iniciativa GNU
+
+Al anuncio inicial del proyecto GNU siguió, en 1985, la publicación del Manifiesto GNU, en el cual Stallman declaraba sus intenciones y motivaciones para crear una alternativa libre al sistema operativo Unix, al que denominó GNU (GNU No es Unix), pronunciado de forma parecida a ñu, en inglés (de ahí los dibujos-logotipos que lo representan). Poco tiempo después fundó la organización sin ánimo de lucro Free Software Foundation para coordinar el esfuerzo. Inventó el concepto de copyleft, que fue utilizado en la Licencia Pública General GNU (conocida generalmente como la «GPL») en 1989. La mayor parte del sistema GNU, excepto el núcleo, se completó aproximadamente al mismo tiempo. En 1991, Linus Torvalds liberó el núcleo Linux bajo los términos de la GPL, completando un sistema GNU completo y operativo, el sistema operativo GNU/Linux.
+
+Software Libre
+
+Stallman insiste en la utilización del término «software libre», y no código abierto, porque lo importante es la libertad del usuario que se pierde. También busca que se utilice GNU/Linux y no solamente Linux cuando se habla del sistema operativo.
+
+La persona
+
+Las motivaciones políticas y morales de Richard Stallman lo han convertido en una figura controvertida. Muchos programadores influyentes que se encuentran de acuerdo con el concepto de compartir el código, difieren con las posturas morales, filosofía personal o el lenguaje que utiliza Stallman para describir sus posiciones. Un resultado de estas disputas condujo al establecimiento de una alternativa al movimiento del software libre, el movimiento de código abierto.
+
+    Que las empresas tengan especial influencia en la política significa que la democracia está enferma. El propósito de la democracia es asegurarse de que los ricos no tengan una influencia proporcional a su riqueza. Y si tienen más influencia que tú o que yo, eso significa que la democracia está fallando. Las leyes que se obtienen de esta forma no tienen autoridad moral, sino la capacidad de hacer daño.
+    Richard Stallman
+
+En 1999 promovió la creación de una enciclopedia libre, la GNUPedia, considerada como un antecedente directo de Wikipedia.
+
+En la actualidad, Stallman se encarga de difundir la ideología GNU en todo el mundo mediante charlas y conferencias. Stallman habla español de manera fluida, y ha dado numerosas conferencias en países de habla hispana como: Argentina, Bolivia, Chile, Colombia, Ecuador, Cuba, España, México, Perú, Uruguay, Venezuela. Durante sus charlas aparece con una segunda personalidad que corresponde a San Ignucio con la que suele bendecir las computadoras de las personas.10
+
+Su aparentemente descuidada imagen, y sus manías extravagantes (no utiliza teléfono móvil, siempre va acompañado de su computadora portátil, no duerme en hoteles, etc.) le han hecho ser blanco de numerosos chistes y bromas, llegando a aparecer en tiras cómicas.11
