@@ -20,7 +20,6 @@ dics_t dics_create(bool reverse, char* name_dic, char* name_ign) {
         free(dics);
         return NULL;
     }
-
     dics->exception = dic_create(false, name_ign);
     if (dics->exception == NULL) {
         dic_destroy(dics->translation);
@@ -74,6 +73,8 @@ void add_exception(dics_t dics, char* word, bool save) {
 dics_t dics_destroy(dics_t dics) {
     dics->translation = dic_destroy(dics->translation);
     dics->exception = dic_destroy(dics->exception);
+    if(dics->result != NULL)
+        free(dics->result);
     dics->result = NULL;
     free(dics);
     return NULL;

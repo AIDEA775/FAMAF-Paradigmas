@@ -11,26 +11,26 @@ struct _dic_node_t {
 };
 
 dic_t dic_create(bool reverse, char* name_dic) {
+    FILE *archive = fopen(name_dic, "r");
+
+    if (archive == NULL)
+        archive = fopen(name_dic, "w+");
+
+    if (archive == NULL)
+        return NULL;
+
     dic_t dic = calloc(1, sizeof(struct _dic_node_t));
     dic->bst = bst_empty();
     dic->name_file = calloc(strlen(name_dic) + 1, sizeof(char));
     strcpy(dic->name_file, name_dic);
-    FILE *archive;
-    archive = fopen(name_dic, "r+a");
+
     char *line;
     char *token_1;
     char *token_2;
 
-    if (archive == NULL) {
-        bst_destroy(dic->bst);
-        free(dic->name_file);
-        free(dic);
-        return NULL;
-    }
-
     while (!feof(archive)) {
         line = readline(archive);
-
+        //printf("%c\n", *line);
         if (line == NULL)
             continue;
 
