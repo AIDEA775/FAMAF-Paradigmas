@@ -20,11 +20,11 @@ dic_t dic_create(bool reverse, char* name_dic) {
     dic->bst = bst_empty();
     dic->file = archive;
 
-    char *line;
-    char *token_1;
-    char *token_2;
-
     while (!feof(archive)) {
+        char *line;
+        char *token_1;
+        char *token_2;
+
         line = readline(archive);
         if (line == NULL)
             continue;
