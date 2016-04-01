@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "../src/dictionary.h"
+#include "./dictionary.h"
 
 #define FOUND 0
 #define NOT_FOUND 1

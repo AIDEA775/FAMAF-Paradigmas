@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "../src/bst.h"
+#include "./bst.h"
 
 typedef struct _dic_node_t  *dic_t;
 

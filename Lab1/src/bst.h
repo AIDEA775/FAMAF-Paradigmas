@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../src/duo.h"
+#include "./duo.h"
 
 typedef struct _tree_node_t  *bst_t;
 
