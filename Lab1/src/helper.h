@@ -8,6 +8,10 @@
 #include <stdio.h>
 #include <string.h>
 
+/*
+ * Read the user input from specified FILE * until a newline is detected,
+ * and return the corresponding (dinamically allocated) string.
+ */
 char *readline(FILE *file);
 
 #endif  // LAB1_SRC_HELPER_H_
