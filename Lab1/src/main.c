@@ -36,6 +36,10 @@ struct Settings {
   bool reverse;
 };
 
+// constante auxiliares
+char* MAYUS = "ÁÉÍÓÚÑ";
+char* MINUS = "áéíóúñ";
+
 // Parse a single option.
 static error_t parse_opt(int key, char *arg, struct argp_state *state) {
   struct Settings *settings = state->input;
@@ -73,8 +77,16 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
 
 static struct argp argp = { options, parse_opt, 0, doc };
 
+char to_latin_lower(char c) {
+    char* i;
+    if ((i = strchr(MAYUS, c)) != NULL) {
+        return MINUS[(i - MAYUS) / sizeof(char)];
+    } else {
+        return tolower(c);
+    }
+}
 
-bool islatinapha(char c) {
+bool is_latin_apha(char c) {
   return isalpha(c) || (strchr("áéíóúÁÉÍÓÚñÑ", c) != NULL);
 }
 
@@ -149,7 +161,7 @@ void translate(dics_t dict, FILE *src, FILE *out) {
       break;
 
     // character
-    if (!islatinapha(ch)) {
+    if (!is_latin_apha(ch)) {
       word[i++] = ch;
       word[i++] = '\0';
       fprintf(out, "%s", word);
@@ -158,10 +170,10 @@ void translate(dics_t dict, FILE *src, FILE *out) {
 
     // word
     do {
-      word[i++] = tolower(ch);
-    } while (EOF != (ch = fgetc(src)) && islatinapha(ch));
+      word[i++] = to_latin_lower(ch);
+    } while (EOF != (ch = fgetc(src)) && is_latin_apha(ch));
 
-    if (!islatinapha(ch))
+    if (!is_latin_apha(ch))
       ungetc(ch, src);
 
     word[i++] = '\0';
