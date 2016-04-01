@@ -23,16 +23,11 @@ Para leer la entrada estandar y los archivos usamos la funcion *`readline()`* im
 Para detectar si un *`char`* es un caracter o una letra, existe una funcion de la libreria estandar *`string`* llamada *`isalpha()`*. Pero esta no reconoce la **ñ** ni los **acentos**, por lo que la expandimos en nuestra funcion *`islatinapha()`* con un simple *or*.
 
 ##### Nuestras minusculas
-Decidimos que la traduccion sea toda en minuscula para no complicarnos, ademas, hasta google translate lo hace aveces. **(¿¿lo hace verdad??)**
+Decidimos que la traduccion sea toda en minuscula para no complicarnos, ademas, hasta google translate lo hace aveces.
 
 ##### Nuestro doble switch case
-Para modularizar mas la busqueda de la traduccion, decidimos que *`dics_search()`* sólo retorne si encontró o no la traduccion y si hay que ignorarla. Si encontró la traduccion, se la puede recuperar a través de *`get_translation()`*. Esto es para que eventualmente poder agregar mas funcionalidades, como un diccionario con insultos, lo cual deberia censurarse con "\*\*\*\*\*". **(¿¿agregar otro ejemplo??)**
+Para modularizar mas la busqueda de la traduccion, decidimos que *`dics_search()`* sólo retorne si encontró o no la traduccion y si hay que ignorarla. Si encontró la traduccion, se la puede recuperar a través de *`get_translation()`*. Esto es para que eventualmente poder agregar mas funcionalidades, como un diccionario con insultos, lo cual deberia censurarse con "\*\*\*\*\*". 
 
 
-##### Nuestro add save duo ¿?
-Explicar porque decidimos usar una funcion solo para guardar un duo en nuestro diccionario en RAM, y otra en el archivo del diccionario.
-
-
-
-
-En este proyectos las deciciones que utilizamos fue, utilizar un TAD duo en el cual va a contener la palabra y la traduccion en su estructura, luego implementamos bst para cargar el diccionario y poder hacer una busqueda mas eficiente. Luego el TAD diccionary usa bst para agregar y buscar palabras en el diccionario. El TAD
+##### Nuestro add save duo 
+Save duo se encarga de guardar en el archivo la palabra con su traducción, decidimos separarla de add duo para no modificar el *`TAD bst`*, ya que este solo modifica el árbol en memoria.
