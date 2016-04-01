@@ -5,6 +5,7 @@ OBJECTS = $(BIN)main.o $(BIN)dictionaries.o $(BIN)dictionary.o $(BIN)duo.o $(BIN
 
 translator : $(OBJECTS)
 	gcc $(FLAGS) -o $(BIN)translator $(OBJECTS)
+	rm $(OBJECTS)
 
 $(BIN)main.o : $(SRC)main.c $(SRC)dictionaries.h
 	gcc $(FLAGS) -o $(BIN)main.o -c $(SRC)main.c
