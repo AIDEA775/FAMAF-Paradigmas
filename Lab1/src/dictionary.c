@@ -26,7 +26,6 @@ dic_t dic_create(bool reverse, char* name_dic) {
 
     while (!feof(archive)) {
         line = readline(archive);
-        //printf("%c\n", *line);
         if (line == NULL)
             continue;
 
