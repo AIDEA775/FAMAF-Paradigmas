@@ -5,6 +5,7 @@
 #include "./duo.h"
 
 struct _dics_node_t {
+    bool reverse;
     char *result;
     struct _dic_node_t *translation;
     struct _dic_node_t *exception;
@@ -27,6 +28,7 @@ dics_t dics_create(bool reverse, char* name_dic, char* name_ign) {
         return NULL;
     }
     dics->result = NULL;
+    dics->reverse = reverse;
     return dics;
 }
 
@@ -55,8 +57,12 @@ char* get_translation(dics_t dics) {
 }
 void add_translation(dics_t dics, char* word, char* translation, bool save) {
     dics->translation = add_duo(dics->translation, word, translation);
-    if (save)
-        save_duo(dics->translation, word, translation);
+    if (save) {
+        if (dics->reverse)
+            save_duo(dics->translation, translation, word);
+        else
+            save_duo(dics->translation, word, translation);
+    }
 }
 
 void add_exception(dics_t dics, char* word, bool save) {
