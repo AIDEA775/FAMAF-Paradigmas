@@ -1,4 +1,4 @@
-*/bin/*
+#*/bin/*
 
 # Object files
 *.o
@@ -68,7 +68,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar
 *.war
 *.ear
 
