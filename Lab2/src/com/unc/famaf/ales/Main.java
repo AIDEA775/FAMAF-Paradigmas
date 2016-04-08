@@ -66,6 +66,8 @@ public class Main {
 	                                + "!");
 	            }
 	        }
+	        
+	        // traductor.run(archivo archivo)
 	    }
 
 }
