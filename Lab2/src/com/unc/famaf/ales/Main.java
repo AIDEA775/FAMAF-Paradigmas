@@ -49,7 +49,7 @@ public class Main {
 	            
 	            System.err.println();
 	            System.err.println("Usage: java "
-	                                + Manual_HelloWorld_7.class.getName());
+	                                + Main.class.getName());
 	            System.err.println("                "
 	                                + jsap.getUsage());
 	            System.err.println();
