@@ -6,20 +6,20 @@ public class EntradaArchivo {
 	static FileReader entrada = null;
 	static int c;
 
-	public static boolean EsSimbolo(char c) {
-		String s = "¡?,.?!¿";
-		String aux = "" + c;
-		boolean b = s.contains(aux);
-		return (b);
-	}
-
-	public static void ArchivoDeEntrada(String nombre) {
+	EntradaArchivo(String nombre) {
 		try {
 			entrada = new FileReader(nombre);
 			c = entrada.read();
 		} catch (IOException e) {
 			// aca va el cuerpo del catch
 		}
+	}
+	
+	public static boolean EsSimbolo(char c) {
+		String s = "¡?,.?!¿";
+		String aux = "" + c;
+		boolean b = s.contains(aux);
+		return (b);
 	}
 
 	public static String LeerPalabra() throws IOException {
