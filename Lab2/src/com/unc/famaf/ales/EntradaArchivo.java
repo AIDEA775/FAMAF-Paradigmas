@@ -1,64 +1,63 @@
 package com.unc.famaf.ales;
 
+import java.io.*;
+
 public class EntradaArchivo {
-		FileReaders entrada = null;
-	int c;
-	
-	public static boolean EsSimbolo(char c){
-		    String s = "¡?,.?!¿";
-		    String aux = "" + c;
-		    boolean b = s.contains(aux);
-		   return(b);
-		  }
-	
-	public static void ArchivoDeEntrada(String nombre){
-        try{
+	static FileReader entrada = null;
+	static int c;
+
+	public static boolean EsSimbolo(char c) {
+		String s = "¡?,.?!¿";
+		String aux = "" + c;
+		boolean b = s.contains(aux);
+		return (b);
+	}
+
+	public static void ArchivoDeEntrada(String nombre) {
+		try {
 			entrada = new FileReader(nombre);
 			c = entrada.read();
-        }catch(IOException e){
-        	//aca va el cuerpo del catch
-        }
+		} catch (IOException e) {
+			// aca va el cuerpo del catch
+		}
 	}
-	
-	public static String LeerPalabra(){
-	          char ch;
-	          String palabra = "";
 
-	          while(c != -1) {
-	              if ((char) c == ' ' && palabra != "") {
+	public static String LeerPalabra() throws IOException {
+		char ch;
+		String palabra = "";
 
-	              	c = entrada.read();
-	              	return(palabra);
-	               
-	             } else if (EsSimbolo((char)c) && palabra == "") { 
+		while (c != -1) {
+			if ((char) c == ' ' && palabra != "") {
 
-	               ch = (char) c;
-	               palabra = palabra + ch;
-	               c = entrada.read();
-	               return(palabra);
+				c = entrada.read();
+				return (palabra);
 
-	             } else if (EsSimbolo((char)c) && palabra != "") {
-	             	
-	               return(palabra);
+			} else if (EsSimbolo((char) c) && palabra == "") {
 
-	             } else if ((char) c == ' ' || (char)c == '\n') {
-	                 
-	                 c = entrada.read();
+				ch = (char) c;
+				palabra = palabra + ch;
+				c = entrada.read();
+				return (palabra);
 
-	             } else {
-	             	
-	               ch = (char) c; 
-	             	palabra = palabra + ch;
-	             	c = entrada.read();
+			} else if (EsSimbolo((char) c) && palabra != "") {
 
-	             }
-	             if(c == -1 && palabra != "") {
-	               
-	               return(palabra);
+				return (palabra);
 
-	            }
-	          }
-	       }
+			} else if ((char) c == ' ' || (char) c == '\n') {
+
+				c = entrada.read();
+
+			} else {
+
+				ch = (char) c;
+				palabra = palabra + ch;
+				c = entrada.read();
+
+			}
+			if (c == -1 && palabra != "") {
+				return (palabra);
+			}
+		}
+		return palabra;
 	}
-	
 }
