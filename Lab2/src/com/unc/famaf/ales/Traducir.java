@@ -11,31 +11,34 @@ public class Traducir {
 	HashMap<String, String> diccionario;
 	HashSet<String> ignoradas;
 	boolean inverso;
-	SalidaArchivo dic_archivo;
-	SalidaArchivo ign_archivo;
+	SalidaArchivo dicArchivo;
+	SalidaArchivo ignArchivo;
 	
 
 	Traducir(String dic, String ign, boolean inverso) throws FileNotFoundException {
 		this.diccionario = new HashMap<String, String>();
 		this.ignoradas = new HashSet<String>();
 		this.inverso = inverso;
-		this.dic_archivo = new SalidaArchivo(dic);
-		this.ign_archivo = new SalidaArchivo(ign);
+		this.dicArchivo = new SalidaArchivo(dic);
+		this.ignArchivo = new SalidaArchivo(ign);
 
 		// Cargar diccionario
-		Scanner d = new Scanner(dic).useDelimiter(",");
-		while (d.hasNext()) {
-			String palabra1 = d.next();
-			String palabra2 = d.next();
+		Scanner d = new Scanner(new File(dic));
+		while (d.hasNextLine()) {
+			Scanner dicPar = new Scanner(d.nextLine());
+			dicPar.useDelimiter(",");
+				String palabra1 = dicPar.next();
+				String palabra2 = dicPar.next();
 			if (!inverso)
 				diccionario.put(palabra1, palabra2);
 			else
 				diccionario.put(palabra2, palabra1);
+			dicPar.close();
 		}
 		d.close();
 
 		// Cargar ignoradas
-		Scanner i = new Scanner(ign);
+		Scanner i = new Scanner(new File(ign));
 		while (i.hasNext()) {
 			ignoradas.add(i.next());
 		}
@@ -53,16 +56,36 @@ public class Traducir {
 		diccionario.put(palabra, traduccion);
 		if (guardar) {
 			if (!this.inverso)
-				this.dic_archivo.EscribirArchivo(palabra + "," + traduccion);
+				this.dicArchivo.EscribirArchivo(palabra + "," + traduccion);
 			else
-				this.dic_archivo.EscribirArchivo(traduccion + "," + palabra);
+				this.dicArchivo.EscribirArchivo(traduccion + "," + palabra);
 		}
 	}
 
 	public void AgregarIgnorada(String palabra, boolean guardar) {
 		ignoradas.add(palabra);
 		if (guardar) {
-			this.dic_archivo.EscribirArchivo(palabra + ",");
+			this.ignArchivo.EscribirArchivo(palabra);
 		}
+	}
+	
+	public void CerrarDiccionario() {
+		this.dicArchivo.CerrarArchivo();
+		this.ignArchivo.CerrarArchivo();
+	}
+	
+	public static void main(String[] args) {
+		Traducir hola;
+		try {
+		hola = new Traducir("/home/aidea775/dic.txt", "/home/aidea775/ign.txt", false);
+		//hola.AgregarTraduccion("hey", "Hey", true);
+		//hola.AgregarIgnorada("tumama", true);
+		System.out.println(hola.TraducirPalabra("hey"));
+		hola.CerrarDiccionario();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		
 	}
 }
