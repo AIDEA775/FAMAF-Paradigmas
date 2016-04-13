@@ -6,20 +6,13 @@ import java.io.IOException;
 public class SalidaArchivo {
 	FileWriter salida;
 
-	SalidaArchivo(String nombre){
-		try {
-			salida = new FileWriter(nombre, true);
-		} catch (IOException e){
-			e.printStackTrace();
-		}
+	SalidaArchivo(String nombre) throws IOException {
+		salida = new FileWriter(nombre, true);
+
 	}
 
-	public void EscribirArchivo(String palabra) {
-		try {
-			salida.write(palabra + "\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void EscribirArchivo(String palabra) throws IOException {
+		salida.write(palabra + "\n");
 	}
 	
 	public void CerrarArchivo() {

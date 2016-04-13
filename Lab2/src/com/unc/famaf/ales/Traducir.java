@@ -2,6 +2,7 @@ package com.unc.famaf.ales;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -15,7 +16,7 @@ public class Traducir {
 	SalidaArchivo ignArchivo;
 	
 
-	Traducir(String dic, String ign, boolean inverso) throws FileNotFoundException {
+	Traducir(String dic, String ign, boolean inverso) throws IOException {
 		this.diccionario = new HashMap<String, String>();
 		this.ignoradas = new HashSet<String>();
 		this.inverso = inverso;
@@ -23,9 +24,9 @@ public class Traducir {
 		this.ignArchivo = new SalidaArchivo(ign);
 
 		// Cargar diccionario
-		Scanner d = new Scanner(new File(dic));
-		while (d.hasNextLine()) {
-			Scanner dicPar = new Scanner(d.nextLine());
+		Scanner sd = new Scanner(new File(dic));
+		while (sd.hasNextLine()) {
+			Scanner dicPar = new Scanner(sd.nextLine());
 			dicPar.useDelimiter(",");
 				String palabra1 = dicPar.next();
 				String palabra2 = dicPar.next();
@@ -35,14 +36,14 @@ public class Traducir {
 				diccionario.put(palabra2, palabra1);
 			dicPar.close();
 		}
-		d.close();
+		sd.close();
 
 		// Cargar ignoradas
-		Scanner i = new Scanner(new File(ign));
-		while (i.hasNext()) {
-			ignoradas.add(i.next());
+		Scanner si = new Scanner(new File(ign));
+		while (si.hasNext()) {
+			ignoradas.add(si.next());
 		}
-		i.close();
+		si.close();
 	}
 
 	public String TraducirPalabra(String palabra) {
@@ -52,7 +53,7 @@ public class Traducir {
 			return this.diccionario.get(palabra);
 	}
 
-	public void AgregarTraduccion(String palabra, String traduccion, boolean guardar) {
+	public void AgregarTraduccion(String palabra, String traduccion, boolean guardar) throws IOException {
 		diccionario.put(palabra, traduccion);
 		if (guardar) {
 			if (!this.inverso)
@@ -62,7 +63,7 @@ public class Traducir {
 		}
 	}
 
-	public void AgregarIgnorada(String palabra, boolean guardar) {
+	public void AgregarIgnorada(String palabra, boolean guardar) throws IOException {
 		ignoradas.add(palabra);
 		if (guardar) {
 			this.ignArchivo.EscribirArchivo(palabra);
@@ -72,20 +73,5 @@ public class Traducir {
 	public void CerrarDiccionario() {
 		this.dicArchivo.CerrarArchivo();
 		this.ignArchivo.CerrarArchivo();
-	}
-	
-	public static void main(String[] args) {
-		Traducir hola;
-		try {
-		hola = new Traducir("/home/aidea775/dic.txt", "/home/aidea775/ign.txt", false);
-		//hola.AgregarTraduccion("hey", "Hey", true);
-		//hola.AgregarIgnorada("tumama", true);
-		System.out.println(hola.TraducirPalabra("hey"));
-		hola.CerrarDiccionario();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		
 	}
 }

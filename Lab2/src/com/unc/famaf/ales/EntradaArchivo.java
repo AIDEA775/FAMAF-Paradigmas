@@ -15,14 +15,14 @@ public class EntradaArchivo {
 		}
 	}
 	
-	public static boolean EsSimbolo(char c) {
+	private boolean EsSimbolo(char c) {
 		String s = "¡?,.?!¿";
 		String aux = "" + c;
 		boolean b = s.contains(aux);
 		return (b);
 	}
 
-	public static String LeerPalabra() throws IOException {
+	public String LeerPalabra() throws IOException {
 		char ch;
 		String palabra = "";
 
