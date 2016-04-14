@@ -20,31 +20,35 @@ public class Traductor {
 		System.out.println(">>> Su opcion: ");
 	}
 
-	private void ParsearOpcion(String palabra) throws IOException {
+	private String ParsearOpcion(String palabra) throws IOException {
 		Scanner s = new Scanner(System.in);
+		String resultado = palabra;
+		reintentar:
 		switch (s.next()) {
 		case "i":
-			System.out.println(">>> Ignorar en este documento...");
+			System.out.println(">>> Ignorar *" + palabra + "* en este documento...");
 			this.traductor.AgregarIgnorada(palabra, false);
 			break;
 		case "h":
-			System.out.println(">>> Ignorar siempre...");
+			System.out.println(">>> Ignorar *" + palabra + "* siempre...");
 			this.traductor.AgregarIgnorada(palabra, true);
 			break;
 		case "t":
-			System.out.print(">>> Traducir " + palabra + " en este documento como: ");
-			this.traductor.AgregarTraduccion(palabra, s.next(), false);
+			System.out.print(">>> Traducir *" + palabra + "* en este documento como: ");
+			resultado = s.next();
+			this.traductor.AgregarTraduccion(palabra, resultado, false);
 			break;
 		case "s":
-			System.out.print(">>> Traducir siempre " + palabra + "como: ");
-			this.traductor.AgregarTraduccion(palabra, s.next(), true);
+			System.out.print(">>> Traducir siempre *" + palabra + "* como: ");
+			resultado = s.next();
+			this.traductor.AgregarTraduccion(palabra, resultado, true);
 			break;
 		default:
-			System.out.println("Lo siento, intente de nuevo: ");
-			this.ParsearOpcion(palabra);
-			break;
+			System.out.print(">>> Lo siento, intente de nuevo: ");
+			break reintentar;
 		}
 		s.close();
+		return resultado;
 	}
 	
 	public void Traduce() throws IOException {
@@ -53,10 +57,9 @@ public class Traductor {
 			palabra = this.traductor.TraducirPalabra(this.fuente.LeerPalabra());
 			if (palabra == null) {
 				this.ImprimirInterfaz(palabra);
-				this.ParsearOpcion(palabra);
-			} else {
-				this.salida.EscribirArchivo(palabra);
+				palabra = this.ParsearOpcion(palabra);
 			}
+			this.salida.EscribirArchivo(palabra);
 		}
 	}
 	
