@@ -8,7 +8,9 @@ public class EntradaArchivo {
 
 	EntradaArchivo(String nombre) throws IOException {
 		entrada = new FileReader(nombre);
-		c = entrada.read();
+		Scanner scanner = new Scanner(entrada);
+		String auxstring = "" + scanner.next();
+		br = new StringBuffer(auxstring); 
 	}
 	
 	private boolean EsSimbolo(char c) {
@@ -18,46 +20,40 @@ public class EntradaArchivo {
 		return (b);
 	}
 
-	public boolean Falta() {
-		return c == '\0';
+	public boolean FinalArchivo() {
+		return scanner.hasNext();
 	}
 	
 	public String LeerPalabra() throws IOException {
-		char ch;
 		String palabra = "";
-
-		while (c != -1) {
-			if ((char) c == ' ' && palabra != "") {
-
-				c = entrada.read();
-				return (palabra);
-
-			} else if (EsSimbolo((char) c) && palabra == "") {
-
-				ch = (char) c;
-				palabra = palabra + ch;
-				c = entrada.read();
-				return (palabra);
-
-			} else if (EsSimbolo((char) c) && palabra != "") {
-
-				return (palabra);
-
-			} else if ((char) c == ' ' || (char) c == '\n') {
-
-				c = entrada.read();
-
-			} else {
-
-				ch = (char) c;
-				palabra = palabra + ch;
-				c = entrada.read();
-
-			}
-			if (c == -1 && palabra != "") {
-				return (palabra);
-			}
+		String signos = "";
+		int n = br.length();
+		if (n == 0) {
+			auxstring = "" + scanner.next();
+			br = br.append(auxstring); 
 		}
-		return palabra;
-	}
+       for (int i = 0; i < n; i++ ) {
+         if (is_symbol(br.charAt(0)) && palabra == "") {
+             auxsignos = auxsignos + br.charAt(0);
+             br.delete(0,1);
+         }else if(!is_symbol(br.charAt(0)) && auxsignos == ""){
+            palabra = palabra + br.charAt(0);
+             br.delete(0,1);
+        }
+        else if(is_symbol(br.charAt(0)) && palabra != ""){
+             return palabra;
+        }else if(!is_symbol(br.charAt(0)) && auxsignos != ""){
+             return auxsignos;
+        }
+    }
+    if (palabra != "") {
+    	return palabra;
+  
+    } else if( auxsignos != ""){
+    	return auxsignos;
+    }
+   }
+}
+
+
 }
