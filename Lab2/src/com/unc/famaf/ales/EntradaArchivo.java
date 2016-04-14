@@ -6,13 +6,9 @@ public class EntradaArchivo {
 	static FileReader entrada = null;
 	static int c;
 
-	EntradaArchivo(String nombre) {
-		try {
-			entrada = new FileReader(nombre);
-			c = entrada.read();
-		} catch (IOException e) {
-			// aca va el cuerpo del catch
-		}
+	EntradaArchivo(String nombre) throws IOException {
+		entrada = new FileReader(nombre);
+		c = entrada.read();
 	}
 	
 	private boolean EsSimbolo(char c) {
@@ -22,6 +18,10 @@ public class EntradaArchivo {
 		return (b);
 	}
 
+	public boolean Falta() {
+		return c == '\0';
+	}
+	
 	public String LeerPalabra() throws IOException {
 		char ch;
 		String palabra = "";

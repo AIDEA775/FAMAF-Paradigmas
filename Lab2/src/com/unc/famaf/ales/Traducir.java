@@ -1,7 +1,6 @@
 package com.unc.famaf.ales;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,8 +19,8 @@ public class Traducir {
 		this.diccionario = new HashMap<String, String>();
 		this.ignoradas = new HashSet<String>();
 		this.inverso = inverso;
-		this.dicArchivo = new SalidaArchivo(dic);
-		this.ignArchivo = new SalidaArchivo(ign);
+		this.dicArchivo = new SalidaArchivo(dic, true);
+		this.ignArchivo = new SalidaArchivo(ign, true);
 
 		// Cargar diccionario
 		Scanner sd = new Scanner(new File(dic));
@@ -70,7 +69,7 @@ public class Traducir {
 		}
 	}
 	
-	public void CerrarDiccionario() {
+	public void CerrarDiccionario() throws IOException {
 		this.dicArchivo.CerrarArchivo();
 		this.ignArchivo.CerrarArchivo();
 	}
