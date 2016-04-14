@@ -15,41 +15,62 @@ public class Traductor {
 	}
 
 	private void ImprimirInterfaz(String palabra) {
-		System.out.println("No encontre la traduccion de " + palabra);
-		System.out.println("Ya sabes las opciones, sinó primero usa la version escrita en C");
+		System.out.println("\n\nIgnorar (i) - Ignorar Todas (h) - Traducir como (t) - Traducir siempre como (s)");
+		System.out.println(">>> No encontre la traduccion de " + palabra);
+		System.out.println(">>> Su opcion: ");
 	}
 
-	private void ParsearOpcion() {
+	private void ParsearOpcion(String palabra) throws IOException {
 		Scanner s = new Scanner(System.in);
 		switch (s.next()) {
-		case "a":
+		case "i":
+			System.out.println(">>> Ignorar en este documento...");
+			this.traductor.AgregarIgnorada(palabra, false);
+			break;
+		case "h":
+			System.out.println(">>> Ignorar siempre...");
+			this.traductor.AgregarIgnorada(palabra, true);
+			break;
+		case "t":
+			System.out.print(">>> Traducir " + palabra + " en este documento como: ");
+			this.traductor.AgregarTraduccion(palabra, s.next(), false);
 			break;
 		case "s":
+			System.out.print(">>> Traducir siempre " + palabra + "como: ");
+			this.traductor.AgregarTraduccion(palabra, s.next(), true);
 			break;
 		default:
+			System.out.println("Lo siento, intente de nuevo: ");
+			this.ParsearOpcion(palabra);
 			break;
 		}
 		s.close();
 	}
 	
-	public void traduce() throws IOException {
+	public void Traduce() throws IOException {
 		String palabra;		
-		while (true) {
+		while (this.fuente.Falta()) {
 			palabra = this.traductor.TraducirPalabra(this.fuente.LeerPalabra());
 			if (palabra == null) {
 				this.ImprimirInterfaz(palabra);
-				this.ParsearOpcion();
+				this.ParsearOpcion(palabra);
 			} else {
 				this.salida.EscribirArchivo(palabra);
 			}
 		}
 	}
+	
+	public void Limpiar() throws IOException {
+		this.salida.CerrarArchivo();
+		this.traductor.CerrarDiccionario();
+	}
 
 	public static void main(String[] args) {
 		Traductor hola;
 		try {
-			hola = new Traductor("/home/aidea775/dic.txt", "/home/aidea775/ign.txt", "/home/aidea/text.txt", "/home/aidea/traduc.txt", false);
-			hola.traduce();
+			hola = new Traductor("dic.txt", "ign.txt", "text.txt", "trad.txt", false);
+			hola.Traduce();
+			hola.Limpiar();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

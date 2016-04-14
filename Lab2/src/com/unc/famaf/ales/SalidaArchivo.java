@@ -7,19 +7,18 @@ public class SalidaArchivo {
 	FileWriter salida;
 
 	SalidaArchivo(String nombre) throws IOException {
-		salida = new FileWriter(nombre, true);
-
+		salida = new FileWriter(nombre);
 	}
 
+	SalidaArchivo(String nombre, boolean agregar) throws IOException {
+		salida = new FileWriter(nombre, agregar);
+	}
+	
 	public void EscribirArchivo(String palabra) throws IOException {
 		salida.write(palabra + "\n");
 	}
 	
-	public void CerrarArchivo() {
-		try {
-			salida.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void CerrarArchivo() throws IOException {
+		salida.close();
 	}
 }
