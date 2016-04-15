@@ -20,6 +20,8 @@ SRC = src/
 # Libraries
 LIB = lib/JSAP-2.1.jar
 
+PACKAGE = com
+
 # Java compiler flags
 JAVAFLAGS = -d $(BIN) -cp $(LIB):$(SRC)
 
@@ -56,13 +58,13 @@ jar:
 	jar cvfm $(BIN)traductor.jar MANIFEST.MF -C $(BIN) $(PACKAGES)
 
 # package without external libraries
+# copy libs to bin
+# changue directory to bin, unpack and remove libs
+# package source code with libs
 pack:
-	# copy libs to bin
 	cp $(LIB) $(BIN)
-	# changue directory to bin, unpack and remove libs
 	cd $(BIN);jar xf *.jar com;rm *.jar
-	# package source code and libs
-	jar cfm $(BIN)traductor.jar MANIFEST.MF -C $(BIN) com
+	jar cfm $(BIN)traductor.jar MANIFEST.MF -C $(BIN) $(PACKAGE)
 
 clean :
 	rm -rf $(BIN)*
