@@ -55,16 +55,16 @@ public class Traducir {
 		diccionario.put(palabra, traduccion);
 		if (guardar) {
 			if (!this.inverso)
-				this.dicArchivo.EscribirArchivo(palabra + "," + traduccion);
+				this.dicArchivo.EscribirArchivo(palabra + "," + traduccion + "\n");
 			else
-				this.dicArchivo.EscribirArchivo(traduccion + "," + palabra);
+				this.dicArchivo.EscribirArchivo(traduccion + "," + palabra + "\n");
 		}
 	}
 
 	public void AgregarIgnorada(String palabra, boolean guardar) throws IOException {
 		ignoradas.add(palabra);
 		if (guardar) {
-			this.ignArchivo.EscribirArchivo(palabra);
+			this.ignArchivo.EscribirArchivo(palabra + "\n");
 		}
 	}
 

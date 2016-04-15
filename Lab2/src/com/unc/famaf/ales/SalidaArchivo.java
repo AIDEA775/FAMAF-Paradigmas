@@ -15,7 +15,7 @@ public class SalidaArchivo {
 	}
 
 	public void EscribirArchivo(String palabra) throws IOException {
-		salida.write(palabra + "\n");
+		salida.write(palabra);
 	}
 
 	public void CerrarArchivo() throws IOException {

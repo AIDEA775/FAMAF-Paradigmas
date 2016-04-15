@@ -19,6 +19,10 @@ public class EntradaArchivo {
 		return !s.matches("[\\p{L}]");
 	}
 
+	public static boolean EsLetras(String s) {
+		return s.matches("[\\p{L}]");
+	}
+	
 	public boolean Falta() {
 		return scanner.hasNext() || br.length() != 0;
 	}
@@ -38,7 +42,7 @@ public class EntradaArchivo {
 			palabra += br.charAt(i);
 		}
 		br.delete(0, i);
-		return palabra;
+		return palabra.toLowerCase();
 	}
 
 	public void CerrarArchivo() throws IOException {

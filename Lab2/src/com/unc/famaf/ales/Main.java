@@ -68,6 +68,7 @@ public class Main {
                                         config.getString("entrada"), config.getString("salida"),
                                         config.getBoolean("reversa"));
             traductor.Traduce();
+            traductor.Limpiar();
         }catch(IOException e){
             e.printStackTrace();
         }
