@@ -13,11 +13,11 @@ public class SalidaArchivo {
 	SalidaArchivo(String nombre, boolean agregar) throws IOException {
 		salida = new FileWriter(nombre, agregar);
 	}
-	
+
 	public void EscribirArchivo(String palabra) throws IOException {
 		salida.write(palabra + "\n");
 	}
-	
+
 	public void CerrarArchivo() throws IOException {
 		salida.close();
 	}
