@@ -75,3 +75,6 @@ Para compilar a un .jar con la librería incluida:
 
 `$ make`  
 `$ make pack`
+
+
+### Como siempre, agregamos un texto muy interesante de ejemplo y uno de prueba. Disfrute la lectura
