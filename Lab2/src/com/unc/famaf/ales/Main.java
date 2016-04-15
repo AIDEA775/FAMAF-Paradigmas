@@ -54,7 +54,8 @@ public class Main {
         }
 
         try{
-            traductor = new Traductor(config.getString("diccionario"), config.getString("ignoradas"), config.getString("reversa"))
+            traductor = new Traductor(config.getString("diccionario"), config.getString("ignoradas"), config.getString("entrada") ,config.getString("reversa"))
+            traductor.Traduce();
         }catch(IOException e){
             e.printStackTrace();
         }
