@@ -25,29 +25,34 @@ public class Traductor {
 	private String ParsearOpcion(String palabra) throws IOException {
 		Scanner s = new Scanner(System.in);
 		String resultado = palabra;
-		reintentar: switch (s.next()) {
-		case "i":
-			System.out.println(String.format(">>> Ignorar *%s* en este documento...", palabra));
-			this.traductor.AgregarIgnorada(palabra, false);
-			break;
-		case "h":
-			System.out.println(String.format(">>> Ignorar *%s* siempre...", palabra));
-			this.traductor.AgregarIgnorada(palabra, true);
-			break;
-		case "t":
-			System.out.print(String.format(">>> Traducir *%s* en este documento como: ", palabra));
-			resultado = s.next();
-			this.traductor.AgregarTraduccion(palabra, resultado, false);
-			break;
-		case "s":
-			System.out.print(String.format(">>> Traducir siempre *%s* como: ", palabra));
-			resultado = s.next();
-			this.traductor.AgregarTraduccion(palabra, resultado, true);
-			break;
-		default:
-			System.out.print(">>> Lo siento, intente de nuevo: ");
-			break reintentar;
-		}
+		boolean reintentar;
+		do {
+			reintentar = false;
+			switch (s.next()) {
+			case "i":
+				System.out.println(String.format(">>> Ignorar *%s* en este documento...", palabra));
+				this.traductor.AgregarIgnorada(palabra, false);
+				break;
+			case "h":
+				System.out.println(String.format(">>> Ignorar *%s* siempre...", palabra));
+				this.traductor.AgregarIgnorada(palabra, true);
+				break;
+			case "t":
+				System.out.print(String.format(">>> Traducir *%s* en este documento como: ", palabra));
+				resultado = s.next();
+				this.traductor.AgregarTraduccion(palabra, resultado, false);
+				break;
+			case "s":
+				System.out.print(String.format(">>> Traducir siempre *%s* como: ", palabra));
+				resultado = s.next();
+				this.traductor.AgregarTraduccion(palabra, resultado, true);
+				break;
+			default:
+				System.out.print(">>> Lo siento, intente de nuevo: ");
+				reintentar = true;
+				break;
+			}
+		} while (reintentar);
 		s.close();
 		return resultado;
 	}
