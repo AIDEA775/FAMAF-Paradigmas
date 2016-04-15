@@ -4,57 +4,45 @@ import java.io.*;
 import java.util.Scanner;
 
 public class EntradaArchivo {
-	static FileReader entrada = null;
-	static int c;
+	FileReader entrada;
 	Scanner scanner;
 	StringBuffer br;
-	String lectura;
 
 	EntradaArchivo(String nombre) throws IOException {
 		entrada = new FileReader(nombre);
 		scanner = new Scanner(entrada);
-		String lectura = "" + scanner.next();
-		br = new StringBuffer(lectura);
+		br = new StringBuffer(scanner.next());
 	}
 
 	private boolean EsSimbolo(char c) {
-		String s = "¡?,.?!¿;:{}]['|/#()=_-%$#";
-		String aux = "" + c;
-		boolean b = s.contains(aux);
-		return (b);
+		String s = "" + c;
+		return !s.matches("[\\p{L}]");
 	}
 
 	public boolean Falta() {
-		return scanner.hasNext();
+		return scanner.hasNext() || br.length() != 0;
 	}
 
 	public String LeerPalabra() throws IOException {
 		String palabra = "";
-		String signos = "";
+		boolean tipo;
+
 		int n = br.length();
 		if (n == 0) {
-			lectura = "" + scanner.next();
-			br = br.append(lectura);
+			br.append(scanner.next());
+			n = br.length();
 		}
-		for (int i = 0; i < n; i++) {
-			if (EsSimbolo(br.charAt(0)) && palabra == "") {
-				signos = signos + br.charAt(0);
-				br.delete(0, 1);
-			} else if (!EsSimbolo(br.charAt(0)) && signos == "") {
-				palabra = palabra + br.charAt(0);
-				br.delete(0, 1);
-			} else if (EsSimbolo(br.charAt(0)) && palabra != "") {
-				return palabra;
-			} else if (!EsSimbolo(br.charAt(0)) && signos != "") {
-				return signos;
-			}
+		tipo = EsSimbolo(br.charAt(0));
+		int i;
+		for (i = 0; i < n && (tipo == EsSimbolo(br.charAt(i))); i++) {
+			palabra += br.charAt(i);
 		}
-		if (palabra != "") {
-			return palabra;
+		br.delete(0, i);
+		return palabra;
+	}
 
-		} else if (signos != "") {
-			return signos;
-		}
-		return "";
+	public void CerrarArchivo() throws IOException {
+		this.scanner.close();
+		this.entrada.close();
 	}
 }
