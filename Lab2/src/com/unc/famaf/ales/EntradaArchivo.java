@@ -16,13 +16,9 @@ public class EntradaArchivo {
 
 	private boolean EsSimbolo(char c) {
 		String s = "" + c;
-		return !s.matches("[\\p{L}]");
+		return !s.matches("[\\p{L}]+");
 	}
 
-	public static boolean EsLetras(String s) {
-		return s.matches("[\\p{L}]");
-	}
-	
 	public boolean Falta() {
 		return scanner.hasNext() || br.length() != 0;
 	}
