@@ -61,7 +61,6 @@ public class Traductor {
 		while (this.fuente.Falta()) {
 			palabra = this.fuente.LeerPalabra();
 			if (palabra.matches("[\\p{L}]+")) {
-				System.out.println("es letra");
 				traduccion = traductor.TraducirPalabra(palabra);
 				if (traduccion == null)
 					traduccion = this.ParsearOpcion(palabra);
