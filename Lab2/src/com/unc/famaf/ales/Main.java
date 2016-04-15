@@ -23,7 +23,7 @@ public class Main {
                                  .setStringParser(JSAP.STRING_PARSER)
                                  .setDefault("ignoradas.txt")
                                  .setRequired(false)
-                                 .setShortFlag('i');
+                                 .setShortFlag('g');
 
         opt2.setHelp("Ingrese un diccionario de palabras ignoradas");
         jsap.registerParameter(opt2);
@@ -31,18 +31,18 @@ public class Main {
         FlaggedOption opt3 = new FlaggedOption("entrada")
                                 .setStringParser(JSAP.STRING_PARSER)
                                 .setRequired(true)
-                                .setShortFlag('e');
+                                .setShortFlag('i');
 
         opt3.setHelp("Ingrese un archivo a traducir existente");
         jsap.registerParameter(opt3);
 
         FlaggedOption opt4 = new FlaggedOption("salida")
                                  .setStringParser(JSAP.STRING_PARSER)
-                                 .setDefault("salida.txt")
+                                 .setDefault("traducido.txt")
                                  .setRequired(false)
-                                 .setShortFlag('i');
+                                 .setShortFlag('o');
 
-        opt4.setHelp("Traducir de ingles a español");
+        opt4.setHelp("Archivo de salida");
         jsap.registerParameter(opt4);
 
         Switch opt5 = new Switch("reversa")
@@ -64,9 +64,9 @@ public class Main {
         }
 
         try{
-            traductor = new Traductor(config.getString("diccionario"), config.getString("ignoradas"), 
-                                        config.getString("entrada"), config.getString("salida"), 
-                                        config.getString("reversa"));
+            traductor = new Traductor(config.getString("diccionario"), config.getString("ignoradas"),
+                                        config.getString("entrada"), config.getString("salida"),
+                                        config.getBoolean("reversa"));
             traductor.Traduce();
         }catch(IOException e){
             e.printStackTrace();
