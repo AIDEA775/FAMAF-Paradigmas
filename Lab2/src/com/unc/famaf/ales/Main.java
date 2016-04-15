@@ -1,5 +1,7 @@
 package com.unc.famaf.ales;
 
+import java.io.IOException;
+
 import com.martiansoftware.jsap.*;
 
 public class Main {
@@ -34,12 +36,20 @@ public class Main {
         opt3.setHelp("Ingrese un archivo a traducir existente");
         jsap.registerParameter(opt3);
 
-
-        Switch opt4 = new Switch("reversa")
-                        .setShortFlag('r');
+        FlaggedOption opt4 = new FlaggedOption("salida")
+                                 .setStringParser(JSAP.STRING_PARSER)
+                                 .setDefault("salida.txt")
+                                 .setRequired(false)
+                                 .setShortFlag('i');
 
         opt4.setHelp("Traducir de ingles a español");
-        jsap.registerParameter(opt4); 
+        jsap.registerParameter(opt4);
+
+        Switch opt5 = new Switch("reversa")
+                        .setShortFlag('r');
+
+        opt5.setHelp("Traducir de ingles a español");
+        jsap.registerParameter(opt5); 
 
         JSAPResult config = jsap.parse(args);    
  
@@ -54,7 +64,9 @@ public class Main {
         }
 
         try{
-            traductor = new Traductor(config.getString("diccionario"), config.getString("ignoradas"), config.getString("entrada") ,config.getString("reversa"))
+            traductor = new Traductor(config.getString("diccionario"), config.getString("ignoradas"), 
+                                        config.getString("entrada"), config.getString("salida"), 
+                                        config.getString("reversa"));
             traductor.Traduce();
         }catch(IOException e){
             e.printStackTrace();
