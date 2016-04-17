@@ -1,73 +1,77 @@
 package com.unc.famaf.ales;
 
+import java.io.IOException;
+
 import com.martiansoftware.jsap.*;
 
 public class Main {
 
-	 public static void main(String[] args) throws Exception {
-	        JSAP jsap = new JSAP();
-	        
-	        FlaggedOption opt1 = new FlaggedOption("count")
-	                                .setStringParser(JSAP.INTEGER_PARSER)
-	                                .setDefault("1") 
-	                                .setRequired(true) 
-	                                .setShortFlag('n') 
-	                                .setLongFlag(JSAP.NO_LONGFLAG);
+    public static void main(String[] args) throws Exception {
+        JSAP jsap = new JSAP();
+        Traductor traductor;
+        
+        FlaggedOption opt1 = new FlaggedOption("diccionario")
+                                .setStringParser(JSAP.STRING_PARSER)
+                                .setDefault("diccionario.txt") 
+                                .setRequired(false) 
+                                .setShortFlag('d'); 
 
-	        opt1.setHelp("The number of times to say hello.");
-	        jsap.registerParameter(opt1);
-	        
-	        Switch sw1 = new Switch("verbose")
-	                        .setShortFlag('v')
-	                        .setLongFlag("verbose");
-	        
-	        sw1.setHelp("Requests verbose output.");
-	        jsap.registerParameter(sw1);
-	        
-	        UnflaggedOption opt2 = new UnflaggedOption("name")
-	                                .setStringParser(JSAP.STRING_PARSER)
-	                                .setDefault("World")
-	                                .setRequired(true)
-	                                .setGreedy(true);
-	        
-	        opt2.setHelp("One or more names of people you would like to greet.");
-	        jsap.registerParameter(opt2);
-	        
-	        JSAPResult config = jsap.parse(args);    
+        opt1.setHelp("Ingrese un diccionario");
+        jsap.registerParameter(opt1);
+        
+        FlaggedOption opt2 = new FlaggedOption("ignoradas")
+                                 .setStringParser(JSAP.STRING_PARSER)
+                                 .setDefault("ignoradas.txt")
+                                 .setRequired(false)
+                                 .setShortFlag('g');
 
-	        if (!config.success()) {
-	            
-	            System.err.println();
+        opt2.setHelp("Ingrese un diccionario de palabras ignoradas");
+        jsap.registerParameter(opt2);
 
-	            // print out specific error messages describing the problems
-	            // with the command line, THEN print usage, THEN print full
-	            // help.  This is called "beating the user with a clue stick."
-	            for (java.util.Iterator errs = config.getErrorMessageIterator();
-	                    errs.hasNext();) {
-	                System.err.println("Error: " + errs.next());
-	            }
-	            
-	            System.err.println();
-	            System.err.println("Usage: java "
-	                                + Main.class.getName());
-	            System.err.println("                "
-	                                + jsap.getUsage());
-	            System.err.println();
-	            System.err.println(jsap.getHelp());
-	            System.exit(1);
-	        }
-	        
-	        String[] names = config.getStringArray("name");
-	        for (int i = 0; i < config.getInt("count"); ++i) {
-	            for (int j = 0; j < names.length; ++j) {
-	                System.out.println((config.getBoolean("verbose") ? "Hello" : "Hi")
-	                                + ", "
-	                                + names[j]
-	                                + "!");
-	            }
-	        }
-	        
-	        // traductor.run(archivo archivo)
-	    }
+        FlaggedOption opt3 = new FlaggedOption("entrada")
+                                .setStringParser(JSAP.STRING_PARSER)
+                                .setRequired(true)
+                                .setShortFlag('i');
 
+        opt3.setHelp("Ingrese un archivo a traducir existente");
+        jsap.registerParameter(opt3);
+
+        FlaggedOption opt4 = new FlaggedOption("salida")
+                                 .setStringParser(JSAP.STRING_PARSER)
+                                 .setDefault("traducido.txt")
+                                 .setRequired(false)
+                                 .setShortFlag('o');
+
+        opt4.setHelp("Archivo de salida");
+        jsap.registerParameter(opt4);
+
+        Switch opt5 = new Switch("reversa")
+                        .setShortFlag('r');
+
+        opt5.setHelp("Traducir de ingles a español");
+        jsap.registerParameter(opt5); 
+
+        JSAPResult config = jsap.parse(args);    
+ 
+        if (!config.success()) {
+            System.err.println();
+            System.err.println("Usage: java ");
+            System.err.println("                " + jsap.getUsage());
+            System.err.println();
+            //imprime la ayuda de todas las opciones
+            System.err.println(jsap.getHelp());
+            System.exit(1);
+        }
+
+        try{
+            traductor = new Traductor(config.getString("diccionario"), config.getString("ignoradas"),
+                                        config.getString("entrada"), config.getString("salida"),
+                                        config.getBoolean("reversa"));
+            traductor.Traduce();
+            traductor.Limpiar();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+    }
 }
