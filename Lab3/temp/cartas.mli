@@ -4,6 +4,8 @@ type carta
 (*Una lista de tipo carta*)
 type cartas
 
+val cartas_mazo : cartas
+
 val cartas_nueva : unit -> cartas
 
 val cartas_agregar : cartas -> carta -> cartas
