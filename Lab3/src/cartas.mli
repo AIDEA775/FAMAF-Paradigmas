@@ -7,7 +7,7 @@ type carta
   con (a) jugador deberia generar su mazo
   con (b) deberia pasarte el mazo general para que saques cartas de ahí
   decidí *)
-val crear_mazo : unit -> cartas
+val crear_mazo : cartas -> cartas
 
 (* devuelve el mazo entero mezclado //*)
 val mazo_completo : unit -> cartas
