@@ -9,7 +9,7 @@ type carta
   decidí *)
 val crear_mazo : unit -> cartas
 
-(* devuelve el mazo entero mezclado *)
+(* devuelve el mazo entero mezclado //*)
 val mazo_completo : unit -> cartas
 
 (* devuelve la carta segun un string *)
@@ -20,18 +20,14 @@ val string_a_carta : string -> carta
 val sacar_cartas : cartas -> cartas -> cartas
 
 (* si pone las cartas al ultimo no seria necesario "poner_ultimo"
-  mazo -> cartas a poner -> resultado *)
+  mazo -> cartas a poner -> resultado //*)
 val poner_cartas : cartas -> cartas -> cartas
 
-(* pone una carta al final del mazo
-   mazo -> carta a poner -> resultado *)
-val poner_ultimo : cartas -> carta -> cartas
-
-(* devuelve la primera carta del mazo *)
+(* devuelve la primera carta del mazo //*)
 val primer_carta : cartas -> carta
 
 (* imprimir por std las cartas separadas por un espacio *)
-val imprimir_mazo : cartas -> unit
+val imprimir_mazo : cartas -> string
 
 (* devuelve la carta mas grande *)
 val carta_maxima : cartas -> carta
@@ -41,3 +37,6 @@ val carta_minima : cartas -> carta
 
 (* devuelve las cartas que son pares *)
 val cartas_pares : cartas -> cartas
+
+val cartas_cantidad : cartas -> int
+
