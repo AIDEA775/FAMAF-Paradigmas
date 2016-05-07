@@ -8,16 +8,17 @@ val crear_jugador : string -> cartas -> jugador
 (* devuelve puntos *)
 val jugador_puntos : jugador -> int
 
+(* devuelve el nombre *)
+val jugador_nombre : jugador -> string
+
 (* devuelve el mismo jugador pero con un punto más *)
 val jugador_suma_punto : jugador -> jugador
 
 (* imprime por stdout "<Nombre>: <Carta Jugada>" *)
 val jugador_imprimir_ronda : jugador -> unit
 
-(* imprime por stdout "<Nombre>(<Puntos>): <Cartas disponibles>" *)
-val jugador_imprimir_estado : jugador -> unit
-
 (* en realidad, hace muchas cosas
+    imprime su estado y la pregunta
     lee la stdin la opcion del usuario
     se fija si es una carta valida
     si no es así vuelve a empezar

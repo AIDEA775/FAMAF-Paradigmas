@@ -24,48 +24,38 @@ let jugar_ronda (m : mesa) : mesa =
   let rec jugar (js : jugador list) (cs : cartas) : jugador list * cartas =
     match js with
     | [] -> ([], cs)
-    | x::xs ->  let nuevo_j, cs = jugador_juega x cs in
+    | x::xs ->  let open Printf in
+                printf "Mazo: %d cartas\nRonda:\n" (cartas_cantidad cs);
+                List.iter jugador_imprimir_ronda m.jugadores;
+                let nuevo_j, cs = jugador_juega x cs in
                 let nuevos_js, cs = jugar xs cs in
                 (nuevo_j :: nuevos_js, cs)
   in
   let js, c = jugar m.jugadores m.mazo in
   {m with jugadores = js; mazo = c};;
 
-let ganador_ronda (m : mesa) : mesa * jugador =
-  (* crear lista de cartas jugadas *)
-  let rec cartas_jugadas (js : jugador list) : cartas =
-    match js with
-    | [] -> []
-    | x::xs -> (jugador_carta_jugada x) :: cartas_jugadas xs
+let ganador_ronda (m : mesa) : mesa =
+  (* imprimir que js ganó la ronda*)
+  let ganador (j : jugador) : jugador =
+    let open Printf in
+    printf "El jugador %s gano la ronda." jugador_nombre j;
+    jugador_suma_punto j
   in
-  (* devuelve el jugador que jugó esa carta*)
-  let rec buscar_jugador (js : jugador list) (carta : carta) : jugador =
+  (* actualiza los jugadores sumando un punto al que jugó c y lo imprime*)
+  let rec actualizar (js : jugador list) (c : carta) : jugador list =
     match js with
-    | [x] -> x (* tiene que ser *)
-    | x::xs -> if (jugador_carta_jugada x) = carta then x else buscar_jugador xs carta
+    | [x] -> ganador x (*tiene que ser*)
+    | x::xs -> if jugador_carta_jugada x = j then (ganador x) :: xs else x :: (actualizar xs j)
   in
-  (* actualiza los jugadores sumando un punto a j*)
-  let rec actualizar (js : jugador list) (j : jugador) : jugador list =
-    match js with
-    | [x] -> jugador_suma_punto x (*tiene que ser*)
-    | x::xs -> if x = j then (jugador_suma_punto x) :: xs else x :: (actualizar js j)
-  in
-  let carta = carta_maxima (cartas_jugadas m.jugadores) in
-  let j = buscar_jugador m.jugadores carta in
-  ({m with jugadores = actualizar m.jugadores j}, (jugador_suma_punto j));;
+  let carta = carta_maxima(List.map jugador_carta_jugada m.jugadores) in
+  {m with jugadores = actualizar m.jugadores c};;
 
 let limpiar_mesa (m : mesa) : mesa =
-  (*quitar carta jugada*)
-  let rec limpiar (js : jugador list) : jugador list =
-    match js with
-    | [] -> []
-    | x::xs -> (jugador_limpiar_carta x) :: limpiar xs
-  in
-  {m with jugadores = limpiar m.jugadores};;
+  {m with jugadores = List.map jugador_limpiar_carta  m.jugadores};;
 
 let cantidad_jugadores (m : mesa) : int =
   (*contar la cantidad de jugadores jugando*)
-  let rec contar (js : jugadores list) : int =
+  let rec contar (js : jugador list) : int =
     match js with
     | [] -> 0
     | x::xs -> if jugador_quedan_cartas x then 1 + contar xs else contar xs

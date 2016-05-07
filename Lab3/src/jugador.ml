@@ -15,11 +15,13 @@ let jugador_imprimir_ronda (j : jugador) : unit =
   let open Printf in
   if j.mano != None then printf "%s: %s\n" (j.nombre) (imprimir_mazo [j.carta]);;
 
-let jugador_imprimir_estado (j : jugador) : unit =
-  let open Printf in
-  printf "%s(%d): %s\n" (j.nombre) (j.puntos) (imprimir_mazo [j.mazo]);;
-
 let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
+  (* imprime por stdout "<Nombre>(<Puntos>): <Cartas disponibles>/n<Pregunta>" *)
+  let imprimir_estado unit : unit =
+    let open Printf in
+    printf "%s(%d): %s\nQue carta vas a jugar Ti? " (j.nombre) (j.puntos) (imprimir_mazo j.mazo)
+  in
+  imprimir_estado();
   let s = leer_palabra() in
   let c = string_a_carta j.mazo c in
   (* sacar carta del mazo cs y guardar en el mazo del jugador
