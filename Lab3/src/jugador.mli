@@ -11,13 +11,19 @@ val jugador_puntos : jugador -> int
 (* devuelve el mismo jugador pero con un punto más *)
 val jugador_suma_punto : jugador -> jugador
 
-(* imprime por std "<Nombre>: <Carta Jugada>" *)
+(* imprime por stdout "<Nombre>: <Carta Jugada>" *)
 val jugador_imprimir_ronda : jugador -> unit
 
-(* imprime por std "<Nombre>(<Puntos>): <Cartas disponibles>" *)
+(* imprime por stdout "<Nombre>(<Puntos>): <Cartas disponibles>" *)
 val jugador_imprimir_estado : jugador -> unit
 
-(* en realidad, hace muchas cosas*)
+(* en realidad, hace muchas cosas
+    lee la stdin la opcion del usuario
+    se fija si es una carta valida
+    si no es así vuelve a empezar
+    si es valida, se fija la clase de carta
+    si es comun la pone en la mano, la quita de su mazo, y devuelve el jugador y el nuevo mazo general
+    si es especial, se fija que hace, lo hace, y vuelve a empezar*)
 val jugador_juega : jugador -> cartas -> jugador * cartas
 
 (* llamar solo despues de haber jugado una ronda *)
