@@ -12,8 +12,9 @@ val crear_mazo : unit -> cartas
 (* devuelve el mazo entero mezclado //*)
 val mazo_completo : unit -> cartas
 
-(* devuelve la carta segun un string *)
-val string_a_carta : string -> carta
+(* devuelve la carta segun un string
+    si es invalida o no se encuentra en cartas devuelve None o lo que sea *)
+val string_a_carta : cartas -> string -> carta
 
 (* saca cartas de un mazo y devuelve el mazo restante
   mazo -> cartas a sacar -> resultado *)
@@ -39,4 +40,3 @@ val carta_minima : cartas -> carta
 val cartas_pares : cartas -> cartas
 
 val cartas_cantidad : cartas -> int
-
