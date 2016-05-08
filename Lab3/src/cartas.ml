@@ -43,9 +43,41 @@ let rec mazo_completo unit =
     aux [] mazo (List.length mazo)
 ;;
 
-let string_a_carta cartas string carta =
-  
+(*funciones auxiliares para string_a_carta in_of_string()*)
+  let rec string_a_lista carta = match carta with
+    | "" -> []
+    | carta -> (String.get carta 0 ) :: (list_car (String.sub carta 1 ( (String.length carta)-1) ) )
+;;
 
+let list_a_string cl = String.concat "" (List.map (String.make 1) cl) ;;
+
+let convertirla lista = 
+  let carta = split lista 1 in
+  let tipo,numero = carta in
+  let tipo = list_a_string(tipo) in
+  let numero = int_of_string(list_a_string(numero)) in
+  let carta = tipo,numero in
+  carta
+;;
+
+let cartas_iguales carta1 carta2 =
+  let x,y = carta1 in
+  let w,z = carta2 in
+  let rbool = x = w && y = z in
+  rbool
+;;
+
+let rec la_carta_esta cartas carta =
+  match cartas with
+  |[]  -> false
+  | x :: cartas -> cartas_iguales x carta  || la_carta_esta cartas carta
+;;
+
+let string_a_carta cartas carta =
+  let lista = string_a_lista carta in
+  let cartaaux = convertirla(lista) in
+  (*nose que poner acaaa!!!! :S !!!!!!!! por todo tira bardo*)
+  cartaaux
 ;;
 
 (*auxiliar para sacar carta*)
@@ -73,11 +105,20 @@ let primer_carta cartas =
    | [] -> raise Not_found
    | h :: cartas -> h
 ;;
-
-let rec imprimir_mazo cartas =  
-  let carta_a_string carta =
-
+(* auxiliar para imprimir*)
+let convertir_carta_a_string carta =
+  let x,y = carta in 
+  let y = string_of_int y in
+  let str = x^y in
+  str
 ;;
+
+let rec imprimir_mazo cartas = 
+  match cartas with
+  | [] -> ""
+  | x :: cartas -> convertir_carta_a_string x ^ " " ^ imprimir_mazo cartas
+;;
+
 (*auxiliar para carta_maxima y carta_minima (compara -> carta1 < carta2) *)
 let comparar_carta carta1 carta2 = 
   let x,y = carta1 in
@@ -91,7 +132,7 @@ let comparar_carta carta1 carta2 =
 
 let rec carta_maxima cartas =
    match cartas with
-   |h :: [] -> h
+   | h :: [] -> h
    | h :: cartas ->
    let aux = carta_maxima cartas in
    if comparar_carta h aux then aux else h
@@ -122,16 +163,10 @@ let rec cartas_pares cartas =
    if carta_par x then x :: nuevalista else cartas
 ;;
 
-
 let rec cartas_cantidad cartas =
   match cartas with
   | [] -> 0
   | x :: cartas -> 1 + cartas_cantidad cartas
-;;
-
-(*funciones auxiliares para cartas*)
-let es_especial carta =
-
 ;;
 
 
