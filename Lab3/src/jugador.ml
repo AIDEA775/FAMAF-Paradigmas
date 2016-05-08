@@ -59,7 +59,7 @@ let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
     | "STOP" -> expr2
     | "SPAR" -> expr2;*)
 
-let jugador_carta_jugada (j : jugador) : cartas = j.mano;;
+let jugador_carta_jugada (j : jugador) : carta = primer_carta j.mano;;
 
 let jugador_quedan_cartas (j : jugador) : bool = cartas_cantidad j.mazo != 0;;
 

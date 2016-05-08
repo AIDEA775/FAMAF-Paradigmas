@@ -50,7 +50,7 @@ let ganador_ronda (m : mesa) : mesa =
     | x::xs -> if jugador_carta_jugada x = mazo c then (ganador x) :: xs else x :: (actualizar xs c)
   in
   let cs = List.map jugador_carta_jugada m.jugadores in
-  let c = carta_maxima(cs) in
+  let c = carta_maxima(mazo_lista cs) in
   {m with jugadores = actualizar m.jugadores c};;
 
 let limpiar_mesa (m : mesa) : mesa =

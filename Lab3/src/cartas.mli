@@ -12,6 +12,8 @@ val crear_mazo : cartas -> cartas
 (*ja!*)
 val mazo : carta -> cartas
 
+val mazo_lista : carta list -> cartas
+
 (* je *)
 val mazo_vacio : unit -> cartas
 

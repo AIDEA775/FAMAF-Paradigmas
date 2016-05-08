@@ -22,6 +22,8 @@ let crear_mazo mazo =
 
 let mazo (c : carta) : cartas = [c];;
 
+let mazo_lista (c : carta list) : cartas = c;;
+
 let mazo_vacio unit : cartas = [];;
 
 let rec mazo_completo unit =

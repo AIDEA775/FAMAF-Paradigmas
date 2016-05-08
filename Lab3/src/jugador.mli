@@ -30,7 +30,7 @@ val jugador_imprimir_ronda : jugador -> unit
 val jugador_juega : jugador -> cartas -> jugador * cartas
 
 (* llamar solo despues de haber jugado una ronda *)
-val jugador_carta_jugada : jugador -> cartas
+val jugador_carta_jugada : jugador -> carta
 
 (* false si ya no le quedan cartas *)
 val jugador_quedan_cartas : jugador -> bool
