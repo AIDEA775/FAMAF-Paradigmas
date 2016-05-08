@@ -15,7 +15,7 @@ let jugador_suma_punto (j : jugador) : jugador = {j with puntos = j.puntos + 1};
 
 let jugador_imprimir_ronda (j : jugador) : unit =
   let open Printf in
-  if j.mano != mazo_vacio() then printf "%s: %s\n" (j.nombre) (imprimir_mazo j.mano);;
+  if j.mano != mazo_vacio() then printf "    %s  %s\n" (j.nombre) (imprimir_mazo j.mano);;
 
 let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
   (* imprime por stdout "<Nombre>(<Puntos>): <Cartas disponibles>/n<Pregunta>" *)
