@@ -14,9 +14,9 @@ let crear_mazo (m : cartas) : cartas =
     | 0 -> []
     | _ ->  match cs with
             | [] -> []
-            | x::xs -> x :: tomar xs i-1
+            | x::xs -> x :: tomar xs (i-1)
   in
-  tomar cs 7;;
+  tomar m 7;;
 
 let mazo_completo unit : cartas = [("E",1);("E",2);("E",3);("E",4);("E",5);("E",6);("E",7);("E",8);("E",9)
                                   ;("E",10);("E",11);("E",12);("B",1);("B",2);("B",3);("B",4);("B",5)
@@ -72,7 +72,13 @@ let rec la_carta_esta cartas carta =
   | x :: cartas -> cartas_iguales x carta  || la_carta_esta cartas carta
 ;;
 
-let carta_of_string (cs : cartas) (c : string) : carta =
+let carta_of_string (cs : cartas) (s : string) : carta option =
+  if String.length s < 2 then None
+  else
+    begin
+      (* estoy con esta *)
+    end
+
   let lista = string_a_lista c in
   let cartaaux = convertirla(lista) in
   (*nose que poner acaaa!!!! :S !!!!!!!! por todo tira bardo*)
@@ -81,7 +87,7 @@ let carta_of_string (cs : cartas) (c : string) : carta =
 
 
 let string_of_carta (c : carta) : string =
-  let x, y = carta in
+  let x, y = c in
   let y = string_of_int y in
   x ^ y;;
 

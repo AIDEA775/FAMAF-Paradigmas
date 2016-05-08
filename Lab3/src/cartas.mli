@@ -31,7 +31,7 @@ val poner_cartas : cartas -> cartas -> cartas
 
 
 (* devuelve la primera carta del mazo *)
-val primer_carta : cartas -> carta option
+val primera_carta : cartas -> carta option
 
 (* devuelve la carta mas grande *)
 val carta_maxima : cartas -> carta
