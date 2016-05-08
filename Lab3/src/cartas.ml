@@ -20,6 +20,10 @@ let crear_mazo mazo =
   let tu = split mazo 7 in
   fst tu;;
 
+let mazo (c : carta) : cartas = [c];;
+
+let mazo_vacio unit : cartas = [];;
+
 let rec mazo_completo unit =
     let rec extraer acc n = function
       | [] -> raise Not_found

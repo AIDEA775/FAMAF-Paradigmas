@@ -1,19 +1,19 @@
 open Cartas
 open Varios
 
-type jugador = {nombre : string; puntos : int; mano : carta; mazo : cartas};;
+type jugador = {nombre : string; puntos : int; mano : cartas; mazo : cartas};;
 
 let crear_jugador (n : string) (c : cartas) : jugador * cartas =
   let m = crear_mazo c in
-  ({nombre=n ; mano=None; mazo=m}, (sacar_cartas c m));;
+  ({nombre = n ; puntos = 0; mano = mazo_vacio(); mazo = m}, (sacar_cartas c m));;
 
 let jugador_puntos (j : jugador) : int = j.puntos;;
 
-let jugador_suma_punto (j : jugador) : jugador = {j with puntos=j.puntos+1};;
+let jugador_suma_punto (j : jugador) : jugador = {j with puntos = j.puntos + 1};;
 
 let jugador_imprimir_ronda (j : jugador) : unit =
   let open Printf in
-  if j.mano != None then printf "%s: %s\n" (j.nombre) (imprimir_mazo [j.carta]);;
+  if j.mano != mazo_vacio() then printf "%s: %s\n" (j.nombre) (imprimir_mazo j.mano);;
 
 let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
   (* imprime por stdout "<Nombre>(<Puntos>): <Cartas disponibles>/n<Pregunta>" *)
@@ -23,21 +23,21 @@ let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
   in
   imprimir_estado();
   let s = leer_palabra() in
-  let c = string_a_carta j.mazo c in
+  let c = string_a_carta j.mazo s in
   (* sacar carta del mazo cs y guardar en el mazo del jugador
       mazo general -> mazo del jugador -> general * jugador *)
   let robar (cs : cartas) (m : cartas): cartas * cartas =
     let c = primer_carta cs in (* ver carta del mazo general *)
-    let cs = sacar_cartas cs [c] in (* quitar la carta del mazo genera*)
-    let m = poner_cartas m [c] in (* guardarla en el mazo del jugador *)
+    let cs = sacar_cartas cs (mazo c) in (* quitar la carta del mazo genera*)
+    let m = poner_cartas m (mazo c) in (* guardarla en el mazo del jugador *)
     (cs, m)
   in
   let jugar_comun (j : jugador) (cs : cartas) : jugador * cartas =
-    let m = sacar_cartas j.mazo [c] in (* tirar carta *)
+    let m = sacar_cartas j.mazo (mazo c) in (* tirar carta *)
     let cs, m = robar cs m in (* levantar del mazo general *)
-    ({j with mano = c; mazo = m}, cs)
+    ({j with mano = (mazo c); mazo = m}, cs)
   in
-  if c = [] then
+  if c = mazo_vacio() then
     jugador_juega j cs
   else jugar_comun();;
 
@@ -61,4 +61,4 @@ let jugador_carta_jugada (j : jugador) : carta = j.mano;;
 
 let jugador_quedan_cartas (j : jugador) : bool = cartas_cantidad j.mazo != 0;;
 
-let jugador_limpiar_carta (j : jugador) : jugador = {j with mano=[]};;
+let jugador_limpiar_carta (j : jugador) : jugador = {j with mano = mazo_vacio()};;

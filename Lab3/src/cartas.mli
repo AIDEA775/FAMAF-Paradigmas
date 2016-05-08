@@ -9,6 +9,12 @@ type carta
   decidí *)
 val crear_mazo : cartas -> cartas
 
+(*ja!*)
+val mazo : carta -> cartas
+
+(* je *)
+val mazo_vacio : unit -> cartas
+
 (* devuelve el mazo entero mezclado //*)
 val mazo_completo : unit -> cartas
 
