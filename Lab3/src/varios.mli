@@ -2,6 +2,8 @@ val leer_letra : unit -> char
 
 val leer_palabra : unit -> string
 
+val leer_nada : unit -> unit
+
 val limpiar : unit -> unit
 
 val at : int -> 'a list -> 'a

@@ -2,18 +2,22 @@ let rec leer_letra unit : char =
   let s = read_line() in
   match String.length s with
   | 0 -> leer_letra()
-  | _ -> s.[0]
-
+  | _ -> s.[0];;
 
 let rec leer_palabra unit : string =
   let s = read_line() in
   match String.length s with
   | 0 -> leer_palabra()
-  | _ -> s
+  | _ -> s;;
+
+let leer_nada unit : unit =
+  read_line();
+  print_endline "";;
 
 let limpiar unit : unit = print_string "\x1B[2J";;
 
 let rec at k = function
+  | [] -> assert false
   | [x] -> x (* tiene que ser *)
   | h::t -> if k = 1 then h else at (k-1) t;;
 
