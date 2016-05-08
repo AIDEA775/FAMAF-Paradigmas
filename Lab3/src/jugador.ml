@@ -9,6 +9,8 @@ let crear_jugador (n : string) (c : cartas) : jugador * cartas =
 
 let jugador_puntos (j : jugador) : int = j.puntos;;
 
+let jugador_nombre (j : jugador) : string = j.nombre;;
+
 let jugador_suma_punto (j : jugador) : jugador = {j with puntos = j.puntos + 1};;
 
 let jugador_imprimir_ronda (j : jugador) : unit =
@@ -37,9 +39,9 @@ let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
     let cs, m = robar cs m in (* levantar del mazo general *)
     ({j with mano = (mazo c); mazo = m}, cs)
   in
-  if c = mazo_vacio() then
+  if (mazo c) = mazo_vacio() then
     jugador_juega j cs
-  else jugar_comun();;
+  else jugar_comun j cs;;
 
   (* juega carta especial y luego juega una comun *)
   (*let jugar_especial : jugador * cartas =
@@ -57,7 +59,7 @@ let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
     | "STOP" -> expr2
     | "SPAR" -> expr2;*)
 
-let jugador_carta_jugada (j : jugador) : carta = j.mano;;
+let jugador_carta_jugada (j : jugador) : cartas = j.mano;;
 
 let jugador_quedan_cartas (j : jugador) : bool = cartas_cantidad j.mazo != 0;;
 

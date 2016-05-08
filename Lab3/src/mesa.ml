@@ -1,22 +1,23 @@
 open Jugador
 open Cartas
+open Varios
 
 type mesa = {jugadores : jugador list; mazo : cartas};;
 
 let crear_mesa unit : mesa =
   (* carga y devuelve jugadores y las cartas que sobran *)
-  let rec cargar_jugadores (i : int) (c : cartas) : jugador list * cartas =
+  let rec cargar_jugadores (i : int) (cs : cartas) : jugador list * cartas =
     match i with
-    | 0 -> []
+    | 0 -> ([], cs)
     | _ ->  let nombre = leer_palabra() in
             match nombre with
-            | "EXIT" -> []
-            | _ ->  let j, c = crear_jugador nombre c in
-                    let js, c = cargar_jugadores (i-1) c in
-                    (j :: js, c)
+            | "EXIT" -> ([], cs)
+            | _ ->  let j, cs = crear_jugador nombre cs in
+                    let js, cs = cargar_jugadores (i-1) cs in
+                    (j :: js, cs)
   in
-  let j, c = cargar_jugadores 5 mazo_completo() in
-  {jugadores = j; mazo = c};;
+  let js, cs = cargar_jugadores 5 (mazo_completo()) in
+  {jugadores = js; mazo = cs};;
 
 (*falta imprimir cosas :P*)
 let jugar_ronda (m : mesa) : mesa =
@@ -32,22 +33,24 @@ let jugar_ronda (m : mesa) : mesa =
                 (nuevo_j :: nuevos_js, cs)
   in
   let js, c = jugar m.jugadores m.mazo in
-  {m with jugadores = js; mazo = c};;
+  {jugadores = js; mazo = c};;
 
 let ganador_ronda (m : mesa) : mesa =
   (* imprimir que js ganó la ronda*)
   let ganador (j : jugador) : jugador =
     let open Printf in
-    printf "El jugador %s gano la ronda." jugador_nombre j;
+    printf "El jugador %s gano la ronda." (jugador_nombre j);
     jugador_suma_punto j
   in
   (* actualiza los jugadores sumando un punto al que jugó c y lo imprime*)
   let rec actualizar (js : jugador list) (c : carta) : jugador list =
     match js with
-    | [x] -> ganador x (*tiene que ser*)
-    | x::xs -> if jugador_carta_jugada x = j then (ganador x) :: xs else x :: (actualizar xs j)
+    | [] -> [] (* no, pero si el compilador quiere *)
+    | [x] -> [ganador x] (* tiene que ser *)
+    | x::xs -> if jugador_carta_jugada x = mazo c then (ganador x) :: xs else x :: (actualizar xs c)
   in
-  let carta = carta_maxima(List.map jugador_carta_jugada m.jugadores) in
+  let cs = List.map jugador_carta_jugada m.jugadores in
+  let c = carta_maxima(cs) in
   {m with jugadores = actualizar m.jugadores c};;
 
 let limpiar_mesa (m : mesa) : mesa =
