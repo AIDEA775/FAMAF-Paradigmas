@@ -47,7 +47,7 @@ let ganador_ronda (m : mesa) : mesa =
     match js with
     | [] -> [] (* no, pero si el compilador quiere *)
     | [x] -> [ganador x] (* tiene que ser *)
-    | x::xs -> if jugador_carta_jugada x = mazo c then (ganador x) :: xs else x :: (actualizar xs c)
+    | x::xs -> if jugador_carta_jugada x = c then (ganador x) :: xs else x :: (actualizar xs c)
   in
   let cs = List.map jugador_carta_jugada m.jugadores in
   let c = carta_maxima(mazo_lista cs) in

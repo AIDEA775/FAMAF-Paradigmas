@@ -1,13 +1,6 @@
 type carta = string * int
 type cartas = carta list
 
-let mazo_lista = [("E",1);("E",2);("E",3);("E",4);("E",5);("E",6);("E",7);("E",8);("E",9)
-                  ;("E",10);("E",11);("E",12);("B",1);("B",2);("B",3);("B",4);("B",5)
-                  ;("B",6);("B",7);("B",8);("B",9);("B",10);("B",11);("B",12);("O",1)
-                  ;("O",2);("O",3);("O",4);("O",5);("O",6);("O",7);("O",8);("O",9)
-                  ;("O",10);("O",11);("O",12);("C",1);("C",2);("C",3);("C",4);("C",5)
-                  ;("C",6);("C",7);("C",8);("C",9);("C",10);("C",11);("C",12)];;
-
 (*funcion auxiliar para crear mazo*)
 let split list n =
     let rec aux i acc = function
@@ -26,7 +19,14 @@ let mazo_lista (c : carta list) : cartas = c;;
 
 let mazo_vacio unit : cartas = [];;
 
-let mazo_completo unit : cartas = mazo_lista;;(*
+let mazo_completo unit : cartas = [("E",1);("E",2);("E",3);("E",4);("E",5);("E",6);("E",7);("E",8);("E",9)
+                                  ;("E",10);("E",11);("E",12);("B",1);("B",2);("B",3);("B",4);("B",5)
+                                  ;("B",6);("B",7);("B",8);("B",9);("B",10);("B",11);("B",12);("O",1)
+                                  ;("O",2);("O",3);("O",4);("O",5);("O",6);("O",7);("O",8);("O",9)
+                                  ;("O",10);("O",11);("O",12);("C",1);("C",2);("C",3);("C",4);("C",5)
+                                  ;("C",6);("C",7);("C",8);("C",9);("C",10);("C",11);("C",12)];;
+
+(*
     let rec extraer (acc : cartas) (n : int) (mazo : cartas): carta * cartas =
       match mazo with
       | [] -> raise Not_found
