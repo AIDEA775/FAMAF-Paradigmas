@@ -45,8 +45,7 @@ let ganador_ronda (m : mesa) : mesa =
   in
   let rec actualizar (js : jugador list) (c : carta) : jugador list =
     match js with
-    | [] -> assert false
-    | [x] -> [ganador x]
+    | [] -> []
     | x::xs ->  if jugador_carta_jugada x = c then (ganador x) :: xs
                 else x :: (actualizar xs c)
   in
