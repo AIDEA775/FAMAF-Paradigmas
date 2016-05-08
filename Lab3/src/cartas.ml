@@ -118,15 +118,23 @@ let primera_carta (c : cartas) : carta option =
   | c::cs -> Some c;;
 
 (*auxiliar para carta_maxima y carta_minima (compara -> carta1 < carta2) *)
-let comparar_carta carta1 carta2 =
-  let x,y = carta1 in
-  let w,z = carta2 in
-   match carta1 with
-   |("e",_) -> w = "e" && y <= z
-   |("b",_) -> w = "e" || w = "b" && y <= z
-   |("o",_) -> w = "e" || w = "b" || w = "o" && y <= z
-   |("c",_) -> w = "e" || w = "b" || w = "o" || w = "c" && y <= z
+let valor_carta (c : carta) : int =
+  let t,n = c in
+  match t with
+  | "E" -> 1000
+  | "B" -> 100
+  | "O" -> 10
+  | "C" -> 1
 ;;
+
+let comparar_carta (c: carta) (t : carta) : bool =
+  let num_c = snd c in
+  let num_t = snd t in 
+  let valor_c = valor_carta c in
+  let valor_t = valor_carta t in
+  valort_c*c < valor_t*t
+;; 
+
 
 let rec carta_maxima (cartas :cartas) : carta option  =
    match cartas with
