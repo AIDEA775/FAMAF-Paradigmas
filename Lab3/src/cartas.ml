@@ -16,7 +16,7 @@ let split list n =
                        else aux (i-1) (h :: acc) t  in
     aux n [] list;;
 
-let crear mazo =
+let crear_mazo mazo =
   let tu = split mazo 7 in
   fst tu;;
 

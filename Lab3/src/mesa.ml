@@ -1,4 +1,4 @@
-open Jugadores
+open Jugador
 open Cartas
 
 type mesa = {jugadores : jugador list; mazo : cartas};;

@@ -1,5 +1,7 @@
 type jugador
 
+open Cartas
+
 (* nuevo jugador a partir de string
     crear mazo a partir de cartas disponibles
     devolver jugador y las cartas que quedaron *)

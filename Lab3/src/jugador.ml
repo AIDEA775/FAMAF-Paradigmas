@@ -5,7 +5,7 @@ type jugador = {nombre : string; puntos : int; mano : carta; mazo : cartas};;
 
 let crear_jugador (n : string) (c : cartas) : jugador * cartas =
   let m = crear_mazo c in
-  ({nombre=n ; carta=None; mazo=m}, (sacar_cartas c m));;
+  ({nombre=n ; mano=None; mazo=m}, (sacar_cartas c m));;
 
 let jugador_puntos (j : jugador) : int = j.puntos;;
 
@@ -37,7 +37,7 @@ let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
     let cs, m = robar cs m in (* levantar del mazo general *)
     ({j with mano = c; mazo = m}, cs)
   in
-  if c = None then
+  if c = [] then
     jugador_juega j cs
   else jugar_comun();;
 
@@ -61,4 +61,4 @@ let jugador_carta_jugada (j : jugador) : carta = j.mano;;
 
 let jugador_quedan_cartas (j : jugador) : bool = cartas_cantidad j.mazo != 0;;
 
-let jugador_limpiar_carta (j : jugador) : jugador = {j with mano=None};;
+let jugador_limpiar_carta (j : jugador) : jugador = {j with mano=[]};;
