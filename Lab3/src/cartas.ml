@@ -6,7 +6,7 @@ let mazo = [("E",1);("E",2);("E",3);("E",4);("E",5);("E",6);("E",7);("E",8);("E"
            ;("B",6);("B",7);("B",8);("B",9);("B",10);("B",11);("B",12);("O",1)
            ;("O",2);("O",3);("O",4);("O",5);("O",6);("O",7);("O",8);("O",9)
            ;("O",10);("O",11);("O",12);("C",1);("C",2);("C",3);("C",4);("C",5)
-           ;("C",6);("C",7);("C",8);("C",9);("C",10);("C",11);("C",12)];;
+           ;("C",6);("C",7);("C",8);("C",9);("C",10);("C",11);("C",12);(S,)];;
 
 let crear_mazo (m : cartas) : cartas =
   let rec tomar (m : cartas) (i : int) : cartas =
@@ -32,6 +32,16 @@ let rec mazo_completo unit =
       aux (picked :: acc) rest (len-1)
   in
   aux [] mazo (List.length mazo);;
+(*Funcion auxiliar para carta_of_string*)
+let que_especial_es (s : string) =
+  match s with
+  | "ID"   -> 6    
+  | "SWAP" -> 5
+  | "MAX"  -> 4
+  | "MIN"  -> 3
+  | "TOP"  -> 2
+  | "PAR"  -> 1
+  | _      -> 0;;
 
 let carta_of_string (cs : cartas) (s : string) : carta option =
   if String.length s < 2 || not (List.exists (fun (t,n) -> t = (String.sub s 0 1)) cs)
@@ -121,3 +131,4 @@ let rec cartas_cantidad cartas =
   match cartas with
   | [] -> 0
   | x :: cartas -> 1 + cartas_cantidad cartas;;
+
