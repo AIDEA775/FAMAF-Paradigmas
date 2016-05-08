@@ -39,7 +39,7 @@ let rec mazo_completo unit =
 (*funciones auxiliares para string_a_carta in_of_string()*)
   let rec string_a_lista carta = match carta with
     | "" -> []
-    | carta -> (String.get carta 0 ) :: (list_car (String.sub carta 1 ( (String.length carta)-1) ) )
+    | carta -> (String.get carta 0 ) :: (string_a_lista (String.sub carta 1 ( (String.length carta)-1) ) )
 ;;
 
 let list_a_string cl = String.concat "" (List.map (String.make 1) cl) ;;
@@ -89,7 +89,8 @@ let rec sacar_cartas cartas cartas2 =
 ;;
 
 let poner_cartas cartas1 cartas2 =
-  lista2 @ lista1
+  let cartas = cartas1 @ cartas2 in
+  cartas
 ;;
 
 let primer_carta cartas =
