@@ -9,7 +9,9 @@ let crear_mesa unit : mesa =
   let rec cargar_jugadores (i : int) (cs : cartas) : jugador list * cartas =
     match i with
     | 0 -> ([], cs)
-    | _ ->  let nombre = leer_palabra() in
+    | _ ->  limpiar();
+            print_string "  Ingrese el nombre del jugador o EXIT para comenzar el juego: \n\n    ";
+            let nombre = leer_palabra() in
             match nombre with
             | "EXIT" -> ([], cs)
             | _ ->  let j, cs = crear_jugador nombre cs in
@@ -25,8 +27,9 @@ let jugar_ronda (m : mesa) : mesa =
   let rec jugar (js : jugador list) (cs : cartas) : jugador list * cartas =
     match js with
     | [] -> ([], cs)
-    | x::xs ->  let open Printf in
-                printf "Mazo: %d cartas\nRonda:\n" (cartas_cantidad cs);
+    | x::xs ->  limpiar();
+                let open Printf in
+                printf "    Mazo: %d cartas\n    Ronda:\n  " (cartas_cantidad cs);
                 List.iter jugador_imprimir_ronda m.jugadores;
                 let nuevo_j, cs = jugador_juega x cs in
                 let nuevos_js, cs = jugar xs cs in

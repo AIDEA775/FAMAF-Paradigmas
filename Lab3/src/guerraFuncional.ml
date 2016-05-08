@@ -1,7 +1,9 @@
 open Mesa
+open Varios
 
 (* jugar una completa con interfaz y todo *)
 let lanzar_lanza (m : mesa) : mesa =
+  limpiar();
   let m = jugar_ronda m in
   let m = ganador_ronda m in
   limpiar_mesa m;;
@@ -13,6 +15,7 @@ let rec clavar_espadas (m : mesa) : mesa =
 
 (* jugar una partida y proximamente reiniciar *)
 let iniciar_batalla unit : unit =
+  limpiar();
   let mesa = crear_mesa() in
   let mesa = clavar_espadas mesa in
   imprimir_resultados mesa;;

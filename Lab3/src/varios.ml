@@ -11,9 +11,4 @@ let rec leer_palabra unit : string =
   | 0 -> leer_palabra()
   | _ -> s
 
-
-(* debug *)
-let () =
-  let open Printf in
-  printf ">>> Palabra: %s\n" (leer_palabra () );
-  printf ">>> Letra: %c\n" (leer_letra() );;
+let limpiar unit : unit = print_string "\x1B[2J";;

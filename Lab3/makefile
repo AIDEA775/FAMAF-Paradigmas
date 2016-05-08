@@ -1,7 +1,8 @@
 all:
 	ocamlbuild -I src guerraFuncional.native
-	mv _build/* bin
+	mv _build/src/guerraFuncional.native bin
+	rm -R _build
+	rm guerraFuncional.native
 
 clean:
-	rm -R _build
-	rm -R bin/*
+	rm bin/guerraFuncional.native
