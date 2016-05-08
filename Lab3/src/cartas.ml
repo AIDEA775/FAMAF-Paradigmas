@@ -111,12 +111,16 @@ let rec carta_maxima (cs :cartas) : carta option  =
   match cs with
   | [] -> None
   | [c] -> Some c
+  | c::(s::cs) when c = 0 -> carta_maxima (s::cs)
+  | c::(s::cs) when s = 0 -> carta_maxima (s::cs)
   | c::(s::cs) -> if comparar_carta c s then carta_maxima (s::cs) else carta_maxima (c::cs);;
 
 let rec carta_minima (cs :cartas) : carta option =
   match cs with
   | [] -> None
   | [c] -> Some c
+  | c::(s::cs) when c = 0 -> carta_minima (s::cs)
+  | c::(s::cs) when s = 0 -> carta_minima (s::cs)
   | c::(s::cs) -> if comparar_carta c s then carta_maxima (c::cs) else carta_maxima (s::cs);;
 
 (*funcion auxiliar para cartas_pares*)
