@@ -25,7 +25,7 @@ let jugar_ronda (m : mesa) : mesa =
   (* juega una ronda y devuelve los nuevos jugadores y el nuevo mazo *)
   let rec jugar (js : jugador list) (cs : cartas) (i : int) : jugador list * cartas =
     match i with
-    | 0 -> (js, cs)
+    | -1 -> (js, cs)
     | _ ->  limpiar();
             let open Printf in
             printf "    Mazo: %d cartas\n    Ronda:\n" (cartas_cantidad cs);
@@ -33,7 +33,7 @@ let jugar_ronda (m : mesa) : mesa =
             let j, cs = jugador_juega (at i js) cs in
             jugar (insert j i (remove i js)) cs (i-1)
   in
-  let js, c = jugar m.jugadores m.mazo (List.length m.jugadores) in
+  let js, c = jugar m.jugadores m.mazo (List.length m.jugadores - 1) in
   {jugadores = js; mazo = c};;
 
 let ganador_ronda (m : mesa) : mesa =
