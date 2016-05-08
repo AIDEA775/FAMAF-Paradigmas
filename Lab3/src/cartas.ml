@@ -1,8 +1,5 @@
-open cartas
-
-open carta
-
 type carta = string * int
+type cartas = carta list
 
 let mazo = [("E",1);("E",2);("E",3);("E",4);("E",5);("E",6);("E",7);("E",8);("E",9)
             ;("E",10);("E",11);("E",12);("B",1);("B",2);("B",3);("B",4);("B",5)
@@ -21,11 +18,7 @@ let split list n =
 
 let crear mazo =
   let tu = split mazo 7 in
-  match tu with
-  |_ -> fst tu
-;;
-
-
+  fst tu;;
 
 let rec mazo_completo unit =
     let rec extraer acc n = function
@@ -51,7 +44,7 @@ let rec mazo_completo unit =
 
 let list_a_string cl = String.concat "" (List.map (String.make 1) cl) ;;
 
-let convertirla lista = 
+let convertirla lista =
   let carta = split lista 1 in
   let tipo,numero = carta in
   let tipo = list_a_string(tipo) in
@@ -95,7 +88,6 @@ let rec sacar_cartas cartas cartas2 =
    | h :: cartas2 -> sacar_cartas(quitar_elemento cartas h) cartas2
 ;;
 
-
 let poner_cartas cartas1 cartas2 =
   lista2 @ lista1
 ;;
@@ -107,25 +99,25 @@ let primer_carta cartas =
 ;;
 (* auxiliar para imprimir*)
 let convertir_carta_a_string carta =
-  let x,y = carta in 
+  let x,y = carta in
   let y = string_of_int y in
   let str = x^y in
   str
 ;;
 
-let rec imprimir_mazo cartas = 
+let rec imprimir_mazo cartas =
   match cartas with
   | [] -> ""
   | x :: cartas -> convertir_carta_a_string x ^ " " ^ imprimir_mazo cartas
 ;;
 
 (*auxiliar para carta_maxima y carta_minima (compara -> carta1 < carta2) *)
-let comparar_carta carta1 carta2 = 
+let comparar_carta carta1 carta2 =
   let x,y = carta1 in
-  let w,z = carta2 in 
+  let w,z = carta2 in
    match carta1 with
    |("e",_) -> w = "e" && y <= z
-   |("b",_) -> w = "e" || w = "b" && y <= z          
+   |("b",_) -> w = "e" || w = "b" && y <= z
    |("o",_) -> w = "e" || w = "b" || w = "o" && y <= z
    |("c",_) -> w = "e" || w = "b" || w = "o" || w = "c" && y <= z
 ;;
@@ -137,7 +129,7 @@ let rec carta_maxima cartas =
    let aux = carta_maxima cartas in
    if comparar_carta h aux then aux else h
   ;;
- 
+
 
 let rec carta_minima cartas =
    match cartas with
@@ -150,7 +142,7 @@ let rec carta_minima cartas =
 let carta_par carta =
     let y = snd carta in
     let par = y mod 2 in
-    match par with 
+    match par with
     |0 -> true
     |_ -> false
 ;;
@@ -168,8 +160,3 @@ let rec cartas_cantidad cartas =
   | [] -> 0
   | x :: cartas -> 1 + cartas_cantidad cartas
 ;;
-
-
-
-
-

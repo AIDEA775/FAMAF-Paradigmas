@@ -62,5 +62,6 @@ let cantidad_jugadores (m : mesa) : int =
   in
   contar m.jugadores;;
 
-let () =
-  let m = crear_mesa;;
+let imprimir_resultados (m : mesa) : unit =
+    let open Printf in
+    printf "hola que hace";;

@@ -14,3 +14,6 @@ val limpiar_mesa : mesa -> mesa
 
 (* devuelve la cantidad de jugadores que siguen jugando *)
 val cantidad_jugadores : mesa -> int
+
+(* imprime el final de la ronda *)
+val imprimir_resultados : mesa -> unit
