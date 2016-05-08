@@ -26,7 +26,7 @@ let mazo_lista (c : carta list) : cartas = c;;
 
 let mazo_vacio unit : cartas = [];;
 
-let rec mazo_completo unit =
+let mazo_completo unit : cartas = mazo_lista;;(*
     let rec extraer (acc : cartas) (n : int) (mazo : cartas): carta * cartas =
       match mazo with
       | [] -> raise Not_found
@@ -41,7 +41,7 @@ let rec mazo_completo unit =
         aux (picked :: acc) rest (len-1)
     in
     aux [] mazo_lista (List.length mazo_lista)
-;;
+;;*)
 
 (*funciones auxiliares para string_a_carta in_of_string()*)
   let rec string_a_lista carta = match carta with
