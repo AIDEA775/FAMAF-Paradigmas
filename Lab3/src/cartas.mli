@@ -34,10 +34,10 @@ val poner_cartas : cartas -> cartas -> cartas
 val primera_carta : cartas -> carta option
 
 (* devuelve la carta mas grande *)
-val carta_maxima : cartas -> carta
+val carta_maxima : cartas -> carta option
 
 (* devuelve la carta mas chica *)
-val carta_minima : cartas -> carta
+val carta_minima : cartas -> carta option
 
 (* devuelve las cartas que son pares *)
 val cartas_pares : cartas -> cartas

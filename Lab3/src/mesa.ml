@@ -51,7 +51,9 @@ let ganador_ronda (m : mesa) : mesa =
     | x::xs -> if jugador_carta_jugada x = c then (ganador x) :: xs else x :: (actualizar xs c)
   in
   let c = carta_maxima(List.map jugador_carta_jugada m.jugadores) in
-  {m with jugadores = actualizar m.jugadores c};;
+  match c with
+  | None -> assert false
+  | Some c -> {m with jugadores = actualizar m.jugadores c};;
 
 let limpiar_mesa (m : mesa) : mesa =
   {m with jugadores = List.map jugador_limpiar_carta  m.jugadores};;
