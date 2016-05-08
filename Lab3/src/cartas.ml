@@ -54,8 +54,6 @@ let rec string_of_cartas (cs : cartas) : string =
   | [] -> ""
   | c::cs -> string_of_carta c ^ " " ^ string_of_cartas cs;;
 
-
-
 (*auxiliar para sacar carta*)
 let rec quitar_elemento cartas elem =
     match cartas with
@@ -117,7 +115,4 @@ let rec cartas_pares cartas =
    let nuevalista = cartas_pares cartas in
    if carta_par x then x :: nuevalista else cartas;;
 
-let rec cartas_cantidad cartas =
-  match cartas with
-  | [] -> 0
-  | x :: cartas -> 1 + cartas_cantidad cartas;;
+let cartas_cantidad cs = List.length cs;;
