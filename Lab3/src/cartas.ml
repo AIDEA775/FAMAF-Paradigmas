@@ -18,21 +18,20 @@ let crear_mazo (m : cartas) : cartas =
   in
   tomar m 7;;
 
- let rec mazo_completo unit =
-     let rec extraer acc n = function
-       | [] -> raise Not_found
-       | h :: t -> if n = 0 then (h, acc @ t) else extraer (h::acc) (n-1) t
-     in
-     let extraer_aleatorio mazo len =
-       extraer [] (Random.int len) mazo
-     in
-     let rec aux acc mazo len =
-       if len = 0 then acc else
-         let picked, rest = extraer_aleatorio mazo len in
-         aux (picked :: acc) rest (len-1)
-     in
-     aux [] mazo (List.length mazo)
- ;;
+let rec mazo_completo unit =
+  let rec extraer acc n = function
+    | [] -> raise Not_found
+    | h :: t -> if n = 0 then (h, acc @ t) else extraer (h::acc) (n-1) t
+  in
+  let extraer_aleatorio mazo len =
+    extraer [] (Random.int len) mazo
+  in
+  let rec aux acc mazo len =
+    if len = 0 then acc else
+      let picked, rest = extraer_aleatorio mazo len in
+      aux (picked :: acc) rest (len-1)
+  in
+  aux [] mazo (List.length mazo);;
 
 let carta_of_string (cs : cartas) (s : string) : carta option =
   if String.length s < 2 || not (List.exists (fun (t,n) -> t = (String.sub s 0 1)) cs)
@@ -63,19 +62,16 @@ let rec quitar_elemento cartas elem =
     | [] -> []
     | carta :: cartas ->
       let nuevalista = quitar_elemento cartas elem in
-      if carta = elem then nuevalista else carta :: nuevalista
-;;
+      if carta = elem then nuevalista else carta :: nuevalista;;
 
 let rec sacar_cartas cartas cartas2 =
    match cartas2 with
-   |[] -> cartas
-   | h :: cartas2 -> sacar_cartas(quitar_elemento cartas h) cartas2
-;;
+   | [] -> cartas
+   | h :: cartas2 -> sacar_cartas(quitar_elemento cartas h) cartas2;;
 
 let poner_cartas cartas1 cartas2 =
   let cartas = cartas1 @ cartas2 in
-  cartas
-;;
+  cartas;;
 
 let primera_carta (c : cartas) : carta option =
   match c with
@@ -100,8 +96,7 @@ let rec carta_maxima (cartas :cartas) : carta option  =
    | h :: [] -> h
    | h :: cartas ->
    let aux = carta_maxima cartas in
-   if comparar_carta h aux then aux else h
-  ;;
+   if comparar_carta h aux then aux else h;;
 
 
 let rec carta_minima cartas =
@@ -109,27 +104,24 @@ let rec carta_minima cartas =
    |h :: [] -> h
    | h :: cartas ->
    let aux = carta_minima cartas in
-   if comparar_carta h aux then h else aux
-;;
+   if comparar_carta h aux then h else aux;;
+
 (*funcion auxiliar para cartas_pares*)
 let carta_par carta =
     let y = snd carta in
     let par = y mod 2 in
     match par with
     |0 -> true
-    |_ -> false
-;;
+    |_ -> false;;
 
 let rec cartas_pares cartas =
   match cartas with
   |[] -> []
   |x :: cartas ->
    let nuevalista = cartas_pares cartas in
-   if carta_par x then x :: nuevalista else cartas
-;;
+   if carta_par x then x :: nuevalista else cartas;;
 
 let rec cartas_cantidad cartas =
   match cartas with
   | [] -> 0
-  | x :: cartas -> 1 + cartas_cantidad cartas
-;;
+  | x :: cartas -> 1 + cartas_cantidad cartas;;
