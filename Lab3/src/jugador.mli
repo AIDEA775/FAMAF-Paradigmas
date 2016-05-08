@@ -26,11 +26,11 @@ val jugador_imprimir_ronda : jugador -> unit
     si no es así vuelve a empezar
     si es valida, se fija la clase de carta
     si es comun la pone en la mano, la quita de su mazo, y devuelve el jugador y el nuevo mazo general
-    si es especial, se fija que hace, lo hace, y vuelve a empezar*)
+    si es especial, se fija que hace, lo hace *)
 val jugador_juega : jugador -> cartas -> jugador * cartas
 
 (* llamar solo despues de haber jugado una ronda *)
-val jugador_carta_jugada : jugador -> carta
+val jugador_carta_jugada : jugador -> carta option
 
 (* false si ya no le quedan cartas *)
 val jugador_quedan_cartas : jugador -> bool

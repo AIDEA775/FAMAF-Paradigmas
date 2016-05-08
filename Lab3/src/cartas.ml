@@ -1,5 +1,4 @@
 type carta = string * int
-type cartas = carta list
 
 (*funcion auxiliar para crear mazo*)
 let split list n =
@@ -9,15 +8,15 @@ let split list n =
                        else aux (i-1) (h :: acc) t  in
     aux n [] list;;
 
-let crear_mazo mazo =
-  let tu = split mazo 7 in
-  fst tu;;
-
-let mazo (c : carta) : cartas = [c];;
-
-let mazo_lista (c : carta list) : cartas = c;;
-
-let mazo_vacio unit : cartas = [];;
+let crear_mazo (m : cartas) : cartas =
+  let rec tomar (cs : cartas) (i : int) : cartas =
+    match i with
+    | 0 -> []
+    | _ ->  match cs with
+            | [] -> []
+            | x::xs -> x :: tomar xs i-1
+  in
+  tomar cs 7;;
 
 let mazo_completo unit : cartas = [("E",1);("E",2);("E",3);("E",4);("E",5);("E",6);("E",7);("E",8);("E",9)
                                   ;("E",10);("E",11);("E",12);("B",1);("B",2);("B",3);("B",4);("B",5)
@@ -73,12 +72,25 @@ let rec la_carta_esta cartas carta =
   | x :: cartas -> cartas_iguales x carta  || la_carta_esta cartas carta
 ;;
 
-let string_a_carta cartas carta =
-  let lista = string_a_lista carta in
+let carta_of_string (cs : cartas) (c : string) : carta =
+  let lista = string_a_lista c in
   let cartaaux = convertirla(lista) in
   (*nose que poner acaaa!!!! :S !!!!!!!! por todo tira bardo*)
   cartaaux
 ;;
+
+
+let string_of_carta (c : carta) : string =
+  let x, y = carta in
+  let y = string_of_int y in
+  x ^ y;;
+
+let rec string_of_cartas (cs : cartas) : string =
+  match cs with
+  | [] -> ""
+  | c::cs -> string_of_carta c ^ " " ^ string_of_cartas cs;;
+
+
 
 (*auxiliar para sacar carta*)
 let rec quitar_elemento cartas elem =
@@ -100,24 +112,10 @@ let poner_cartas cartas1 cartas2 =
   cartas
 ;;
 
-let primer_carta cartas =
-   match cartas with
-   | [] -> raise Not_found
-   | h :: cartas -> h
-;;
-(* auxiliar para imprimir*)
-let convertir_carta_a_string carta =
-  let x,y = carta in
-  let y = string_of_int y in
-  let str = x^y in
-  str
-;;
-
-let rec imprimir_mazo cartas =
-  match cartas with
-  | [] -> ""
-  | x :: cartas -> convertir_carta_a_string x ^ " " ^ imprimir_mazo cartas
-;;
+let primera_carta (c : cartas) : carta option =
+  match c with
+  | [] -> None
+  | c::cs -> Some c;;
 
 (*auxiliar para carta_maxima y carta_minima (compara -> carta1 < carta2) *)
 let comparar_carta carta1 carta2 =

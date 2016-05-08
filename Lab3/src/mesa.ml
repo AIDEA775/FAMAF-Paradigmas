@@ -50,9 +50,8 @@ let ganador_ronda (m : mesa) : mesa =
     | [] -> [] (* no, pero si el compilador quiere *)
     | [x] -> [ganador x] (* tiene que ser *)
     | x::xs -> if jugador_carta_jugada x = c then (ganador x) :: xs else x :: (actualizar xs c)
-  in
-  let cs = List.map jugador_carta_jugada m.jugadores in
-  let c = carta_maxima(mazo_lista cs) in
+  in\
+  let c = carta_maxima(List.map jugador_carta_jugada m.jugadores) in
   {m with jugadores = actualizar m.jugadores c};;
 
 let limpiar_mesa (m : mesa) : mesa =

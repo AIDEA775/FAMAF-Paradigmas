@@ -1,11 +1,11 @@
 open Cartas
 open Varios
 
-type jugador = {nombre : string; puntos : int; mano : cartas; mazo : cartas};;
+type jugador = {nombre : string; puntos : int; mano : carta option; mazo : cartas};;
 
 let crear_jugador (n : string) (c : cartas) : jugador * cartas =
   let m = crear_mazo c in
-  ({nombre = n ; puntos = 0; mano = mazo_vacio(); mazo = m}, (sacar_cartas c m));;
+  ({nombre = n ; puntos = 0; mano = None; mazo = m}, (sacar_cartas c m));;
 
 let jugador_puntos (j : jugador) : int = j.puntos;;
 
@@ -15,30 +15,34 @@ let jugador_suma_punto (j : jugador) : jugador = {j with puntos = j.puntos + 1};
 
 let jugador_imprimir_ronda (j : jugador) : unit =
   let open Printf in
-  if j.mano != mazo_vacio() then printf "    %s  %s\n" (j.nombre) (imprimir_mazo j.mano);;
+  match j.mano with
+  | None -> unit
+  | Some c -> printf "    %s  %s\n" (j.nombre) (carta_to_string c);;
 
 let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
   (* imprime por stdout "<Nombre>(<Puntos>): <Cartas disponibles>/n<Pregunta>" *)
   let open Printf in
-  printf "\n    %s(%d): %s\n    Que carta vas a jugar %s?\n\n        " (j.nombre) (j.puntos) (imprimir_mazo j.mazo) (j.nombre);
+  printf "\n    %s(%d): %s\n    Que carta vas a jugar %s?\n\n        " (j.nombre) (j.puntos) (carta_to_string j.mazo) (j.nombre);
   let s = leer_palabra() in
-  let c = string_a_carta j.mazo s in
   (* sacar carta del mazo cs y guardar en el mazo del jugador
       mazo general -> mazo del jugador -> general * jugador *)
   let robar (cs : cartas) (m : cartas): cartas * cartas =
     let c = primer_carta cs in (* ver carta del mazo general *)
-    let cs = sacar_cartas cs (mazo c) in (* quitar la carta del mazo genera*)
-    let m = poner_cartas m (mazo c) in (* guardarla en el mazo del jugador *)
-    (cs, m)
+    match c with
+    | None -> (cs, m)
+    | Some c -> let cs = sacar_cartas cs (mazo c) in (* quitar la carta del mazo genera*)
+                let m = poner_cartas m (mazo c) in (* guardarla en el mazo del jugador *)
+                (cs, m)
   in
-  let jugar_comun (j : jugador) (cs : cartas) : jugador * cartas =
+  let jugar_comun (j : jugador) (cs : cartas) (c : carta) : jugador * cartas =
     let m = sacar_cartas j.mazo (mazo c) in (* tirar carta *)
     let cs, m = robar cs m in (* levantar del mazo general *)
-    ({j with mano = (mazo c); mazo = m}, cs)
+    ({j with mano = c; mazo = m}, cs)
   in
-  if (mazo c) = mazo_vacio() then
-    jugador_juega j cs
-  else jugar_comun j cs;;
+  let c = string_a_carta j.mazo s in
+  match c with
+  | None -> jugador_juega j cs
+  | Some c -> jugar_comun j cs c;;
 
   (* juega carta especial y luego juega una comun *)
   (*let jugar_especial : jugador * cartas =
@@ -56,8 +60,8 @@ let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
     | "STOP" -> expr2
     | "SPAR" -> expr2;*)
 
-let jugador_carta_jugada (j : jugador) : carta = primer_carta j.mano;;
+let jugador_carta_jugada (j : jugador) : carta option = j.mano;;
 
-let jugador_quedan_cartas (j : jugador) : bool = cartas_cantidad j.mazo != 0;;
+let jugador_quedan_cartas (j : jugador) : bool = (cartas_cantidad j.mazo) != 0;;
 
-let jugador_limpiar_carta (j : jugador) : jugador = {j with mano = mazo_vacio()};;
+let jugador_limpiar_carta (j : jugador) : jugador = {j with mano = None};;
