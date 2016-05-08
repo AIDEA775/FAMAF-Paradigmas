@@ -17,7 +17,7 @@ let crear_mesa unit : mesa =
             | "EXIT" -> ([], cs)
             | _ ->  let j, cs = crear_jugador nombre cs in
                     let js, cs = cargar_jugadores (i-1) cs in
-                    (j :: js, cs)
+                    (List.append js [j], cs)
   in
   let js, cs = cargar_jugadores 5 (mazo_completo()) in
   {jugadores = js; mazo = cs};;

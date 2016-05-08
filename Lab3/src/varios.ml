@@ -19,7 +19,7 @@ let limpiar unit : unit = print_string "\x1B[2J";;
 let rec at k = function
   | [] -> assert false
   | [x] -> x (* tiene que ser *)
-  | h::t -> if k = 1 then h else at (k-1) t;;
+  | h::t -> if k = 0 then h else at (k-1) t;;
 
 let rec insert x n = function
   | [] -> [x]
