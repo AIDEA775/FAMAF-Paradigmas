@@ -21,7 +21,6 @@ let crear_mesa unit : mesa =
   let js, cs = cargar_jugadores 5 (mazo_completo()) in
   {jugadores = js; mazo = cs};;
 
-(*falta imprimir cosas :P*)
 let jugar_ronda (m : mesa) : mesa =
   (* juega una ronda y devuelve los nuevos jugadores y el nuevo mazo *)
   let rec jugar (js : jugador list) (cs : cartas) (i : int) : jugador list * cartas =
@@ -50,7 +49,7 @@ let ganador_ronda (m : mesa) : mesa =
     | [] -> [] (* no, pero si el compilador quiere *)
     | [x] -> [ganador x] (* tiene que ser *)
     | x::xs -> if jugador_carta_jugada x = c then (ganador x) :: xs else x :: (actualizar xs c)
-  in\
+  in
   let c = carta_maxima(List.map jugador_carta_jugada m.jugadores) in
   {m with jugadores = actualizar m.jugadores c};;
 

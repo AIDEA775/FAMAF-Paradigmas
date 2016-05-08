@@ -17,7 +17,7 @@ let jugador_imprimir_ronda (j : jugador) : unit =
   let open Printf in
   match j.mano with
   | None -> unit
-  | Some c -> printf "    %s  %s\n" (j.nombre) (carta_to_string c);;
+  | Some c -> printf "    %s  %s\n" (j.nombre) (string_of_carta c);;
 
 let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
   (* imprime por stdout "<Nombre>(<Puntos>): <Cartas disponibles>/n<Pregunta>" *)
@@ -35,11 +35,11 @@ let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
                 (cs, m)
   in
   let jugar_comun (j : jugador) (cs : cartas) (c : carta) : jugador * cartas =
-    let m = sacar_cartas j.mazo (mazo c) in (* tirar carta *)
+    let m = sacar_cartas j.mazo [c] in (* tirar carta *)
     let cs, m = robar cs m in (* levantar del mazo general *)
-    ({j with mano = c; mazo = m}, cs)
+    ({j with mano = c; mazo = (Some m)}, cs)
   in
-  let c = string_a_carta j.mazo s in
+  let c = carta_of_string j.mazo s in
   match c with
   | None -> jugador_juega j cs
   | Some c -> jugar_comun j cs c;;
