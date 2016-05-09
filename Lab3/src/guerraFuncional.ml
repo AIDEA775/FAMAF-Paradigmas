@@ -26,6 +26,7 @@ let rec iniciar_batalla unit : unit =
   if r = "S" || r = "s" then iniciar_batalla();;
 
 let () =
+  Random.self_init();
   iniciar_batalla();
   set_pos 0 0;
   limpiar();;

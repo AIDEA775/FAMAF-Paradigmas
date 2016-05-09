@@ -84,20 +84,10 @@ let rec string_of_cartas (cs : cartas) : string =
   | [] -> ""
   | c::cs -> string_of_carta c ^ " " ^ string_of_cartas cs;;
 
-(*auxiliar para sacar carta*)
-let rec quitar_elemento cartas elem =
-    match cartas with
-    | [] -> []
-    | carta :: cartas ->
-      let nuevalista = quitar_elemento cartas elem in
-      if carta = elem then nuevalista else carta :: nuevalista;;
-
-let rec sacar_cartas cs sacar =
+let rec sacar_cartas (cs : cartas) (sacar : cartas) =
    List.filter (fun x -> not (List.mem x sacar)) cs;;
 
-let poner_cartas cartas1 cartas2 =
-  let cartas = cartas1 @ cartas2 in
-  cartas;;
+let poner_cartas (cs1 : cartas) (cs2 : cartas) = cs1 @ cs2;;
 
 let primera_carta (c : cartas) : carta option =
   match c with
@@ -121,7 +111,7 @@ let rec carta_maxima (cs :cartas) : carta option  =
   | [] -> None
   | [c] -> Some c
   | c::(s::cs) when fst c = "S" -> carta_maxima (s::cs)
-  | c::(s::cs) when fst s = "S" -> carta_maxima (s::cs)
+  | c::(s::cs) when fst s = "S" -> carta_maxima (c::cs)
   | c::(s::cs) -> if comparar_carta c s then carta_maxima (s::cs) else carta_maxima (c::cs);;
 
 let rec carta_minima (cs :cartas) : carta option =
@@ -129,27 +119,12 @@ let rec carta_minima (cs :cartas) : carta option =
   | [] -> None
   | [c] -> Some c
   | c::(s::cs) when fst c = "S" -> carta_minima (s::cs)
-  | c::(s::cs) when fst s = "S" -> carta_minima (s::cs)
-  | c::(s::cs) -> if comparar_carta c s then carta_maxima (c::cs) else carta_maxima (s::cs);;
+  | c::(s::cs) when fst s = "S" -> carta_minima (c::cs)
+  | c::(s::cs) -> if comparar_carta c s then carta_minima (c::cs) else carta_minima (s::cs);;
 
-(*funcion auxiliar para cartas_pares*)
-let carta_par carta =
-    let y = snd carta in
-    let par = y mod 2 in
-    match par with
-    |0 -> true
-    |_ -> false;;
+let rec cartas_pares (cs : cartas) =
+  List.filter (fun (t, n) -> t != "S" && n mod 2 = 0) cs;;
 
-let rec cartas_pares cartas =
-  match cartas with
-  |[] -> []
-  |x :: cartas ->
-   let nuevalista = cartas_pares cartas in
-   if carta_par x then x :: nuevalista else cartas;;
+let cartas_cantidad (cs : cartas) = List.length cs;;
 
-let cartas_cantidad cs = List.length cs;;
-
-let es_especial c =
-  match c with
-  | ("S",_) -> true
-  | _ -> false;;
+let es_especial (c : carta) = (fst c = "S");;
