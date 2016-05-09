@@ -30,7 +30,9 @@ let () =
   Random.self_init();
   try
     iniciar_batalla();
+    set_pos 0 0;
+    limpiar()
   with
   | Not_found -> limpiar_interfaz();
-  set_pos 0 0;
-  limpiar();;
+                set_pos 0 0;
+                limpiar();;

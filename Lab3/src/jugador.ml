@@ -45,6 +45,9 @@ let imprimir_estado (j : jugador) : unit =
     (j.nombre) (j.puntos) (string_of_cartas j.mazo);;
 
 let rec jugar (j : jugador) (cs : cartas) : jugador * cartas =
+  if cartas_cantidad j.mazo = 0 then (j,cs) (* fue su ultima carta *)
+  else
+  begin
   limpiar_linea 0 11;
   imprimir_estado j;
   limpiar_linea 0 13;
@@ -58,6 +61,7 @@ let rec jugar (j : jugador) (cs : cartas) : jugador * cartas =
             jugar j cs
   | Some c -> if es_especial c then jugar_especial j cs c
               else jugar_comun j cs c
+              end
 and jugar_especial (j : jugador) (cs : cartas) (c : carta) : jugador * cartas =
   let s = string_of_carta c in
   let m = sacar_cartas j.mazo [c] in
@@ -72,25 +76,31 @@ and jugar_especial (j : jugador) (cs : cartas) (c : carta) : jugador * cartas =
 
   | "SMAX" -> let max = carta_maxima cs in
              (match max with
-             | None -> jugar j cs (* no quedan cartas en el mazo general *)
+             | None ->  (* no quedan cartas comunes en el mazo general *)
+                        let cs, m = robar cs m in
+                        jugar {j with mazo = m} cs
              | Some max -> let cs = sacar_cartas cs [max] in
                            let m = poner_cartas m [max] in
+                           let cs, m = robar cs m in
                            jugar {j with mazo = m} cs)
 
   | "SMIN" ->  let min = carta_minima m in
               (match min with
-              | None -> jugar j cs (* no le quedan mas cartas comunes *)
+              | None -> (* no le quedan mas cartas comunes*)
+                        let cs, m = robar cs m in
+                        jugar {j with mazo = m} cs
               | Some min -> let cs = poner_cartas cs [min] in
                             let cs, m = robar cs m in
                             jugar {j with mazo = m} cs)
 
-  | "STOP" ->  let cs, m = robar cs m in
+  | "STOP" -> let cs, m = robar cs m in
               let cs, m = robar cs m in
               jugar {j with mazo = m} cs
 
-  | "SPAR" ->  let p = cartas_pares cs in
+  | "SPAR" -> let p = cartas_pares cs in
               let cs = sacar_cartas cs p in
               let m = poner_cartas m p in
+              let cs, m = robar cs m in
               jugar {j with mazo = m} cs
   | _ -> assert false;;
 
