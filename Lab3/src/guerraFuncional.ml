@@ -1,5 +1,6 @@
 open Mesa
 open Varios
+open Interfaz
 
 (* jugar una completa con interfaz y todo *)
 let lanzar_lanza (m : mesa) : mesa =
@@ -27,6 +28,9 @@ let rec iniciar_batalla unit : unit =
 
 let () =
   Random.self_init();
-  iniciar_batalla();
+  try
+    iniciar_batalla();
+  with
+  | Not_found -> limpiar_interfaz();
   set_pos 0 0;
   limpiar();;

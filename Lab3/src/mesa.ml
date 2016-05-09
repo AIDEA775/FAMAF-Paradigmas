@@ -17,6 +17,7 @@ let crear_mesa unit : mesa =
             let nombre = leer_palabra() in
             match nombre with
             | "EXIT" -> ([], cs)
+            | "BETA" -> raise Not_found
             | _ ->  limpiar();
                     set_pos 0 (12-i);
                     printf "  JOIN >>> %s" nombre;
@@ -51,6 +52,11 @@ let jugar_ronda (m : mesa) : mesa =
   {jugadores = js; mazo = c};;
 
 let ganador_ronda (m : mesa) : mesa =
+  let carta (c : carta option) : carta  =
+    match c with
+    | None -> assert false
+    | Some c -> c
+  in
   let ganador (j : jugador) : jugador =
     limpiar();
     set_pos 0 8;
@@ -61,11 +67,16 @@ let ganador_ronda (m : mesa) : mesa =
   let rec actualizar (js : jugador list) (c : carta) : jugador list =
     match js with
     | [] -> []
-    | x::xs ->  if jugador_carta_jugada x = c then (ganador x) :: xs
-                else x :: (actualizar xs c)
+    | x::xs ->  let cj = jugador_carta_jugada x in
+                match cj with
+                | None -> x :: (actualizar xs c)
+                | Some cj ->  if cj = c then (ganador x) :: xs
+                              else x :: (actualizar xs c)
   in
   let c = List.map jugador_carta_jugada m.jugadores in
-  let c = carta_maxima(c) in
+  let c = List.filter (fun x -> not (x = None)) c in
+  let c = List.map carta c in
+  let c = carta_maxima c in
   match c with
   | None -> assert false
   | Some c -> {m with jugadores = actualizar m.jugadores c};;
@@ -85,7 +96,7 @@ let imprimir_resultados (m : mesa) : unit =
   let imprimir (j : jugador) : unit =
     printf "\t\t%s  %d\n\n" (jugador_nombre j) (jugador_puntos j)
   in
-  let js = List.sort (fun x y -> (jugador_puntos x) - (jugador_puntos y)) m.jugadores in
+  let js = List.sort (fun x y -> (jugador_puntos y)-(jugador_puntos x)) m.jugadores in
   limpiar();
   titulo();
   set_pos 0 4;

@@ -110,10 +110,7 @@ let jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
   end;;
 
 
-let jugador_carta_jugada (j : jugador) : carta =
-  match j.mano with
-  | None -> assert false
-  | Some c -> c;;
+let jugador_carta_jugada (j : jugador) : carta option = j.mano;;
 
 let jugador_quedan_cartas (j : jugador) : bool = (cartas_cantidad j.mazo) != 0;;
 

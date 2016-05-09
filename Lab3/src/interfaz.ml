@@ -56,7 +56,7 @@ let add_head move snake =
       Up    -> (x,y-1) :: snake
     | Down  -> (x,y+1) :: snake
     | Right -> (x+1,y) :: snake
-    | Left  -> (x-1,y) :: snake;;    
+    | Left  -> (x-1,y) :: snake;;
 
 let drop_tail = function
     [] -> [];
@@ -91,7 +91,7 @@ let rec game_loop snake apple =
     game_loop snake' apple';;
 
 (* main function *)
-let () =
+let limpiar_interfaz unit : unit =
   Random.self_init();
   let snake = [(1,1)] in
   let apple = new_apple snake in
