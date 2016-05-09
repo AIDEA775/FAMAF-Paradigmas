@@ -53,12 +53,12 @@ let carta_of_string (cs : cartas) (s : string) : carta option =
       let n = String.sub s 1 ((String.length s) - 1) in
       if ct = "S" then
         let n = especial n in
-        if not (List.exists (fun (_,t) -> t = n) cs) then None
+        if not (List.exists (fun (t,i) -> t = ct && i = n) cs) then None
         else Some (ct, n)
       else
         try
           let n = int_of_string n in
-          if not (List.exists (fun (_,t) -> t = n) cs) then None
+          if not (List.exists (fun (t,i) -> t = ct && i = n) cs) then None
           else Some (ct, n)
         with
           | Failure "int_of_string" -> None
@@ -92,10 +92,8 @@ let rec quitar_elemento cartas elem =
       let nuevalista = quitar_elemento cartas elem in
       if carta = elem then nuevalista else carta :: nuevalista;;
 
-let rec sacar_cartas cartas cartas2 =
-   match cartas2 with
-   | [] -> cartas
-   | h :: cartas2 -> sacar_cartas(quitar_elemento cartas h) cartas2;;
+let rec sacar_cartas cs sacar =
+   List.filter (fun x -> not (List.mem x sacar)) cs;;
 
 let poner_cartas cartas1 cartas2 =
   let cartas = cartas1 @ cartas2 in

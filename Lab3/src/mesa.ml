@@ -33,12 +33,20 @@ let jugar_ronda (m : mesa) : mesa =
     match i with
     | -1 -> (js, cs)
     | _ ->  limpiar();
+            set_pos 0 8;
+            printf "\tEs turno de %s." (jugador_nombre (at i js));
+            leer_nada();
+            limpiar();
             titulo();
             printf "\tMazo: %d cartas\n\tRonda:\n" (cartas_cantidad cs);
             List.iter jugador_imprimir_ronda (List.rev js);
             let j, cs = jugador_juega (at i js) cs in
             jugar (insert j i (remove i js)) cs (i-1)
   in
+  limpiar();
+  set_pos 0 8;
+  print_string "\tEmpieza una nueva ronda.";
+  leer_nada();
   let js, c = jugar m.jugadores m.mazo (List.length m.jugadores - 1) in
   {jugadores = js; mazo = c};;
 

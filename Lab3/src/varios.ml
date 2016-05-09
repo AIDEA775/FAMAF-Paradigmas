@@ -14,10 +14,15 @@ let leer_nada unit : unit =
   read_line();
   print_endline "";;
 
-let limpiar unit : unit = print_string "\x1B[2J";;
-
 let set_pos x y =
   print_string ("\x1b[" ^ string_of_int y ^ ";" ^ string_of_int x ^ "H");;
+
+let limpiar unit : unit = print_string "\x1B[2J";;
+
+let limpiar_linea x y =
+  set_pos x y;
+  print_string "                                                        ";
+  set_pos x y;;
 
 let titulo unit : unit =
   set_pos 0 2;
