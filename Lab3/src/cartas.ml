@@ -98,9 +98,9 @@ let comparar_carta (c: carta) (t : carta) : bool =
   let valor_carta (c : carta) : int =
     let t,n = c in
     match t with
-    | "E" -> 1000 * n
-    | "B" -> 100 * n
-    | "O" -> 10 * n
+    | "E" -> 2173 * n
+    | "B" -> 181 * n
+    | "O" -> 15 * n
     | "C" -> 1 * n
     | _ -> 0
   in
