@@ -19,22 +19,37 @@ La funcion mas importante es `jugador_juega()`: lee la std hasta que el jugador 
 ## Mesa
 
 Necesitamos una mesa donde sentar a los jugadores no?. En la mesa estan las funciones "principales" con respecto al reparto del juego.
-Teniendo el record mesa que contiene, la lista de jugadores y el mazo general a partir de ahi s e deciden cuantos jugadores va a haber, las cartas que se jugo en esa ronda, el ganador de la ronda, y el "ESTADO" actual de la mesa.
+El record mesa contiene la lista de jugadores y el mazo general a partir de ahi se decide que jugadores van a jugar, las cartas jugadas en esa ronda, el ganador de la ronda, y el "*ESTADO*" actual de la mesa.
 
 ## La guerra
-ya teniendo todo los elementos para jugar, solo necesitamos iniciar y de eso se encarga guerra funcional. Guerra funcional es el anfitrion de la fiesta se encarga de crear la mesa, registrar a los jugadores, decir quien es el ganador de cada ronda y de que el juego no se termine hasta que un jugador no haya ganado.
+
+Ya teniendo todo los elementos para jugar, solo necesitamos iniciar y de eso se encarga guerra funcional. Guerra funcional es el anfitrion de la fiesta se encarga de crear la mesa, registrar a los jugadores, decir quien es el ganador de cada ronda y de que el juego no se termine hasta que un jugador no haya ganado.
 
 ## Decisiones
-funcion carta_of_string
-## Ideas
+* La funcion `carta_of_string()` agregamos un parametro extra `cs` para que devuelva una carta si y solo si está dentro de `cs`.
+
+* Implementamos las cartas especiales como un palo mas dentro del mazo general `("S", int)` donde int es un numero que representa una carta especial y hacemos la tranformacion con las funciones internas `especial()`.
+
+* Las cartas especiales no se consideran para la comparacion de cartas, es decir: **SPAR** **SMAX** **SMIN**.
+
+* Caso borde con MAX (y MIN), en caso de no encontrar una carta en el mazo general es porque no quedan cartas comunes. Por lo tanto se vuelve a jugar.
+
+* Al principio de `jugar()` preguntamos si el jugador juega una carta especial y esta era su ultima carta.
 
 ### Bibliografia y/o paginas de consulta
 
-Libros: Copying and pasting from Stack Overflow
-	    Real World Ocml
+Libros:
 
-Webs: https://ocaml.org/learn/tutorials/99problems.html
-      http://stackoverflow.com
+Copying and pasting from Stack Overflow
 
-## SORPRESA!!!
-si usted alguna vez jugo mortal kombat y sabia los trucos, como a b arriba b arriba b a abajo (para desbloquear jugadores motaro, shao khan, 99 credits mortal kombat ultimate 3 (SEGA)) bueno usted es de los nuestros, aunque pedimos 12 horas para poder entregar este LAB, no podiamos dejar pasar esta oportunidad!! si es lo que esta pensando nos dimos el lujo de poner un comando secreto. Para ver esta sorpresa cuando el juego le pida el nombre de un jugador ingrese "los ales tienen 10" fijese con confianza!! que lo disfrute!!!
+Webs:
+
+https://ocaml.org/learn/tutorials/99problems.html
+
+
+http://stackoverflow.com
+
+## Easter Egg!!!
+Si usted alguna vez jugo mortal kombat y sabia los trucos, como a b arriba b arriba b a abajo (para desbloquear jugadores motaro, shao khan, 99 credits mortal kombat ultimate 3 (SEGA)) bueno usted es de los nuestros, aunque pedimos 12 horas para poder entregar este LAB, no podiamos dejar pasar esta oportunidad!! si es lo que esta pensando nos dimos el lujo de poner un comando secreto. Para ver esta sorpresa cuando el juego le pida el nombre de un jugador ingrese la respuesta de este acertijo: "`es una letra griega y compañero suyo`"
+
+### Que lo disfrute!!!
