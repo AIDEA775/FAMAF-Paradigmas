@@ -35,7 +35,7 @@ identificatorio:
 | MAX  | Toma la carta más alta del mazo general |
 | MIN  | Toma la carta mínima del mazo del jugador y la devuelve al *fondo* del mazo general |
 | TOP  | Toma una carta del tope del mazo general |
-| PAR  | Toma las cartas *pares* del mazo general |
+| PAR   | Toma las cartas *pares* del mazo general |
 
 Cuando se juega una carta especial también se recupera una del tope
 del mazo general. De esta forma, la carta especial ID permite tomar

@@ -139,3 +139,18 @@ let rec cartas_pares cartas =
    if carta_par x then x :: nuevalista else cartas;;
 
 let cartas_cantidad cs = List.length cs;;
+
+let es_especial c =
+  match c with
+  | ("S",_) -> true
+  | _ -> false;;
+
+let la_carta_especial c =
+  match c with
+  | ("S",6) -> "ID"
+  | ("S",5) -> "SWAP"
+  | ("S",4) -> "MAX"
+  | ("S",3) -> "MIN"
+  | ("S",2) -> "TOP"
+  | ("S",1) -> "PAR"
+  | _       -> "";;
