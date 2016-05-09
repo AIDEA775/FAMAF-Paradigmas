@@ -16,6 +16,13 @@ let leer_nada unit : unit =
 
 let limpiar unit : unit = print_string "\x1B[2J";;
 
+let set_pos x y =
+  print_string ("\x1b[" ^ string_of_int y ^ ";" ^ string_of_int x ^ "H");;
+
+let titulo unit : unit =
+  set_pos 0 2;
+  print_string "     ={---{--{-{{GUERRA FUNCIONAL}}-}--}---}=\n\n";;
+
 let rec at k = function
   | [] -> assert false
   | [x] -> x (* tiene que ser *)

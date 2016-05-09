@@ -33,7 +33,7 @@ let jugar_especial (j : jugador) (cs : cartas) (c : carta) =
                   let m = poner_cartas j.mazo c in
                   jugador_juega {j with mazo = m} cs
 
-    | "TOP" -> let c = primera_carta cs in 
+    | "TOP" -> let c = primera_carta cs in
                   let cs = sacar_cartas cs c in
                   let m = poner_cartas j.mazo c in
                   jugador_juega {j with mazo = m} cs
@@ -49,10 +49,7 @@ let jugador_imprimir_ronda (j : jugador) : unit =
   | None -> printf ""
   | Some c -> printf "\t%s  %s\n" (j.nombre) (string_of_carta c);;
 
-let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
-  let open Printf in
-  printf "\n\t%s(%d): %s\n\tQue carta vas a jugar %s?\n\n\t\t"
-    (j.nombre) (j.puntos) (string_of_cartas j.mazo) (j.nombre);
+let rec jugar (j : jugador) (cs : cartas) : jugador * cartas =
   let s = leer_palabra() in
   (* sacar carta del mazo cs y guardar en el mazo del jugador
       mazo general -> mazo del jugador -> general * jugador *)
@@ -75,13 +72,20 @@ let rec jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
   in
     let c = carta_of_string j.mazo s in
     match c with
-    | None -> jugador_juega j cs
-    | Some c -> let r = es_especial c  in
+    | None -> print_string "\t  Vuelve a intentar: ";
+              jugar j cs
+    | Some c -> jugar_comun j cs c;;
                 match r with
                 | true -> jugar_especial j cs c
-                | false -> jugar_comun j cs c;;
-
+                | false -> jugar j cs;;
   (* juega carta especial y luego juega una comun *)
+
+let jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
+  let open Printf in
+  set_pos 0 11;
+  printf "\t%s(%d): %s\n\tQue carta vas a jugar %s? "
+    (j.nombre) (j.puntos) (string_of_cartas j.mazo) (j.nombre);
+  jugar j cs;;
 
 let jugador_carta_jugada (j : jugador) : carta =
   match j.mano with

@@ -6,6 +6,10 @@ val leer_nada : unit -> unit
 
 val limpiar : unit -> unit
 
+val set_pos : int -> int -> unit
+
+val titulo : unit -> unit
+
 val at : int -> 'a list -> 'a
 
 val insert : 'a -> int -> 'a list -> 'a list

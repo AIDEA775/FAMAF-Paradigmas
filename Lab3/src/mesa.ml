@@ -10,12 +10,17 @@ let crear_mesa unit : mesa =
   let rec cargar_jugadores (i : int) (cs : cartas) : jugador list * cartas =
     match i with
     | 0 -> ([], cs)
-    | _ ->  limpiar();
-            printf "  Ingrese el nombre del jugador o EXIT para comenzar el juego:\n\n\t";
+    | _ ->  titulo();
+            set_pos 0 4;
+            printf "\tIngrese el nombre del jugador\n\t EXIT para comenzar el juego:";
+            set_pos 12 (12-i);
             let nombre = leer_palabra() in
             match nombre with
             | "EXIT" -> ([], cs)
-            | _ ->  let j, cs = crear_jugador nombre cs in
+            | _ ->  limpiar();
+                    set_pos 0 (12-i);
+                    printf "  JOIN >>> %s" nombre;
+                    let j, cs = crear_jugador nombre cs in
                     let js, cs = cargar_jugadores (i-1) cs in
                     (List.append js [j], cs)
   in
@@ -28,6 +33,7 @@ let jugar_ronda (m : mesa) : mesa =
     match i with
     | -1 -> (js, cs)
     | _ ->  limpiar();
+            titulo();
             printf "\tMazo: %d cartas\n\tRonda:\n" (cartas_cantidad cs);
             List.iter jugador_imprimir_ronda (List.rev js);
             let j, cs = jugador_juega (at i js) cs in
@@ -39,7 +45,8 @@ let jugar_ronda (m : mesa) : mesa =
 let ganador_ronda (m : mesa) : mesa =
   let ganador (j : jugador) : jugador =
     limpiar();
-    printf "\tEl jugador %s gano la ronda.\n\n\n\n" (jugador_nombre j);
+    set_pos 0 8;
+    printf "\tEl jugador %s gano la ronda." (jugador_nombre j);
     leer_nada();
     jugador_suma_punto j
   in
@@ -71,8 +78,9 @@ let imprimir_resultados (m : mesa) : unit =
     printf "\t\t%s  %d\n\n" (jugador_nombre j) (jugador_puntos j)
   in
   let js = List.sort (fun x y -> (jugador_puntos x) - (jugador_puntos y)) m.jugadores in
-  printf "\t\tGAME OVER\n\t\tPosiciones:\n\n";
+  limpiar();
+  titulo();
+  set_pos 0 4;
+  printf "\t\tGAME OVER\n\t       Posiciones:\n\n";
   List.iter imprimir js;
-  leer_nada();
-  printf ":)"
-  ;;
+  leer_nada();;
