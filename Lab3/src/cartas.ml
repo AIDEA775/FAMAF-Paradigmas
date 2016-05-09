@@ -64,9 +64,19 @@ let carta_of_string (cs : cartas) (s : string) : carta option =
     end;;
 
 let string_of_carta (c : carta) : string =
+  let especial (n : int) : string =
+    match n with
+    | 6 -> "ID"
+    | 5 -> "SWAP"
+    | 4 -> "MAX"
+    | 3 -> "MIN"
+    | 2 -> "TOP"
+    | 1 -> "PAR"
+    | _ -> assert false
+  in
   let x, y = c in
-  let y = string_of_int y in
-  x ^ y;;
+  if x = "S" then x ^ (especial y)
+  else x ^ (string_of_int y);;
 
 let rec string_of_cartas (cs : cartas) : string =
   match cs with
@@ -144,13 +154,3 @@ let es_especial c =
   match c with
   | ("S",_) -> true
   | _ -> false;;
-
-let la_carta_especial c =
-  match c with
-  | ("S",6) -> "ID"
-  | ("S",5) -> "SWAP"
-  | ("S",4) -> "MAX"
-  | ("S",3) -> "MIN"
-  | ("S",2) -> "TOP"
-  | ("S",1) -> "PAR"
-  | _       -> "";;

@@ -46,6 +46,3 @@ val cartas_pares : cartas -> cartas
 val cartas_cantidad : cartas -> int
 
 val es_especial : carta -> bool
-
-val la_carta_especial : carta -> string
-

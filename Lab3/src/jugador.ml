@@ -13,41 +13,12 @@ let jugador_nombre (j : jugador) : string = j.nombre;;
 
 let jugador_suma_punto (j : jugador) : jugador = {j with puntos = j.puntos + 1};;
 
-let jugar_especial (j : jugador) (cs : cartas) (c : carta) =
-  let str = la_carta_especial(c) in 
-    match str with
-    | "ID" ->  let m = sacar_cartas j.mazo c in
-                  let cs, m = robar cs m in
-                  jugador_juega{j with mazo = m} cs
-
-    | "SWAP" -> jugador_juega {j with mazo = cs} m
-
-    | "MAX" -> let max = carta_maxima cs in
-                 let cs = sacar_cartas cs max in
-                 let m = poner_cartas m max in
-                 jugador_juega {j with mazo = m} cs
-
-    | "MIN" -> let min = carta_minima j.mazo in
-                  let cs = poner_cartas cs min in
-                  let c = sacar_cartas cs in
-                  let m = poner_cartas j.mazo c in
-                  jugador_juega {j with mazo = m} cs
-
-    | "TOP" -> let c = primera_carta cs in
-                  let cs = sacar_cartas cs c in
-                  let m = poner_cartas j.mazo c in
-                  jugador_juega {j with mazo = m} cs
-
-    | "PAR" ->let p = cartas_pares cs in
-                  let cs = sacar_cartas cs p in
-                  let m = poner_cartas p j.mazo in
-                  jugador_juega {j with mazo = m} cs;;
-
 let jugador_imprimir_ronda (j : jugador) : unit =
   let open Printf in
   match j.mano with
   | None -> printf ""
   | Some c -> printf "\t%s  %s\n" (j.nombre) (string_of_carta c);;
+
 
 let rec jugar (j : jugador) (cs : cartas) : jugador * cartas =
   let s = leer_palabra() in
@@ -63,6 +34,43 @@ let rec jugar (j : jugador) (cs : cartas) : jugador * cartas =
                 let m = poner_cartas m [c] in
                 (cs, m)
   in
+  let jugar_especial (j : jugador) (cs : cartas) (c : carta) : jugador * cartas =
+    let s = string_of_carta c in
+    let m = sacar_cartas j.mazo [c] in
+      match s with
+      | "ID" -> let cs, m = robar cs m in
+                jugar {j with mazo = m} cs
+
+      | "SWAP" -> let cs, m = robar m cs in (* m es el nuevo mazo general *)
+                  jugar {j with mazo = m} cs
+
+      | "MAX" -> begin
+                 let max = carta_maxima cs in
+                 match max with
+                 | None -> jugar j cs (* no quedan cartas en el mazo general *)
+                 | Some max -> let cs = sacar_cartas cs [max] in
+                               let m = poner_cartas m [max] in
+                               jugar {j with mazo = m} cs
+                 end
+
+      | "MIN" ->  begin
+                  let min = carta_minima m in
+                  match min with
+                  | None -> jugar j cs (* no le quedan mas cartas comunes *)
+                  | Some min -> let cs = poner_cartas cs [min] in
+                                let cs, m = robar cs, m in
+                                jugar {j with mazo = m} cs
+                  end
+
+      | "TOP" ->  let cs, m = robar cs m in
+                  let cs, m = robar cs m in
+                  jugar {j with mazo = m} cs
+
+      | "PAR" ->  let p = cartas_pares cs in
+                  let cs = sacar_cartas cs p in
+                  let m = poner_cartas m p in
+                  jugar {j with mazo = m} cs
+  in
   let jugar_comun (j : jugador) (cs : cartas) (c : carta) : jugador * cartas =
     (* tirar carta *)
     let m = sacar_cartas j.mazo [c] in
@@ -70,15 +78,12 @@ let rec jugar (j : jugador) (cs : cartas) : jugador * cartas =
     let cs, m = robar cs m in
     ({j with mano = (Some c); mazo = m}, cs)
   in
-    let c = carta_of_string j.mazo s in
-    match c with
-    | None -> print_string "\t  Vuelve a intentar: ";
-              jugar j cs
-    | Some c -> jugar_comun j cs c;;
-                match r with
-                | true -> jugar_especial j cs c
-                | false -> jugar j cs;;
-  (* juega carta especial y luego juega una comun *)
+  let c = carta_of_string j.mazo s in
+  match c with
+  | None -> print_string "\t  Vuelve a intentar: ";
+            jugar j cs
+  | Some c -> if es_especial c then jugar_especial j cs c
+              else jugar_comun j cs c;;
 
 let jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
   let open Printf in
