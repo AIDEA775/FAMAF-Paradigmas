@@ -38,38 +38,35 @@ let rec jugar (j : jugador) (cs : cartas) : jugador * cartas =
     let s = string_of_carta c in
     let m = sacar_cartas j.mazo [c] in
       match s with
-      | "ID" -> let cs, m = robar cs m in
+      | "SID" -> let cs, m = robar cs m in
                 jugar {j with mazo = m} cs
 
-      | "SWAP" -> let cs, m = robar m cs in (* m es el nuevo mazo general *)
+      | "SSWAP" -> let cs, m = robar m cs in (* m es el nuevo mazo general *)
                   jugar {j with mazo = m} cs
 
-      | "MAX" -> begin
-                 let max = carta_maxima cs in
-                 match max with
+      | "SMAX" -> let max = carta_maxima cs in
+                 (match max with
                  | None -> jugar j cs (* no quedan cartas en el mazo general *)
                  | Some max -> let cs = sacar_cartas cs [max] in
                                let m = poner_cartas m [max] in
-                               jugar {j with mazo = m} cs
-                 end
+                               jugar {j with mazo = m} cs)
 
-      | "MIN" ->  begin
-                  let min = carta_minima m in
-                  match min with
+      | "SMIN" ->  let min = carta_minima m in
+                  (match min with
                   | None -> jugar j cs (* no le quedan mas cartas comunes *)
                   | Some min -> let cs = poner_cartas cs [min] in
-                                let cs, m = robar cs, m in
-                                jugar {j with mazo = m} cs
-                  end
+                                let cs, m = robar cs m in
+                                jugar {j with mazo = m} cs)
 
-      | "TOP" ->  let cs, m = robar cs m in
+      | "STOP" ->  let cs, m = robar cs m in
                   let cs, m = robar cs m in
                   jugar {j with mazo = m} cs
 
-      | "PAR" ->  let p = cartas_pares cs in
+      | "SPAR" ->  let p = cartas_pares cs in
                   let cs = sacar_cartas cs p in
                   let m = poner_cartas m p in
                   jugar {j with mazo = m} cs
+      | _ -> assert false
   in
   let jugar_comun (j : jugador) (cs : cartas) (c : carta) : jugador * cartas =
     (* tirar carta *)
