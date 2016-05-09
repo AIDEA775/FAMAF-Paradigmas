@@ -95,9 +95,20 @@ and jugar_especial (j : jugador) (cs : cartas) (c : carta) : jugador * cartas =
   | _ -> assert false;;
 
 let jugador_juega (j : jugador) (cs : cartas) : jugador * cartas =
-  imprimir_estado j;
-  Printf.printf "\tQue carta vas a jugar %s? " (j.nombre);
-  jugar j cs;;
+  if cartas_cantidad j.mazo = 0 then
+    begin
+      limpiar();
+      set_pos 0 8;
+      Printf.printf "\tEl jugador %s ya no tiene cartas." j.nombre;
+      (j,cs)
+    end
+  else
+  begin
+    imprimir_estado j;
+    Printf.printf "\tQue carta vas a jugar %s? " (j.nombre);
+    jugar j cs
+  end;;
+
 
 let jugador_carta_jugada (j : jugador) : carta =
   match j.mano with
