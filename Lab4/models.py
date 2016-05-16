@@ -23,4 +23,11 @@ class Feed(flask_db.Model):
     url = CharField()
     description = CharField()
 
+class Post(flask_db.Model):
+    id = PrimaryKeyField()
+    title = CharField(null=True)
 
+class Tag(flask_db.Model):
+    id = PrimaryKeyField()
+    tag = CharField(null=True)
+    post = ForeignKeyField(Post, related_name="feeds")
