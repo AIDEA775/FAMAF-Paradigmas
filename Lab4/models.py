@@ -23,6 +23,10 @@ class Feed(flask_db.Model):
     url = CharField()
     description = CharField()
 
+
+
+
+
 class Post(flask_db.Model):
     id = PrimaryKeyField()
     title = CharField(null=True)

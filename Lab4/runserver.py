@@ -3,10 +3,34 @@ from peewee import *
 from playhouse.flask_utils import get_object_or_404
 from app import app, flask_db, database
 from models import User, Feed, Post, Tag
+from auth import *
+
+@app.route("/login/<provider>")
+def login(provider):
+    if (provider == "github"):
+        user = login_github()
+    elif (provider == "google"):
+        return login_google()
+
+    import ipdb; ipdb.set_trace()
+    if user != None:
+        return render_template('index.html', current_user=user)
+    else:
+        return '<h1>Access denied!!</h1>'
 
 @app.route("/")
 def hello():
-    return "Hello World"
+    return render_template("login.html")
+
+@app.route("/index")
+def index():
+    return "El index papia!"
+
+@app.route("/new-feed")
+def new_feed():
+    return "aca crear un nuevo feed ameo"
+
+
 
 @app.route("/create/<title>")
 def create(title):
@@ -33,5 +57,5 @@ def hello_template(name):
     return render_template("index.html", name=name)
 
 if __name__=="__main__":
-    database.create_tables([Post, Tag], safe=True)
+    database.create_tables([User, Feed], safe=True)
     app.run()
