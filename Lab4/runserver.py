@@ -24,7 +24,7 @@ def hello():
 
 @app.route("/index")
 def index():
-    return "El index papia!"
+    return render_template("login.html")
 
 @app.route("/new-feed")
 def new_feed():
