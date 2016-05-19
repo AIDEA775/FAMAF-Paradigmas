@@ -25,10 +25,15 @@ def start():
 def index():
     return render_template("index.html")
 
-@app.route("/new_feed")
+@app.route("/new_feed", methods=['POST', 'GET'])
 @login_required
 def new_feed():
-    return "aca crear un nuevo feed ameo"
+    if request.method == 'POST':
+        # hacer cosas con los feeds
+        print request.form['feed_url']
+        return redirect(url_for('index'))
+    else:
+        return render_template("newfeed.html")
 
 if __name__=="__main__":
     database.create_tables([User, Feed], safe=True)

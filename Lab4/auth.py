@@ -55,3 +55,7 @@ def logout():
     logout_user()
     session.pop('github_token', None)
     return redirect(url_for('start'))
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return "<h2>WARNING! ACCESS DENIED. Papa noel fue avisado!</h2>"
