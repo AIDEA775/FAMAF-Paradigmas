@@ -1,5 +1,6 @@
 from flask import Flask
 from playhouse.flask_utils import FlaskDB
+from flask.ext.login import LoginManager, UserMixin
 import settings
 
 
