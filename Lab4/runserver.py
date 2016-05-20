@@ -36,31 +36,30 @@ def new_feed():
         fd = Feed.create(
             user = current_user.id,
             title = f.feed.title,
-            url = f.feed.link,
+            url = feedurl,
             description = f.feed.description)
         return redirect(url_for('index'))
     else:
         return render_template("newfeed.html")
+
 @app.route("/delete_feed/<feed>")
 @login_required
 def delete_feed(feed):
     try:
         fd = Feed.get(Feed.id == feed, Feed.user == current_user.id)
+        fd.delete_instance()
+        return redirect(url_for('index'))
     except Feed.DoesNotExist:
-        fd = None
         return "feed no valido"
-
-    fd.delete_instance()
-    return redirect(url_for('index'))
 
 @app.route("/rss/<feed>")
 @login_required
 def rss(feed):
     try:
-        fd = Feed.get(Feed.id == feed, Feed.user == current_user.id)
-        return render_template("rss.html", feed=fd)
+        return render_template("rss.html",
+        feed=Feed.get(Feed.id == feed, Feed.user == current_user.id),
+        entries=feedparser.parse(fd.url).entries)
     except Feed.DoesNotExist:
-        fd = None
         return "feed no valido"
 
 if __name__=="__main__":
