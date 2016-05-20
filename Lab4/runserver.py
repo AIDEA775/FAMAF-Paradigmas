@@ -50,7 +50,7 @@ def delete_feed(feed):
         fd.delete_instance()
         return redirect(url_for('index'))
     except Feed.DoesNotExist:
-        return "feed no valido"
+        return redirect(url_for('index'))
 
 @app.route("/rss/<feed>")
 @login_required
@@ -61,7 +61,7 @@ def rss(feed):
         feed=fd,
         entries=feedparser.parse(fd.url).entries)
     except Feed.DoesNotExist:
-        return "feed no valido"
+        return redirect(url_for('index'))
 
 if __name__=="__main__":
     database.create_tables([User, Feed], safe=True)
