@@ -44,11 +44,19 @@ def new_feed():
 @app.route("/delete_feed/<feed>")
 @login_required
 def delete_feed(feed):
-    pass
+    try:
+        fd = Feed.get(Feed.id == feed, Feed.user == True)
+    except Feed.DoesNotExist:
+        fd = None
+        return "feed no valido"
+
+    fd.delete_instance()
+    return redirect(url_for('index'))
 
 @app.route("/rss/<feed>")
 @login_required
 def rss(feed):
+
     pass
 
 if __name__=="__main__":
