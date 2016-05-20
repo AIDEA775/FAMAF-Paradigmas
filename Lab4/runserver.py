@@ -56,8 +56,9 @@ def delete_feed(feed):
 @login_required
 def rss(feed):
     try:
+        fd = Feed.get(Feed.id == feed, Feed.user == current_user.id)
         return render_template("rss.html",
-        feed=Feed.get(Feed.id == feed, Feed.user == current_user.id),
+        feed=fd,
         entries=feedparser.parse(fd.url).entries)
     except Feed.DoesNotExist:
         return "feed no valido"
