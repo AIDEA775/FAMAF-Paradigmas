@@ -45,7 +45,7 @@ def new_feed():
 @login_required
 def delete_feed(feed):
     try:
-        fd = Feed.get(Feed.id == feed, Feed.user == True)
+        fd = Feed.get(Feed.id == feed, Feed.user == current_user.id)
     except Feed.DoesNotExist:
         fd = None
         return "feed no valido"
@@ -56,8 +56,12 @@ def delete_feed(feed):
 @app.route("/rss/<feed>")
 @login_required
 def rss(feed):
-
-    pass
+    try:
+        fd = Feed.get(Feed.id == feed, Feed.user == current_user.id)
+        return render_template("rss.html", feed=fd)
+    except Feed.DoesNotExist:
+        fd = None
+        return "feed no valido"
 
 if __name__=="__main__":
     database.create_tables([User, Feed], safe=True)
