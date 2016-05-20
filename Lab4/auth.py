@@ -30,7 +30,6 @@ def login_google():
 def authorized():
     resp = github.authorized_response()
     if resp is None:
-        flask.flash("authorized: resp es igual a None")
         return redirect(url_for('start'))
     session['github_token'] = (resp['access_token'], '')
     dat = github.get('user')
