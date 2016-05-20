@@ -5,6 +5,7 @@ from app import app, flask_db, database
 from models import User, Feed
 from flask.ext.login import current_user
 from auth import *
+import feedparser
 
 @app.route("/login/<provider>")
 def login(provider):
@@ -30,10 +31,25 @@ def index():
 def new_feed():
     if request.method == 'POST':
         # hacer cosas con los feeds
-        print request.form['feed_url']
+        feedurl = request.form['feed_url']
+        f = feedparser.parse(feedurl)
+        fd = Feed.create(
+            user = current_user.id,
+            title = f.feed.title,
+            url = f.feed.link,
+            description = f.feed.description)
         return redirect(url_for('index'))
     else:
         return render_template("newfeed.html")
+@app.route("/delete_feed/<feed>")
+@login_required
+def delete_feed(feed):
+    pass
+
+@app.route("/rss/<feed>")
+@login_required
+def rss(feed):
+    pass
 
 if __name__=="__main__":
     database.create_tables([User, Feed], safe=True)
