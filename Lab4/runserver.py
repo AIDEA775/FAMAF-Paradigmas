@@ -1,7 +1,6 @@
-from flask import render_template, abort
+from flask import render_template, request
 from peewee import *
-from playhouse.flask_utils import get_object_or_404
-from app import app, flask_db, database
+from app import app, database
 from models import User, Feed
 from flask.ext.login import current_user
 from auth import *
@@ -16,10 +15,10 @@ def login(provider):
 
 @app.route("/")
 def start():
-    if not current_user.is_anonymous:
-        return redirect(url_for('index'))
-    else:
+    if current_user.is_anonymous:
         return render_template("login.html")
+    else:
+        return redirect(url_for('index'))
 
 @app.route("/index")
 @login_required
@@ -30,15 +29,16 @@ def index():
 @login_required
 def new_feed():
     if request.method == 'POST':
-        # hacer cosas con los feeds
         feedurl = request.form['feed_url']
         f = feedparser.parse(feedurl)
-        fd = Feed.create(
-            user = current_user.id,
-            title = f.feed.title,
-            url = feedurl,
-            description = f.feed.description)
-        return redirect(url_for('index'))
+        if ('title' in f.feed and 'description' in f.feed):
+            Feed.create(
+                user = current_user.id,
+                title = f.feed.title,
+                url = feedurl,
+                description = f.feed.description)
+            return redirect(url_for('index'))
+        return render_template("newfeed.html")
     else:
         return render_template("newfeed.html")
 
@@ -58,8 +58,8 @@ def rss(feed):
     try:
         fd = Feed.get(Feed.id == feed, Feed.user == current_user.id)
         return render_template("rss.html",
-        feed=fd,
-        entries=feedparser.parse(fd.url).entries)
+            feed=fd,
+            entries=feedparser.parse(fd.url).entries)
     except Feed.DoesNotExist:
         return redirect(url_for('index'))
 

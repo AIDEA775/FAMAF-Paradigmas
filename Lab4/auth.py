@@ -1,8 +1,8 @@
-from flask import Flask, redirect, url_for, session, request
+from flask import redirect, url_for, session
 from flask_oauthlib.client import OAuth
 from flask.ext.login import LoginManager, UserMixin, login_required, logout_user, login_user
 from app import app
-from models import User, Feed
+from models import User
 
 oauth = OAuth(app)
 login_manager = LoginManager()
