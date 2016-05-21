@@ -8,6 +8,7 @@ from peewee import *
 class AnonymousUser(AnonymousUserMixin):
     pass
 
+
 class User(flask_db.Model, UserMixin):
     id = PrimaryKeyField()
     social_id = CharField(null=False, unique=True)
