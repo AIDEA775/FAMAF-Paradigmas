@@ -13,6 +13,13 @@ def login(provider):
     elif (provider == "google"):
         return login_google()
 
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    session.pop('github_token', None)
+    return redirect(url_for('start'))
+
 @app.route("/")
 def start():
     if current_user.is_anonymous:
@@ -62,6 +69,10 @@ def rss(feed):
             entries=feedparser.parse(fd.url).entries)
     except Feed.DoesNotExist:
         return redirect(url_for('index'))
+
+@app.errorhandler(404)
+def not_found(exc):
+    return render_template("notfound.html"), 404
 
 if __name__=="__main__":
     database.create_tables([User, Feed], safe=True)

@@ -1,4 +1,4 @@
-from flask import redirect, url_for, session
+from flask import redirect, url_for, session, abort
 from flask_oauthlib.client import OAuth
 from flask.ext.login import LoginManager, UserMixin, login_required, logout_user, login_user
 from app import app
@@ -46,15 +46,12 @@ def get_github_oauth_token():
 
 @login_manager.user_loader
 def load_user(uid):
-    return User.get(User.id == uid)
-
-@app.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    session.pop('github_token', None)
-    return redirect(url_for('start'))
+    try:
+        return User.get(User.id == uid)
+    except User.DoesNotExist:
+        session.clear()
+        return AnonymousUser()
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    return "<h2>WARNING! ACCESS DENIED. Papa noel fue avisado!</h2>"
+    return abort(404)
