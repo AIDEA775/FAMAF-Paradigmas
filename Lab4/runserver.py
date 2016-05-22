@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from peewee import *
 from app import app, database
 from models import User, Feed
@@ -71,15 +71,16 @@ def new_feed():
         return render_template("newfeed.html")
 
 
-@app.route("/delete_feed/<feed>")
+@app.route("/delete_feed", methods=['POST'])
 @login_required
-def delete_feed(feed):
+def delete_feed():
+    feed = request.form['feed']
     try:
         fd = Feed.get(Feed.id == feed, Feed.user == current_user.id)
         fd.delete_instance()
-        return redirect(url_for('index'))
+        return jsonify(status='OK')
     except Feed.DoesNotExist:
-        return redirect(url_for('index'))
+        return jsonify(status='FAIL')
 
 
 @app.route("/rss/<feed>")
