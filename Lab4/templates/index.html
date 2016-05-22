@@ -1,69 +1,76 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('.btn-danger').each(function(){
-            $(this).click(function(){
-                var remove = '#feed_'+$(this).attr('id');
-                $.post('/delete_feed', {
-                   feed: $(this).attr('id')
-               }).done(function(data) {
-                   if (data['status'] == 'OK') {
-                       $(remove).slideUp(400);
-                   } else {
-                       alert("Invalid Feed.")
-                   }
-               }).fail(function() {
-                   alert("Could not contact server.")
-               });
-            });
-        });
-    });
-    </script>
 
-    <div class="main-header" name="index">
-      <h1 class="main-title">Welcome to your feed {{ current_user.nickname }}!</h1>
-      <p class="lead main-description">Choose a source to see the news</p>
-    </div>
-
-    <div class="row">
-
-      <div class="col-md-10 col-md-offset-1" name="index">
-        {% if message %}
-            <div class="alert alert-{{ message_level }}" role="alert">{{ message }}</div>
-        {% endif %}
-        <ul class="list-group">
-          {% for feed in current_user.feeds %}
-              <li class="list-group-item" id="feed_{{feed.id}}">
-                <a class="badge btn-danger" id={{feed.id}}>
-                  <i class="fa fa-trash-o"></i>
-                </a>
-                <a href="{{ url_for('rss', feed=feed.id) }}"><h4 class="list-group-item-heading">{{ feed.title }}</h4></a>
-                <p class="list-group-item-text">{{ feed.description }}</p>
-              </li>
-          {% endfor %}
-          <li class="list-group-item list-group-item-success text-center">
-             <a class="text-success" href=# id="newfeed"><i class="fa fa-plus fa-lg"></i> Add New Feed</a>
-          </li>
-        </ul>
-
-      </div>
-    </div><!-- /.row -->
-
+  {% block extra_scripts %}
+  <script>
+  function index_fade() {
+      $("#index1").delay(200).fadeOut(400);
+      $("#index2").fadeOut(400);
+  }
+  </script>
 
   <script>
   $(document).ready(function() {
-      $('a#newfeed').click(function(){
-        $("div[name='index']").slideUp(800);
-        $.get('/new_feed', function(html) {
-          $('#reserved_for_newfeed').empty().hide().append(html);
-          $('#reserved_for_newfeed').delay(600).fadeIn(400);
+    $('.btn-danger').each(function(){
+      $(this).click(function(){
+        var remove = '#feed_'+$(this).attr('id');
+        $.post('/delete_feed', {
+          feed: $(this).attr('id')
+        }).done(function(data) {
+          if (data['status'] == 'OK') {
+            $(remove).slideUp(400);
+          } else {
+            alert("Invalid Feed.")
+          }
+        }).fail(function() {
+          alert("Could not contact server.")
         });
       });
+    });
   });
   </script>
+
+  <script>
+  $(document).ready(function() {
+    $('a#newfeed').click(function(){
+      index_fade();
+      $.get('/new_feed', function(html) {
+        $('#reserved_for_newfeed').empty().hide().append(html);
+        $('#reserved_for_newfeed').delay(600).fadeIn(400);
+      });
+    });
+  });
+  </script>
+
+  {% endblock %}
+
+  <div class="main-header" id="index1">
+    <h1 class="main-title">Welcome to your feed {{ current_user.nickname }}!</h1>
+    <p class="lead main-description">Choose a source to see the news</p>
+  </div>
+
+  <div class="row" id="index2">
+    <div class="col-md-10 col-md-offset-1">
+      {% if message %}
+        <div class="alert alert-{{ message_level }}" role="alert">{{ message }}</div>
+      {% endif %}
+      <ul class="list-group">
+        {% for feed in current_user.feeds %}
+          <li class="list-group-item" id="feed_{{feed.id}}">
+            <a class="badge btn-danger" id={{feed.id}}>
+              <i class="fa fa-trash-o"></i>
+            </a>
+            <a href="{{ url_for('rss', feed=feed.id) }}"><h4 class="list-group-item-heading">{{ feed.title }}</h4></a>
+            <p class="list-group-item-text">{{ feed.description }}</p>
+          </li>
+        {% endfor %}
+        <li class="list-group-item list-group-item-success text-center">
+           <a class="text-success" href=# id="newfeed"><i class="fa fa-plus fa-lg"></i> Add New Feed</a>
+        </li>
+      </ul>
+    </div>
+  </div><!-- /.row -->
 
   <div id='reserved_for_newfeed'>
   </div>

@@ -1,16 +1,26 @@
+{% block content %}
 
 <script>
 $(document).ready(function() {
-    $('#newfeedsubmit').click(function(){
-      $(":hidden").slideDown(800);
-      $("div[name='newfeed']").fadeOut(400);
+  $('#newfeedsubmit').click(function(){
+    $.post("/new_feed", {
+      feed_url: $("#feed_url").val()
+    }).done(function(data) {
+      if (data['status'] == 'OK') {
+        $("div[name='newfeed']").fadeOut(400);
+        window.location.replace("/index");
+      } else {
+        alert("Invalid Feed.")
+      }
+    }).fail(function() {
+      alert("Could not contact server.")
     });
+  });
 });
 </script>
 
-
 <div class="main-header" name="newfeed">
-    <h1 class="main-title">Add a new feed!</h1>
+  <h1 class="main-title">Add a new feed!</h1>
 </div>
 
 <div class="row" name="newfeed">
@@ -33,3 +43,5 @@ $(document).ready(function() {
     </form>
     </div>
 </div><!-- /.row -->
+
+{% endblock %}

@@ -65,8 +65,8 @@ def new_feed():
                 title=f.feed.title,
                 url=feedurl,
                 description=f.feed.description)
-            return redirect(url_for('index'))
-        return render_template("newfeed.html")
+            return jsonify(status='OK')
+        return jsonify(status='FAIL')
     else:
         return render_template("newfeed.html")
 
