@@ -23,14 +23,14 @@
     });
     </script>
 
-    <div class="main-header">
+    <div class="main-header" name="index">
       <h1 class="main-title">Welcome to your feed {{ current_user.nickname }}!</h1>
       <p class="lead main-description">Choose a source to see the news</p>
     </div>
 
     <div class="row">
 
-      <div class="col-md-10 col-md-offset-1">
+      <div class="col-md-10 col-md-offset-1" name="index">
         {% if message %}
             <div class="alert alert-{{ message_level }}" role="alert">{{ message }}</div>
         {% endif %}
@@ -45,7 +45,7 @@
               </li>
           {% endfor %}
           <li class="list-group-item list-group-item-success text-center">
-             <a class="text-success" href="{{ url_for('new_feed') }}" id="newfeed"><i class="fa fa-plus fa-lg"></i> Add New Feed</a>
+             <a class="text-success" href=# id="newfeed"><i class="fa fa-plus fa-lg"></i> Add New Feed</a>
           </li>
         </ul>
 
@@ -53,5 +53,19 @@
     </div><!-- /.row -->
 
 
+  <script>
+  $(document).ready(function() {
+      $('a#newfeed').click(function(){
+        $("div[name='index']").slideUp(800);
+        $.get('/new_feed', function(html) {
+          $('#reserved_for_newfeed').empty().hide().append(html);
+          $('#reserved_for_newfeed').delay(600).fadeIn(400);
+        });
+      });
+  });
+  </script>
+
+  <div id='reserved_for_newfeed'>
+  </div>
 
 {% endblock %}
