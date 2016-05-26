@@ -20,8 +20,8 @@
     <div class="main-masthead">
         <div class="container">
             <nav class="main-nav">
-                <a class="main-nav-item active" name="button_base" href="{{ url_for('index') }}">Home</a>
-                <a class="main-nav-item" name="button_base" href="{{ url_for('logout') }}">Log Out</a>
+                <a class="main-nav-item active" href="{{ url_for('index') }}">Home</a>
+                <a class="main-nav-item" href="{{ url_for('logout') }}">Log Out</a>
             </nav>
         </div>
     </div>
@@ -34,6 +34,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.2.3.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     <script>
+        // Efecto fade cada vez que se carga la pag
         $("div[name=container_fade]").hide();
         $(document).ready(function() {
             $("div[name=container_fade]").fadeIn(400);

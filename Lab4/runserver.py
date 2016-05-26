@@ -7,6 +7,14 @@ from auth import *
 import feedparser
 
 
+@app.route("/")
+def main():
+    if current_user.is_anonymous:
+        return render_template("login.html")
+    else:
+        return redirect(url_for('index'))
+
+
 @app.route("/login/<provider>")
 def login(provider):
     if not current_user.is_anonymous:
@@ -22,7 +30,7 @@ def callback(provider):
     oauth = SignIn.get_provider(provider)
     social_id, username, email = oauth.callback()
     if social_id is None:
-        return redirect(url_for('start'))
+        return redirect(url_for('main'))
     user, _ = User.get_or_create(
         social_id=social_id,
         nickname=username,
@@ -36,15 +44,7 @@ def callback(provider):
 def logout():
     logout_user()
     session.pop('github_token', None)
-    return redirect(url_for('start'))
-
-
-@app.route("/")
-def start():
-    if current_user.is_anonymous:
-        return render_template("login.html")
-    else:
-        return redirect(url_for('index'))
+    return redirect(url_for('main'))
 
 
 @app.route("/index")
@@ -53,22 +53,19 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/new_feed", methods=['POST', 'GET'])
+@app.route("/new_feed", methods=['POST'])
 @login_required
 def new_feed():
-    if request.method == 'POST':
-        feedurl = request.form['feed_url']
-        f = feedparser.parse(feedurl)
-        if ('title' in f.feed and 'description' in f.feed):
-            Feed.create(
-                user=current_user.id,
-                title=f.feed.title,
-                url=feedurl,
-                description=f.feed.description)
-            return jsonify(status='OK')
-        return jsonify(status='FAIL')
-    else:
-        return render_template("newfeed.html")
+    feedurl = request.form['feed_url']
+    f = feedparser.parse(feedurl)
+    if ('title' in f.feed and 'description' in f.feed):
+        Feed.create(
+            user=current_user.id,
+            title=f.feed.title,
+            url=feedurl,
+            description=f.feed.description)
+        return jsonify(status='OK')
+    return jsonify(status='FAIL')
 
 
 @app.route("/delete_feed", methods=['POST'])

@@ -4,9 +4,8 @@
 
   {% block extra_scripts %}
   <script>
-  function index_fade() {
-      $("#index1").delay(200).fadeOut(400);
-      $("#index2").fadeOut(400);
+  function display_feed_error(msg) {
+    $("#newfeed_error").empty().hide().append("<strong>Error! </strong>"+msg).fadeIn(400);
   }
   </script>
 
@@ -33,11 +32,28 @@
 
   <script>
   $(document).ready(function() {
-    $('a#newfeed').click(function(){
-      index_fade();
-      $.get('/new_feed', function(html) {
-        $('#reserved_for_newfeed').empty().hide().append(html);
-        $('#reserved_for_newfeed').delay(600).fadeIn(400);
+    $('a#newfeedbutton').click(function(){
+      $("#index1").delay(200).fadeOut(400);
+      $("#index2").fadeOut(400);
+      $('div[name=newfeed]').delay(600).fadeIn(400);
+    });
+  });
+  </script>
+
+  <script>
+  $(document).ready(function() {
+    $('#newfeedsubmit').click(function(){
+      $.post("/new_feed", {
+        feed_url: $("#feed_url").val()
+      }).done(function(data) {
+        if (data['status'] == 'OK') {
+          $("div[name='newfeed']").fadeOut(400);
+          window.location.replace("/index");
+        } else {
+          display_feed_error("Invalid Feed");
+        }
+      }).fail(function() {
+        display_feed_error("Could not contact server");
       });
     });
   });
@@ -59,20 +75,40 @@
         {% for feed in current_user.feeds %}
           <li class="list-group-item" id="feed_{{feed.id}}">
             <a class="badge btn-danger" id={{feed.id}}>
-              <i class="fa fa-trash-o"></i>
+              <i class="fa fa-times"></i>
             </a>
             <a href="{{ url_for('rss', feed=feed.id) }}"><h4 class="list-group-item-heading">{{ feed.title }}</h4></a>
             <p class="list-group-item-text">{{ feed.description }}</p>
           </li>
         {% endfor %}
         <li class="list-group-item list-group-item-success text-center">
-           <a class="text-success" href=# id="newfeed"><i class="fa fa-plus fa-lg"></i> Add New Feed</a>
+           <a class="text-success" href=# id="newfeedbutton"><i class="fa fa-plus fa-lg"></i> Add New Feed</a>
         </li>
       </ul>
     </div>
   </div><!-- /.row -->
 
-  <div id='reserved_for_newfeed'>
+  <div class="main-header" name="newfeed" style='display:none;'>
+    <h1 class="main-title">Add a new feed!</h1>
   </div>
+
+  <div class="row" name="newfeed" style='display:none;'>
+    <div class="col-md-8 col-md-offset-1">
+      <div class="alert alert-danger" id="newfeed_error" style="display:none;" role="alert"></div>
+      <form class="form-horizontal" method="post">
+        <div class="form-group">
+          <label for="feed_url" class="col-sm-2 control-label">URL</label>
+          <div class="col-sm-10">
+            <input type="url" class="form-control" id="feed_url" placeholder="Feed URL">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button id="newfeedsubmit" type="button" class="btn btn-primary">Add Feed</button>
+          </div>
+        </div>
+      </form>
+      </div>
+  </div><!-- /.row -->
 
 {% endblock %}
