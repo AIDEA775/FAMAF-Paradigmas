@@ -33,6 +33,17 @@ google = oauth.remote_app(
     authorize_url='https://accounts.google.com/o/oauth2/auth',
 )
 
+dropbox = oauth.remote_app(
+    'dropbox',
+    consumer_key='rzgoghd4x1b6c6t',
+    consumer_secret='re6mwc291hsd53b',
+    request_token_params={},
+    base_url='https://www.dropbox.com/1/',
+    request_token_url=None,
+    access_token_method='POST',
+    access_token_url='https://api.dropbox.com/1/oauth2/token',
+    authorize_url='https://www.dropbox.com/1/oauth2/authorize',
+)
 
 class SignIn(object):
     providers = None
@@ -53,10 +64,10 @@ class SignIn(object):
         id = "{}${}".format(self.provider_name, dat.data['id'])
         return (id, dat.data['name'], dat.data['email'])
 
+
     def get_callback_url(self):
         return url_for('callback', provider=self.provider_name,
                        _external=True)
-
     @classmethod
     def get_provider(self, provider_name):
         if self.providers is None:
@@ -78,6 +89,20 @@ class GoogleSignIn(SignIn):
         super(GoogleSignIn, self).__init__('google', 'userinfo')
         self.service = google
 
+class DropboxSignIn(SignIn):
+    def __init__(self):
+        super(DropboxSignIn, self).__init__('dropbox', 'account/info')
+        self.service = dropbox
+
+    def callback(self):
+        resp = self.service.authorized_response()
+        if resp is None:
+            return (None, None, None)
+        session[self.provider_name + "_token"] = (resp['access_token'], '')
+        dat = self.service.get(self.get_info)
+        id = "{}${}".format(self.provider_name, dat.data['uid'])
+        return (id, dat.data['display_name'], dat.data['email'])
+
 
 @github.tokengetter
 def get_github_oauth_token():
@@ -88,6 +113,9 @@ def get_github_oauth_token():
 def get_google_oauth_token():
     return session.get('google_token')
 
+@dropbox.tokengetter
+def get_dropbox_oauth_token():
+    return session.get('dropbox_token')
 
 @login_manager.user_loader
 def load_user(uid):
