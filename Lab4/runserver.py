@@ -58,10 +58,11 @@ def index():
 def new_feed():
     feedurl = request.form['feed_url']
     f = feedparser.parse(feedurl)
-    try:
-        title = f.feed.title
-    except AttributeError:
+    if f.bozo == 1:
         return jsonify(status='FAIL')
+    if not 'title' in f.feed:
+        return jsonify(status='FAIL')
+    title = f.feed.title
     try:
         description = f.feed.description
     except AttributeError:
