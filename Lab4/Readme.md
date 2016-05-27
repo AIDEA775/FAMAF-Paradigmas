@@ -5,14 +5,14 @@
 tipo de feed RSS.**
 
 ### La primera impresión
-Partimos del ejemplo (pastebin) que dejó Cristian, a partir de ahí agregamos cosas hasta que el **AleRSS** comenzó a andar solo con la autenticacion a traves de github. En ese momento, refactorizamos el Auth para soportar mas proveedores modularmente (clase SignIn). Tambien nos entretuvimos mucho tiempo jugando con el HTML, jQuery y JavaScrip, por lo que cambiamos muchas cosas.
+Partimos del ejemplo (pastebin) que dejó Cristian, a partir de ahí agregamos cosas hasta que el **AleRSS** comenzó a andar solo con la autenticacion a traves de github. Luego tuvimos que refactorizar el Auth para soportar mas proveedores (clase SignIn). Tambien nos entretuvimos mucho tiempo jugando con el HTML, jQuery y JavaScrip, por lo que cambiamos muchas cosas.
 
 ### El autenticador
-Implementamos la clase `SignIn` para evitar repetir codigo parecido. Esta clase define metodos `login()` y `callback()` que dependeran del nombre del proveedor. Tambien definimos objetos `oauth` globales para definir los parametros necesarios para cada proveedor.
+Implementamos la clase **SignIn** con los metodos `login()`, `callback()` y `get_provider()` para usarlos desde *runserver.py* independientemente del proveedor.
 
+Definimos una clase que hereda de `SignIn` por cada proveedor y redefinimos metodos en caso que necesitemos. Definimos objetos `oauth` con los parametros necesarios para cada proveedor.
 
-Definimos una clase por cada proveedor que hereda de `SignIn`, se redefinen metodos si es necesario.
-
+Los objetos `oauth` en general requieren una `consumer_key` y `consumer_secret` 
 
 Tambien definimos los `tokengetter` que no sabemos que hace, y si un usuario quiere ingresar a una pag que no tiene permisos, levantamos un abort con el codigo 404.
 

@@ -60,6 +60,16 @@
   });
   </script>
 
+  <script>
+  $("input").keypress(function(event) {
+      if (event.which == 13) {
+          alert("hola!");
+          event.preventDefault();
+          return false;
+      }
+  });
+  </script>
+
   {% endblock %}
 
   <div class="main-header" id="index1">

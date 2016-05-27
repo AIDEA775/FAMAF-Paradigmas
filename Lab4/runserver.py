@@ -58,14 +58,20 @@ def index():
 def new_feed():
     feedurl = request.form['feed_url']
     f = feedparser.parse(feedurl)
-    if ('title' in f.feed and 'description' in f.feed):
-        Feed.create(
-            user=current_user.id,
-            title=f.feed.title,
-            url=feedurl,
-            description=f.feed.description)
-        return jsonify(status='OK')
-    return jsonify(status='FAIL')
+    try:
+        title = f.feed.title
+    except AttributeError:
+        return jsonify(status='FAIL')
+    try:
+        description = f.feed.description
+    except AttributeError:
+        description = ""
+    Feed.create(
+        user=current_user.id,
+        title=title,
+        url=feedurl,
+        description=description)
+    return jsonify(status='OK')
 
 
 @app.route("/delete_feed", methods=['POST'])
