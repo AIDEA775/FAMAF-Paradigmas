@@ -60,6 +60,18 @@ linkedin = oauth.remote_app(
     authorize_url='https://www.linkedin.com/uas/oauth2/authorization',
 )
 
+bitbucket = oauth.remote_app(
+    'bitbucket',
+    consumer_key='YuVU8hTZXmbcSfrm7k',
+    consumer_secret=' PXz6BjSqQXF2dDEqet8tGXf8y5aDGHLL',
+    request_token_params={'scope': 'email'},
+    base_url='https://api.bitbucket.org',
+    request_token_url=None,
+    access_token_method='POST',
+    access_token_url='https://bitbucket.org/site/oauth2/access_token',
+    authorize_url='https://bitbucket.org/site/oauth2/authorize',
+)
+
 def change_linkedin_query(uri, headers, body):
     auth = headers.pop('Authorization')
     headers['x-li-format'] = 'json'
@@ -145,6 +157,13 @@ class LinkedinSignIn(SignIn):
         self.service = linkedin
 
 
+class BitbucketSignIn(SignIn):
+    def __init__(self):
+        super(BitbucketSignIn, self).__init__('bitbucket',
+                                             get='2.0/user',
+                                             name='firstName')
+        self.service = linkedin
+
 @github.tokengetter
 def get_github_oauth_token():
     return session.get('github_token')
@@ -163,6 +182,10 @@ def get_dropbox_oauth_token():
 @linkedin.tokengetter
 def get_linkedin_oauth_token():
     return session.get('linkedin_token')
+
+@bitbucket.tokengetter
+def get_bitbucket_oauth_token():
+    return session.get('bitbucket_token')
 
 
 @login_manager.user_loader
