@@ -45,6 +45,21 @@ dropbox = oauth.remote_app(
     authorize_url='https://www.dropbox.com/1/oauth2/authorize',
 )
 
+linkedin = oauth.remote_app(
+		'linkedin',
+		consumer_key='77wn6bxtm0z70p',
+		consumer_secret='CbhDjThUBp6itndW',
+		request_token_params={
+		'scope': 'r_basicprofile',
+		'state': 'RandomString',
+		},
+		base_url='https://api.linkedin.com/v1/',
+		request_token_url=None,
+		access_token_method='POST',
+		access_token_url='https://www.linkedin.com/uas/oauth2/accessToken',
+		authorize_url='https://www.linkedin.com/uas/oauth2/authorization',
+)
+
 class SignIn(object):
     providers = None
 
@@ -61,6 +76,7 @@ class SignIn(object):
             return (None, None, None)
         session[self.provider_name + "_token"] = (resp['access_token'], '')
         dat = self.service.get(self.get_info)
+        import ipdb; ipdb.set_trace()
         id = "{}${}".format(self.provider_name, dat.data['id'])
         return (id, dat.data['name'], dat.data['email'])
 
@@ -103,6 +119,10 @@ class DropboxSignIn(SignIn):
         id = "{}${}".format(self.provider_name, dat.data['uid'])
         return (id, dat.data['display_name'], dat.data['email'])
 
+class LinkedinSignIn(SignIn):
+    def __init__(self):
+        super(LinkedinSignIn, self).__init__('linkedin', 'people/~')
+        self.service = linkedin
 
 @github.tokengetter
 def get_github_oauth_token():
