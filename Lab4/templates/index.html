@@ -4,8 +4,9 @@
 
   {% block extra_scripts %}
   <script>
-  function display_feed_error(msg) {
-    $("#newfeed_error").empty().hide().append("<strong>Error! </strong>"+msg).fadeIn(400);
+  function display_feed_error(div, msg) {
+    $(div).empty().hide().append("<strong>Error! </strong>"+msg);
+    $(div).finish().slideDown(400).delay(2000).slideUp(400);
   }
   </script>
 
@@ -20,10 +21,10 @@
           if (data['status'] == 'OK') {
             $(remove).slideUp(400);
           } else {
-            alert("Invalid Feed.")
+            display_feed_error("#delfeed_error", "Invalid Feed");
           }
         }).fail(function() {
-          alert("Could not contact server.")
+          display_feed_error("#delfeed_error", "Could not contact server");
         });
       });
     });
@@ -50,10 +51,10 @@
           $("div[name='newfeed']").fadeOut(400);
           window.location.replace("/index");
         } else {
-          display_feed_error("Invalid Feed");
+          display_feed_error("#newfeed_error", "Invalid Feed");
         }
       }).fail(function() {
-        display_feed_error("Could not contact server");
+        display_feed_error("#newfeed_error", "Could not contact server");
       });
     });
   });
@@ -68,9 +69,7 @@
 
   <div class="row" id="index2">
     <div class="col-md-10 col-md-offset-1">
-      {% if message %}
-        <div class="alert alert-{{ message_level }}" role="alert">{{ message }}</div>
-      {% endif %}
+      <div class="alert alert-danger" id="delfeed_error" style="display:none;" role="alert"></div>
       <ul class="list-group">
         {% for feed in current_user.feeds %}
           <li class="list-group-item" id="feed_{{feed.id}}">

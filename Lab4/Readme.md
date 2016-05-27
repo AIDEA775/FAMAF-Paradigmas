@@ -30,10 +30,16 @@ Setting y models.
 
 
 ### Decisiones
-No nos gusto el boton de eliminar y lo cambiamos por una cruz. Para ser mas cool cambiamos el logut y el home por iconos para que sean mas representaivos y que no dependa del idioma. 
+No nos gusto el boton de eliminar y lo cambiamos por una cruz. Para ser mas cool cambiamos el `logut` y el `home` por iconos para que sean mas representaivos y que no dependa del idioma.
 
-### Ahora somos del club devs
+### Ahora somos del club DEVs
 Para crear las apis de gthub, github y dropbox. Nos registramos como desarrolladores en respectivas paginas luego leimos la documentacion que nos brindaba cada pagina. Con los datos que nos dieron cuando la creamos (como key, id, etc) llenamos el objeto que esta en el codigo.
+
+### Tambien somos miembros de testers
+Testeamos lo mas que pudimos la interfaz, haciendo mas de dos clics a todo
+(literalmente) y encontramos bugs pero lo solucionamos con `.finish()` para
+limpiar todas las animaciones pendientes.
+
 
 ### Inspiracion
 Copypastear todo el codigo que encontramos en stackoverflow, ejemplos en github
