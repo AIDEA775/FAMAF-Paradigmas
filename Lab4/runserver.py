@@ -43,7 +43,7 @@ def callback(provider):
 @login_required
 def logout():
     logout_user()
-    session.pop('github_token', None)
+    session.clear()
     return redirect(url_for('main'))
 
 
@@ -60,7 +60,7 @@ def new_feed():
     f = feedparser.parse(feedurl)
     if f.bozo == 1:
         return jsonify(status='FAIL')
-    if not 'title' in f.feed:
+    if 'title' not in f.feed:
         return jsonify(status='FAIL')
     title = f.feed.title
     try:

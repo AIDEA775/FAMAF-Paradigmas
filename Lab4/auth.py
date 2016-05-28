@@ -2,7 +2,8 @@ from flask import redirect, url_for, session, abort
 from flask_oauthlib.client import OAuth
 from app import app
 from models import User
-from flask.ext.login import LoginManager, login_required, logout_user, login_user
+from flask.ext.login import (LoginManager, login_required,
+                             logout_user, login_user)
 
 oauth = OAuth(app)
 login_manager = LoginManager()
@@ -22,8 +23,9 @@ github = oauth.remote_app(
 
 google = oauth.remote_app(
     'google',
-    consumer_key=
-    "100074576936-07bcar152vcuok1muu9e4ki8q6u959b8.apps.googleusercontent.com",
+    consumer_key=(
+        "100074576936-07bcar152vcuok1muu9e4ki8q6u959b8"
+        ".apps.googleusercontent.com"),
     consumer_secret="m2swxVcYr7snV4wNGGX97I8F",
     request_token_params={'scope': 'email'},
     base_url='https://www.googleapis.com/oauth2/v1/',
@@ -50,9 +52,8 @@ linkedin = oauth.remote_app(
     consumer_key='77wn6bxtm0z70p',
     consumer_secret='CbhDjThUBp6itndW',
     request_token_params={
-    'scope': 'r_basicprofile',
-    'state': 'RandomString',
-    },
+        'scope': 'r_basicprofile',
+        'state': 'RandomString'},
     base_url='https://api.linkedin.com/v1/',
     request_token_url=None,
     access_token_method='POST',
@@ -63,7 +64,7 @@ linkedin = oauth.remote_app(
 bitbucket = oauth.remote_app(
     'bitbucket',
     consumer_key='YuVU8hTZXmbcSfrm7k',
-    consumer_secret=' PXz6BjSqQXF2dDEqet8tGXf8y5aDGHLL',
+    consumer_secret='PXz6BjSqQXF2dDEqet8tGXf8y5aDGHLL',
     request_token_params={'scope': 'email'},
     base_url='https://api.bitbucket.org',
     request_token_url=None,
@@ -71,6 +72,7 @@ bitbucket = oauth.remote_app(
     access_token_url='https://bitbucket.org/site/oauth2/access_token',
     authorize_url='https://bitbucket.org/site/oauth2/authorize',
 )
+
 
 def change_linkedin_query(uri, headers, body):
     auth = headers.pop('Authorization')
@@ -112,10 +114,10 @@ class SignIn(object):
             email = dat.data[self.email]
         return (id, dat.data[self.name], email)
 
-
     def get_callback_url(self):
         return url_for('callback', provider=self.provider_name,
                        _external=True)
+
     @classmethod
     def get_provider(self, provider_name):
         if self.providers is None:
@@ -129,7 +131,7 @@ class SignIn(object):
 class GithubSignIn(SignIn):
     def __init__(self):
         super(GithubSignIn, self).__init__('github',
-                                            get='user')
+                                           get='user')
         self.service = github
 
 
@@ -138,6 +140,7 @@ class GoogleSignIn(SignIn):
         super(GoogleSignIn, self).__init__('google',
                                            get='userinfo')
         self.service = google
+
 
 class DropboxSignIn(SignIn):
     def __init__(self):
@@ -160,9 +163,12 @@ class LinkedinSignIn(SignIn):
 class BitbucketSignIn(SignIn):
     def __init__(self):
         super(BitbucketSignIn, self).__init__('bitbucket',
-                                             get='2.0/user',
-                                             name='firstName')
-        self.service = linkedin
+                                              get='2.0/user',
+                                              id='uuid',
+                                              name='display_name',
+                                              email="")
+        self.service = bitbucket
+
 
 @github.tokengetter
 def get_github_oauth_token():
@@ -182,6 +188,7 @@ def get_dropbox_oauth_token():
 @linkedin.tokengetter
 def get_linkedin_oauth_token():
     return session.get('linkedin_token')
+
 
 @bitbucket.tokengetter
 def get_bitbucket_oauth_token():
